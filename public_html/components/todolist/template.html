@@ -1,0 +1,44 @@
+<div class="todolist unselectable" ng-class="{'todolist-minimized': $ctrl.minimized, 'todolist-maximized': !$ctrl.minimized}">
+    <div class="todolist-header">
+        <div ng-if="!$ctrl.minimized">
+            <div class="todolist-title-row">
+                <div ng-if="!$ctrl.selectedProject" class="todolist-title-text">Projects</div>
+                <div ng-if="$ctrl.selectedProject" class="todolist-title-text">{{$ctrl.selectedProject.name}}-Tasks</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="todolist-content">
+        <div ng-if="!$ctrl.minimized">
+            <div ng-if="!$ctrl.selectedProject">
+                <div ng-repeat="project in $ctrl.projects" class="w100">
+                    <div class="todolist-project">
+                        <div ng-click="$ctrl.selectProject(project)" class="todolist-project-name">{{project.name}}</div>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="$ctrl.selectedProject" ng-repeat="task in $ctrl.tasks">
+                <div class="todolist-task">{{task.taskString}}</div>
+                <div class="todolist-task-detail" ng-repeat="detail in task.details">
+                    {{detail.taskString}}
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="$ctrl.createProjectDialog && !$ctrl.minimized" class="todolist-create-project-dialog">
+            <div class="todolist-dialog-title">Create project: <span ng-if="$ctrl.createProjectError" class="error">{{$ctrl.createProjectError}}</span></div>
+            <div><input class="todolist-dialog-input-project-name" type="text" ng-model="$ctrl.newProjectName"></div>
+
+            <div ng-click="$ctrl.createProject($ctrl.newProjectName)" class="todolist-button todolist-dialog-button-create">Create</div>
+            <div ng-click="$ctrl.createProjectDialog = false; $ctrl.createProjectError = null;" class="todolist-button todolist-dialog-button-cancel">Cancel</div>
+        </div>
+    </div>
+
+    <div class="todolist-footer">
+        <div ng-click="$ctrl.minimized = !$ctrl.minimized" class="todolist-maximize-minimize-button"></div>
+
+        <div ng-if="!$ctrl.minimized">
+            <div ng-click="$ctrl.createProjectDialog = true" class="todolist-button todolist-createproject-button">Create Project</div>
+        </div>
+    </div>
+</div>

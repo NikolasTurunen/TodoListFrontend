@@ -1,0 +1,15 @@
+{
+    "name": "TodoListFrontend",
+    "version": "1.0.0",
+    "main": "path/to/main.css",
+    "ignore": [
+        ".jshintrc",
+        "**/*.txt"
+    ],
+    "dependencies": {
+        "angular": "1.5.x",
+        "angular-resource": "1.5.x"
+    },
+    "devDependencies": {
+    }
+}

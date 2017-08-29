@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <base href="/todolist/">
+        <title>TODO List</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link type="text/css" rel="stylesheet" href="main.css">
+
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/angular-resource/angular-resource.js"></script>
+
+        <script src="app.js"></script>
+
+        <script src="components/todolist/component.js"></script>
+        <script src="components/todolist/service.js"></script>
+        <link type="text/css" rel="stylesheet" href="components/todolist/style.css">
+    </head>
+    <body ng-app="app">
+        <div ng-view>
+            <todolist></todolist>
+        </div>
+    </body>
+</html>
