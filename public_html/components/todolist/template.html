@@ -3,7 +3,7 @@
         <div ng-if="!$ctrl.minimized">
             <div class="todolist-title-row">
                 <div ng-if="!$ctrl.selectedProject" class="todolist-title-text">Projects</div>
-                <div ng-if="$ctrl.selectedProject" class="todolist-title-text">{{$ctrl.selectedProject.name}}-Tasks</div>
+                <div ng-if="$ctrl.selectedProject" class="todolist-title-text">Project: {{$ctrl.selectedProject.name}}</div>
             </div>
         </div>
     </div>
