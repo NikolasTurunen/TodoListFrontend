@@ -30,7 +30,7 @@
             <div><input class="todolist-dialog-input-project-name" type="text" ng-model="$ctrl.newProjectName"></div>
 
             <div ng-click="$ctrl.createProject($ctrl.newProjectName)" class="todolist-button todolist-dialog-button-create">Create</div>
-            <div ng-click="$ctrl.createProjectDialog = false; $ctrl.createProjectError = null;" class="todolist-button todolist-dialog-button-cancel">Cancel</div>
+            <div ng-click="$ctrl.createProjectDialog = false; $ctrl.createProjectError = null; $ctrl.newProjectName = null;" class="todolist-button todolist-dialog-button-cancel">Cancel</div>
         </div>
     </div>
 
