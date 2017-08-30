@@ -16,8 +16,12 @@
                         <div class="todolist-project-name">{{project.name}}</div>
                     </div>
                     <div class="todolist-project-control"></div>
-                    <div class="todolist-project-control"></div>
-                    <div class="todolist-project-control"></div>
+                    <div class="todolist-project-control">
+                        <div ng-if="$ctrl.projects[$index - 1]" ng-click="$ctrl.swapProjects(project.id, $ctrl.projects[$index - 1].id)" class="todolist-project-control-arrow-up"></div>
+                    </div>
+                    <div class="todolist-project-control">
+                        <div ng-if="$ctrl.projects[$index + 1]" ng-click="$ctrl.swapProjects(project.id, $ctrl.projects[$index + 1].id)" class="todolist-project-control-arrow-down"></div>
+                    </div>
                     <div class="todolist-project-control"></div>
                 </div>
             </div>

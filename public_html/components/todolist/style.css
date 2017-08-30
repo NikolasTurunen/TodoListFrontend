@@ -94,9 +94,21 @@
     margin-left: 5px;
     height: 20px;
     width: 20px;
-    background-color: white;
+    background-color: #585858;
     cursor: pointer;
     float: left;
+}
+
+.todolist-project-control-arrow-up {
+    height: 20px;
+    width: 20px;
+    background-image: url("arrow-up.png");
+}
+
+.todolist-project-control-arrow-down {
+    height: 20px;
+    width: 20px;
+    background-image: url("arrow-down.png");
 }
 
 .todolist-task {

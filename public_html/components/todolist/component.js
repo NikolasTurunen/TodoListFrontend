@@ -30,6 +30,16 @@ function Controller(ProjectsService) {
             ctrl.createProjectError = "Failed to create project";
         });
     };
+
+    ctrl.swapProjects = function (projectId1, projectId2) {
+        ProjectsService.swappositions.query({projectId: projectId1, projectId2: projectId2}, {}, function (data) {
+            ctrl.error = null;
+            ctrl.createProjectDialog = false;
+            ctrl.getProjects();
+        }, function (error) {
+            ctrl.error = "Failed to swap projects";
+        });
+    };
 }
 
 angular.module("app").component("todolist", {
