@@ -119,14 +119,6 @@
 
 }
 
-.todolist-maximize-minimize-button {
-    width: 30px;
-    height: 30px;
-    background-color: white;
-    cursor: pointer;
-    float: left;
-}
-
 .todolist-createproject-button {
     margin-left: 40px;
     float: left;
@@ -189,4 +181,22 @@
 
 .todolist-dialog-button-cancel:hover {
     background-color: #DD0000;
+}
+
+.todolist-maximize-minimize-button {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    cursor: pointer;
+    float: left;
+}
+
+.todolist-big-arrow-right {
+    background-image: url("big-arrow-right.png");
+    background-size: cover;
+}
+
+.todolist-big-arrow-left {
+    background-image: url("big-arrow-left.png");
+    background-size: cover;
 }

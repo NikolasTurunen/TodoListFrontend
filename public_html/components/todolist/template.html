@@ -43,7 +43,7 @@
     </div>
 
     <div class="todolist-footer">
-        <div ng-click="$ctrl.minimized = !$ctrl.minimized" class="todolist-maximize-minimize-button"></div>
+        <div ng-click="$ctrl.minimized = !$ctrl.minimized" class="todolist-maximize-minimize-button" ng-class="{'todolist-big-arrow-right': $ctrl.minimized, 'todolist-big-arrow-left': !$ctrl.minimized}"></div>
 
         <div ng-if="!$ctrl.minimized && !$ctrl.selectedProject">
             <div ng-click="$ctrl.createProjectDialog = true" class="todolist-button todolist-createproject-button">Create Project</div>
