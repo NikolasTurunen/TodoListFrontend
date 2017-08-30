@@ -102,13 +102,13 @@
 .todolist-project-control-arrow-up {
     height: 20px;
     width: 20px;
-    background-image: url("arrow-up.png");
+    background-image: url("icons/arrow-up.png");
 }
 
 .todolist-project-control-arrow-down {
     height: 20px;
     width: 20px;
-    background-image: url("arrow-down.png");
+    background-image: url("icons/arrow-down.png");
 }
 
 .todolist-task {
@@ -192,11 +192,11 @@
 }
 
 .todolist-big-arrow-right {
-    background-image: url("big-arrow-right.png");
+    background-image: url("icons/big-arrow-right.png");
     background-size: cover;
 }
 
 .todolist-big-arrow-left {
-    background-image: url("big-arrow-left.png");
+    background-image: url("icons/big-arrow-left.png");
     background-size: cover;
 }
