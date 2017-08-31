@@ -41,6 +41,7 @@
     height: 475px;
     width: 100%;
     min-width: 1px;
+    overflow: auto;
     float: left;
 }
 
@@ -160,4 +161,13 @@
 .todolist-big-arrow-left {
     background-image: url("icons/big-arrow-left.png");
     background-size: cover;
+}
+
+::-webkit-scrollbar {
+    width: 15px;
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #A4A4A4;
 }
