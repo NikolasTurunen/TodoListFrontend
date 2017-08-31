@@ -116,6 +116,10 @@
     background-image: url("icons/edit.png");
 }
 
+.todolist-project-control-remove {
+    background-image: url("icons/cross.png");
+}
+
 .todolist-task {
 
 }

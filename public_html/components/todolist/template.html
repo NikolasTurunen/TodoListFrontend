@@ -22,7 +22,7 @@
                     <div class="todolist-project-control">
                         <div ng-if="$ctrl.projects[$index + 1]" ng-click="$ctrl.swapProjects(project.id, $ctrl.projects[$index + 1].id)" class="todolist-project-control-arrow-down"></div>
                     </div>
-                    <div ng-click="$ctrl.removeProjectDialog = true; $ctrl.selectedProjectForRemove = project;" class="todolist-project-control"></div>
+                    <div ng-click="$ctrl.removeProjectDialog = true; $ctrl.selectedProjectForRemove = project;" class="todolist-project-control todolist-project-control-remove"></div>
                 </div>
             </div>
             <div ng-if="$ctrl.selectedProject" ng-repeat="task in $ctrl.tasks">
