@@ -3,6 +3,8 @@ function Controller(ProjectsService) {
     ctrl.minimized = true;
 
     ctrl.tasks = null;
+    
+    ctrl.newProjectName = null;
 
     ctrl.selectProject = function (project) {
         // Get tasks of project by id
@@ -38,6 +40,17 @@ function Controller(ProjectsService) {
             ctrl.getProjects();
         }, function (error) {
             ctrl.error = "Failed to swap projects";
+        });
+    };
+
+    ctrl.renameProject = function (projectId, newName) {
+        ProjectsService.rename.query({projectId: projectId, newName: newName}, {}, function (data) {
+            ctrl.renameProjectError = null;
+            ctrl.renameProjectDialog = false;
+            ctrl.newProjectName = null;
+            ctrl.getProjects();
+        }, function (error) {
+            ctrl.renameProjectError = "Failed to rename project";
         });
     };
 }

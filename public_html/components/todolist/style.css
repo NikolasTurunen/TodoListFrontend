@@ -111,6 +111,10 @@
     background-image: url("icons/arrow-down.png");
 }
 
+.todolist-project-control-edit {
+    background-image: url("icons/edit.png");
+}
+
 .todolist-task {
 
 }
@@ -122,32 +126,6 @@
 .todolist-createproject-button {
     margin-left: 40px;
     float: left;
-}
-
-.todolist-create-project-dialog {
-    position: absolute;
-    width: 350px;
-    height: 86px;
-    top: 50%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    background-color: #747474;
-    color: black;
-}
-
-.todolist-dialog-title {
-    margin-left: 5px;
-    margin-top: 5px;
-    color: white;
-}
-
-.todolist-dialog-input-project-name {
-    margin-left: 5px;
-    margin-top: 5px;
-    width: 80%;
-    text-decoration: none;
-    border: 0;
-    outline: none;
 }
 
 .todolist-button {
@@ -164,23 +142,6 @@
 
 .todolist-button:hover {
     background-color: #505050;
-}
-
-.todolist-dialog-button-create {
-    margin-top: 5px;
-    margin-left: 40px;
-    float: left;
-}
-
-.todolist-dialog-button-cancel {
-    margin-top: 5px;
-    margin-right: 40px;
-    background-color: red;
-    float: right;
-}
-
-.todolist-dialog-button-cancel:hover {
-    background-color: #DD0000;
 }
 
 .todolist-maximize-minimize-button {

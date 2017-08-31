@@ -1,5 +1,15 @@
 {
     "elements": {
+        "action-cancel-dialog": {
+            "attributes": {
+                "action-text": {},
+                "action": {},
+                "title-text": {},
+                "text": {},
+                "error": {},
+                "status": {}
+            }
+        },
         "todolist": {}
     },
     "attributes": {}
