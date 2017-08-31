@@ -4,5 +4,5 @@
     <div ng-if="$ctrl.text !== undefined" class="todolist-dialog-text">{{$ctrl.text}}</div>
 
     <div ng-click="$ctrl.action()" class="todolist-button todolist-dialog-button-action">{{$ctrl.actionText}}</div>
-    <div ng-click="$ctrl.status = false; $ctrl.error = null; $ctrl.textInput = null;" class="todolist-button todolist-dialog-button-cancel">Cancel</div>
+    <div ng-click="$ctrl.cancel()" class="todolist-button todolist-dialog-button-cancel">Cancel</div>
 </div>
