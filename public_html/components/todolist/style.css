@@ -31,14 +31,14 @@
 }
 
 .todolist-header {
-    height: 45px;
+    height: 44px;
     width: 100%;
     min-width: 1px;
     float: left;
 }
 
 .todolist-content {
-    height: 475px;
+    height: 476px;
     width: 100%;
     min-width: 1px;
     overflow: auto;
