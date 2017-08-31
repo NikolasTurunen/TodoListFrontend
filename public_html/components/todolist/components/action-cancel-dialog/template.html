@@ -1,6 +1,6 @@
 <div ng-if="$ctrl.status" class="todolist-dialog">
     <div class="todolist-dialog-title">{{$ctrl.titleText}}: <span ng-if="$ctrl.error" class="error">{{$ctrl.error}}</span></div>
-    <div ng-if="$ctrl.textInput !== undefined"><input class="todolist-dialog-input-text" type="text" ng-model="$ctrl.text"></div>
+    <div ng-if="$ctrl.textInput !== undefined"><input class="todolist-dialog-input-text" type="text" ng-model="$ctrl.textInput"></div>
     <div ng-if="$ctrl.text !== undefined" class="todolist-dialog-text">{{$ctrl.text}}</div>
 
     <div ng-click="$ctrl.action()" class="todolist-button todolist-dialog-button-action">{{$ctrl.actionText}}</div>
