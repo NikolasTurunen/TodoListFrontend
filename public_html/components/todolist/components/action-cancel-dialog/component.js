@@ -9,7 +9,8 @@ angular.module("app").component("actionCancelDialog", {
         status: "=",
         titleText: "@",
         error: "=",
-        text: "=",
+        textInput: "=",
+        text: "@",
         action: "&",
         actionText: "@"
     }

@@ -3,6 +3,7 @@
         "action-cancel-dialog": {
             "attributes": {
                 "action-text": {},
+                "text-input": {},
                 "action": {},
                 "title-text": {},
                 "text": {},

@@ -3,7 +3,7 @@ function Controller(ProjectsService) {
     ctrl.minimized = true;
 
     ctrl.tasks = null;
-    
+
     ctrl.newProjectName = null;
 
     ctrl.selectProject = function (project) {
@@ -51,6 +51,16 @@ function Controller(ProjectsService) {
             ctrl.getProjects();
         }, function (error) {
             ctrl.renameProjectError = "Failed to rename project";
+        });
+    };
+
+    ctrl.removeProject = function (projectId) {
+        ProjectsService.remove.query({projectId: projectId}, {}, function (data) {
+            ctrl.removeProjectError = null;
+            ctrl.removeProjectDialog = false;
+            ctrl.getProjects();
+        }, function (error) {
+            ctrl.removeProjectError = "Failed to remove project";
         });
     };
 }

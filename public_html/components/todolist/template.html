@@ -22,7 +22,7 @@
                     <div class="todolist-project-control">
                         <div ng-if="$ctrl.projects[$index + 1]" ng-click="$ctrl.swapProjects(project.id, $ctrl.projects[$index + 1].id)" class="todolist-project-control-arrow-down"></div>
                     </div>
-                    <div class="todolist-project-control"></div>
+                    <div ng-click="$ctrl.removeProjectDialog = true; $ctrl.selectedProjectForRemove = project;" class="todolist-project-control"></div>
                 </div>
             </div>
             <div ng-if="$ctrl.selectedProject" ng-repeat="task in $ctrl.tasks">
@@ -39,7 +39,7 @@
                 status="$ctrl.createProjectDialog" 
                 title-text="Create project" 
                 error="$ctrl.createProjectError" 
-                text="$ctrl.newProjectName" 
+                text-input="$ctrl.newProjectName" 
                 action="$ctrl.createProject($ctrl.newProjectName)" 
                 action-text="Create"></action-cancel-dialog>
 
@@ -48,9 +48,18 @@
                 status="$ctrl.renameProjectDialog" 
                 title-text="Rename project" 
                 error="$ctrl.renameProjectError" 
-                text="$ctrl.newProjectName" 
+                text-input="$ctrl.newProjectName" 
                 action="$ctrl.renameProject($ctrl.selectedProjectForRename.id, $ctrl.newProjectName)" 
                 action-text="Rename"></action-cancel-dialog>
+
+            <!-- Remove project dialog -->
+            <action-cancel-dialog 
+                status="$ctrl.removeProjectDialog" 
+                title-text="Remove project" 
+                error="$ctrl.removeProjectError" 
+                text="Are you sure you want to remove the project?"
+                action="$ctrl.removeProject($ctrl.selectedProjectForRemove.id)" 
+                action-text="Remove"></action-cancel-dialog>
         </div>
     </div>
 
