@@ -126,12 +126,13 @@
 
 .todolist-task {
     width: 100%;
-    min-height: 18px;
-    margin-bottom: 6px;
+    min-height: 15px;
+    margin-bottom: 2px;
 }
 
 .todolist-task-text {
     width: 80%;
+    font-size: 14px;
 }
 
 .todolist-task-dash {
