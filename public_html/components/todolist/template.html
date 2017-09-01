@@ -12,7 +12,7 @@
         <div ng-if="!$ctrl.minimized">
             <div ng-if="!$ctrl.selectedProject">
                 <div ng-repeat="project in $ctrl.projects" class="w100">
-                    <div ng-click="$ctrl.selectProject(project); $ctrl.createProjectDialog = false;" class="todolist-project">
+                    <div ng-click="$ctrl.selectProject(project); $ctrl.closeDialogs();" class="todolist-project">
                         <div class="todolist-project-name">{{project.name}}</div>
                     </div>
                     <div ng-click="$ctrl.renameProjectDialog = true; $ctrl.selectedProjectForRename = project;" class="todolist-project-control todolist-project-control-edit"></div>
@@ -86,7 +86,7 @@
             </div>
 
             <div ng-if="$ctrl.selectedProject">
-                <div ng-click="$ctrl.selectedProject = null; $ctrl.error = null; $ctrl.createTaskDialog = false;" class="todolist-button todolist-footer-button">Back</div>
+                <div ng-click="$ctrl.selectedProject = null; $ctrl.error = null; $ctrl.closeDialogs();" class="todolist-button todolist-footer-button">Back</div>
                 <div ng-click="$ctrl.createTaskDialog = true" class="todolist-button todolist-footer-button">New Task</div>
             </div>
         </div>

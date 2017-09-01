@@ -13,6 +13,13 @@ function Controller(ProjectsService, TasksService) {
         ctrl.selectedProject = project;
     };
 
+    ctrl.closeDialogs = function () {
+        ctrl.createProjectDialog = false;
+        ctrl.renameProjectDialog = false;
+        ctrl.removeProjectDialog = false;
+        ctrl.createTaskDialog = false;
+    };
+
     ctrl.getProjects = function () {
         ProjectsService.get.query(function (data) {
             ctrl.projects = data;
