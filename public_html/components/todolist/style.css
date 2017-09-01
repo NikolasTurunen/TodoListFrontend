@@ -120,8 +120,22 @@
     background-image: url("icons/cross.png");
 }
 
-.todolist-task {
+.todolist-tasks {
+    margin-left: 10px;
+}
 
+.todolist-task {
+    margin-bottom: 6px;
+    width: 80%;
+}
+
+.todolist-task-dash {
+    margin-top: 3px;
+    margin-right: 8px;
+    width: 10px;
+    height: 10px;
+    background-image: url("icons/hierarchy-dash.png");
+    float: left;
 }
 
 .todolist-task-detail {

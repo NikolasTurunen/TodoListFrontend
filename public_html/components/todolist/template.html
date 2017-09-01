@@ -26,7 +26,8 @@
                 </div>
             </div>
             <div ng-if="$ctrl.selectedProject">
-                <div ng-repeat="task in $ctrl.tasks">
+                <div ng-repeat="task in $ctrl.tasks" class="todolist-tasks selectable">
+                    <div class="todolist-task-dash"></div>
                     <div class="todolist-task">{{task.taskString}}</div>
                     <div class="todolist-task-detail" ng-repeat="detail in task.details">
                         {{detail.taskString}}
