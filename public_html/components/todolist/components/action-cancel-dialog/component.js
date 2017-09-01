@@ -1,5 +1,6 @@
-function Controller() {
+function Controller($attrs) {
     var ctrl = this;
+    ctrl.attributes = $attrs;
 
     ctrl.cancel = function () {
         ctrl.cancelAction();

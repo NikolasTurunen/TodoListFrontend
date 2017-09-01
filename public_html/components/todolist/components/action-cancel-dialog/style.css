@@ -9,6 +9,10 @@
     color: black;
 }
 
+.todolist-dialog-wide {
+    width: 550px;
+}
+
 .todolist-dialog-title {
     margin-left: 5px;
     margin-top: 5px;
