@@ -25,10 +25,10 @@
                     <div ng-click="$ctrl.openDialog($ctrl.DIALOG.REMOVE_PROJECT); $ctrl.selectedProjectForRemove = project;" class="todolist-project-control todolist-project-control-remove"></div>
                 </div>
             </div>
-            <div ng-if="$ctrl.selectedProject">
-                <div ng-repeat="task in $ctrl.tasks" class="todolist-tasks selectable">
+            <div ng-if="$ctrl.selectedProject" class="todolist-tasks selectable">
+                <div ng-repeat="task in $ctrl.tasks" class="todolist-task">
                     <div class="todolist-task-dash"></div>
-                    <div class="todolist-task">{{task.taskString}}</div>
+                    <div class="todolist-task-text">{{task.taskString}}</div>
                     <div class="todolist-task-detail" ng-repeat="detail in task.details">
                         {{detail.taskString}}
                     </div>
