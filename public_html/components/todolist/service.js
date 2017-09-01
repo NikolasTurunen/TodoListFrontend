@@ -35,7 +35,7 @@ angular.module("app").factory("ProjectsService", ["$resource", "$location",
 
 angular.module("app").factory("TasksService", ["$resource", "$location",
     function ($resource, $location) {
-        var url = "http://" + $location.host() + ":8081/todolist/api/tasks";
+        var url = "http://" + $location.host() + ":8082/todolist/api/tasks";
 
         return {
             get: $resource(url, {}, {

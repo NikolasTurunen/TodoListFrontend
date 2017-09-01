@@ -1,4 +1,4 @@
-function Controller(ProjectsService) {
+function Controller(ProjectsService, TasksService) {
     var ctrl = this;
     ctrl.minimized = true;
 
@@ -7,7 +7,9 @@ function Controller(ProjectsService) {
     ctrl.newProjectName = null;
 
     ctrl.selectProject = function (project) {
-        // Get tasks of project by id
+        ctrl.tasks = null;
+        ctrl.getTasks(project.id);
+
         ctrl.selectedProject = project;
     };
 
@@ -61,6 +63,26 @@ function Controller(ProjectsService) {
             ctrl.getProjects();
         }, function (error) {
             ctrl.removeProjectError = "Failed to remove project";
+        });
+    };
+
+    ctrl.getTasks = function (projectId) {
+        TasksService.get.query({projectId: projectId}, {}, function (data) {
+            ctrl.error = null;
+            ctrl.tasks = data;
+        }, function (error) {
+            ctrl.error = "Failed to get tasks";
+        });
+    };
+
+    ctrl.createTask = function (projectId, task) {
+        TasksService.create.query({projectId: projectId, task: task}, {}, function (data) {
+            ctrl.createTaskError = null;
+            ctrl.createTaskDialog = false;
+            ctrl.newTaskText = undefined;
+            ctrl.getTasks(ctrl.selectedProject.id);
+        }, function (error) {
+            ctrl.createTaskError = "Failed to create task";
         });
     };
 }

@@ -25,10 +25,18 @@
                     <div ng-click="$ctrl.removeProjectDialog = true; $ctrl.selectedProjectForRemove = project;" class="todolist-project-control todolist-project-control-remove"></div>
                 </div>
             </div>
-            <div ng-if="$ctrl.selectedProject" ng-repeat="task in $ctrl.tasks">
-                <div class="todolist-task">{{task.taskString}}</div>
-                <div class="todolist-task-detail" ng-repeat="detail in task.details">
-                    {{detail.taskString}}
+            <div ng-if="$ctrl.selectedProject">
+                <div ng-repeat="task in $ctrl.tasks">
+                    <div class="todolist-task">{{task.taskString}}</div>
+                    <div class="todolist-task-detail" ng-repeat="detail in task.details">
+                        {{detail.taskString}}
+                    </div>
+                </div>
+
+                <div ng-if="$ctrl.createTaskDialog" class="todolist-create-task-dialog">
+                    <div>New task:</div> 
+                    <div><input class="todolist-new-task-input-text" type="text" ng-model="$ctrl.newTaskText"></div>
+                    <div ng-click="$ctrl.createTask($ctrl.selectedProject.id, $ctrl.newTaskText)" class="todolist-button todolist-dialog-button-action">Create</div><div ng-click="$ctrl.createTaskDialog = false; $ctrl.newTaskText = undefined;" class="todolist-button todolist-dialog-button-cancel">Cancel</div>
                 </div>
             </div>
 
@@ -71,6 +79,7 @@
 
             <div ng-if="$ctrl.selectedProject">
                 <div ng-click="$ctrl.selectedProject = null" class="todolist-button todolist-footer-button">Back</div>
+                <div ng-click="$ctrl.createTaskDialog = true" class="todolist-button todolist-footer-button">New Task</div>
             </div>
         </div>
     </div>
