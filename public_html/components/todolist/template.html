@@ -12,7 +12,7 @@
         <div ng-if="!$ctrl.minimized">
             <div ng-if="!$ctrl.selectedProject">
                 <div ng-repeat="project in $ctrl.projects" class="w100">
-                    <div ng-click="$ctrl.selectProject(project)" class="todolist-project">
+                    <div ng-click="$ctrl.selectProject(project); $ctrl.createProjectDialog = false;" class="todolist-project">
                         <div class="todolist-project-name">{{project.name}}</div>
                     </div>
                     <div ng-click="$ctrl.renameProjectDialog = true; $ctrl.selectedProjectForRename = project;" class="todolist-project-control todolist-project-control-edit"></div>
