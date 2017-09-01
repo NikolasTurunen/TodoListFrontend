@@ -37,12 +37,14 @@
 
             <div ng-if="$ctrl.error" class="error">{{$ctrl.error}}</div>
 
-            <div ng-if="$ctrl.isDialogOpen($ctrl.DIALOG.CREATE_TASK)" class="todolist-create-task-dialog">
-                <div>New task:</div> 
-                <div><input class="todolist-new-task-input-text" type="text" ng-model="$ctrl.newTaskText"></div>
-                <div ng-click="$ctrl.createTask($ctrl.selectedProject.id, $ctrl.newTaskText)" class="todolist-button todolist-dialog-button-action">Create</div>
-                <div ng-click="$ctrl.closeDialog(); $ctrl.newTaskText = undefined;" class="todolist-button todolist-dialog-button-cancel">Cancel</div>
-            </div>
+            <action-cancel-dialog 
+                status="$ctrl.isDialogOpen($ctrl.DIALOG.CREATE_TASK)" 
+                title-text="New task" 
+                error="$ctrl.createTaskError" 
+                text-input="$ctrl.newTaskText" 
+                action="$ctrl.createTask($ctrl.selectedProject.id, $ctrl.newTaskText)" 
+                action-text="Create" 
+                cancel-action="$ctrl.closeDialog()"></action-cancel-dialog>
 
             <!-- Create project dialog -->
             <action-cancel-dialog 

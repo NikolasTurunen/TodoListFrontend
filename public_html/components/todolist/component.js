@@ -5,6 +5,7 @@ function Controller(ProjectsService, TasksService) {
     ctrl.tasks = null;
 
     ctrl.newProjectName = null;
+    ctrl.newTaskText = null;
 
     ctrl.selectProject = function (project) {
         ctrl.tasks = null;
@@ -100,7 +101,7 @@ function Controller(ProjectsService, TasksService) {
         TasksService.create.query({projectId: projectId, task: task}, {}, function (data) {
             ctrl.createTaskError = null;
             ctrl.closeDialog();
-            ctrl.newTaskText = undefined;
+            ctrl.newTaskText = null;
             ctrl.getTasks(ctrl.selectedProject.id);
         }, function (error) {
             ctrl.createTaskError = "Failed to create task";
