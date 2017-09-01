@@ -13,11 +13,25 @@ function Controller(ProjectsService, TasksService) {
         ctrl.selectedProject = project;
     };
 
-    ctrl.closeDialogs = function () {
-        ctrl.createProjectDialog = false;
-        ctrl.renameProjectDialog = false;
-        ctrl.removeProjectDialog = false;
-        ctrl.createTaskDialog = false;
+    ctrl.currentDialog = null;
+
+    ctrl.DIALOG = {
+        CREATE_PROJECT: 1,
+        RENAME_PROJECT: 2,
+        REMOVE_PROJECT: 3,
+        CREATE_TASK: 4
+    };
+
+    ctrl.openDialog = function (dialog) {
+        ctrl.currentDialog = dialog;
+    };
+
+    ctrl.closeDialog = function () {
+        ctrl.currentDialog = null;
+    };
+
+    ctrl.isDialogOpen = function (dialog) {
+        return ctrl.currentDialog === dialog;
     };
 
     ctrl.getProjects = function () {
@@ -34,7 +48,7 @@ function Controller(ProjectsService, TasksService) {
     ctrl.createProject = function (projectName) {
         ProjectsService.create.query({name: projectName}, {}, function (data) {
             ctrl.createProjectError = null;
-            ctrl.createProjectDialog = false;
+            ctrl.closeDialog();
             ctrl.newProjectName = null;
             ctrl.getProjects();
         }, function (error) {
@@ -45,7 +59,7 @@ function Controller(ProjectsService, TasksService) {
     ctrl.swapProjects = function (projectId1, projectId2) {
         ProjectsService.swappositions.query({projectId: projectId1, projectId2: projectId2}, {}, function (data) {
             ctrl.error = null;
-            ctrl.createProjectDialog = false;
+            ctrl.closeDialog();
             ctrl.getProjects();
         }, function (error) {
             ctrl.error = "Failed to swap projects";
@@ -55,7 +69,7 @@ function Controller(ProjectsService, TasksService) {
     ctrl.renameProject = function (projectId, newName) {
         ProjectsService.rename.query({projectId: projectId, newName: newName}, {}, function (data) {
             ctrl.renameProjectError = null;
-            ctrl.renameProjectDialog = false;
+            ctrl.closeDialog();
             ctrl.newProjectName = null;
             ctrl.getProjects();
         }, function (error) {
@@ -66,7 +80,7 @@ function Controller(ProjectsService, TasksService) {
     ctrl.removeProject = function (projectId) {
         ProjectsService.remove.query({projectId: projectId}, {}, function (data) {
             ctrl.removeProjectError = null;
-            ctrl.removeProjectDialog = false;
+            ctrl.closeDialog();
             ctrl.getProjects();
         }, function (error) {
             ctrl.removeProjectError = "Failed to remove project";
@@ -85,7 +99,7 @@ function Controller(ProjectsService, TasksService) {
     ctrl.createTask = function (projectId, task) {
         TasksService.create.query({projectId: projectId, task: task}, {}, function (data) {
             ctrl.createTaskError = null;
-            ctrl.createTaskDialog = false;
+            ctrl.closeDialog();
             ctrl.newTaskText = undefined;
             ctrl.getTasks(ctrl.selectedProject.id);
         }, function (error) {

@@ -2,7 +2,7 @@ function Controller() {
     var ctrl = this;
 
     ctrl.cancel = function () {
-        ctrl.status = false;
+        ctrl.cancelAction();
         ctrl.error = null;
 
         if (ctrl.textInput !== undefined) {
@@ -15,12 +15,13 @@ angular.module("app").component("actionCancelDialog", {
     controller: Controller,
     templateUrl: "components/todolist/components/action-cancel-dialog/template.html",
     bindings: {
-        status: "=",
+        status: "<",
         titleText: "@",
         error: "=",
         textInput: "=?",
         text: "@",
         action: "&",
-        actionText: "@"
+        actionText: "@",
+        cancelAction: "&"
     }
 });
