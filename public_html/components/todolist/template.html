@@ -33,12 +33,14 @@
                         {{detail.taskString}}
                     </div>
                 </div>
+            </div>
 
-                <div ng-if="$ctrl.createTaskDialog" class="todolist-create-task-dialog">
-                    <div>New task:</div> 
-                    <div><input class="todolist-new-task-input-text" type="text" ng-model="$ctrl.newTaskText"></div>
-                    <div ng-click="$ctrl.createTask($ctrl.selectedProject.id, $ctrl.newTaskText)" class="todolist-button todolist-dialog-button-action">Create</div><div ng-click="$ctrl.createTaskDialog = false; $ctrl.newTaskText = undefined;" class="todolist-button todolist-dialog-button-cancel">Cancel</div>
-                </div>
+            <div ng-if="$ctrl.error" class="error">{{$ctrl.error}}</div>
+
+            <div ng-if="$ctrl.createTaskDialog" class="todolist-create-task-dialog">
+                <div>New task:</div> 
+                <div><input class="todolist-new-task-input-text" type="text" ng-model="$ctrl.newTaskText"></div>
+                <div ng-click="$ctrl.createTask($ctrl.selectedProject.id, $ctrl.newTaskText)" class="todolist-button todolist-dialog-button-action">Create</div><div ng-click="$ctrl.createTaskDialog = false; $ctrl.newTaskText = undefined;" class="todolist-button todolist-dialog-button-cancel">Cancel</div>
             </div>
 
             <!-- Create project dialog -->
@@ -84,7 +86,7 @@
             </div>
 
             <div ng-if="$ctrl.selectedProject">
-                <div ng-click="$ctrl.selectedProject = null" class="todolist-button todolist-footer-button">Back</div>
+                <div ng-click="$ctrl.selectedProject = null; $ctrl.error = null; $ctrl.createTaskDialog = false;" class="todolist-button todolist-footer-button">Back</div>
                 <div ng-click="$ctrl.createTaskDialog = true" class="todolist-button todolist-footer-button">New Task</div>
             </div>
         </div>
