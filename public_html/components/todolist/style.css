@@ -171,8 +171,15 @@
     width: 30px;
     height: 30px;
     background-color: white;
-    cursor: pointer;
+    cursor: pointer
+}
+
+.todolist-maximize-minimize-button-left {
     float: left;
+}
+
+.todolist-maximize-minimize-button-right {
+    float: right;
 }
 
 .todolist-big-arrow-right {

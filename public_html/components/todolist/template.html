@@ -70,7 +70,12 @@
     </div>
 
     <div class="todolist-footer">
-        <div ng-click="$ctrl.minimized = !$ctrl.minimized" class="todolist-maximize-minimize-button" ng-class="{'todolist-big-arrow-right': $ctrl.minimized, 'todolist-big-arrow-left': !$ctrl.minimized}"></div>
+        <div ng-click="$ctrl.minimized = !$ctrl.minimized" class="todolist-maximize-minimize-button" 
+             ng-class="{'todolist-big-arrow-right': $ctrl.minimized
+                 , 'todolist-maximize-minimize-button-left': $ctrl.minimized
+                 , 'todolist-big-arrow-left': !$ctrl.minimized
+                 , 'todolist-maximize-minimize-button-right': !$ctrl.minimized
+             }"></div>
 
         <div ng-if="!$ctrl.minimized">
             <div ng-if="!$ctrl.selectedProject">
