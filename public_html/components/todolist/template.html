@@ -15,14 +15,16 @@
                     <div ng-click="$ctrl.selectProject(project); $ctrl.closeDialog();" class="todolist-project">
                         <div class="todolist-project-name">{{project.name}}</div>
                     </div>
-                    <div ng-click="$ctrl.openDialog($ctrl.DIALOG.RENAME_PROJECT); $ctrl.selectedProjectForRename = project;" class="todolist-project-control todolist-project-control-edit"></div>
-                    <div class="todolist-project-control">
-                        <div ng-if="$ctrl.projects[$index - 1]" ng-click="$ctrl.swapProjects(project.id, $ctrl.projects[$index - 1].id)" class="todolist-project-control-arrow-up"></div>
+                    <div ng-if="$ctrl.controls">
+                        <div ng-click="$ctrl.openDialog($ctrl.DIALOG.RENAME_PROJECT); $ctrl.selectedProjectForRename = project;" class="todolist-project-control todolist-project-control-edit"></div>
+                        <div class="todolist-project-control">
+                            <div ng-if="$ctrl.projects[$index - 1]" ng-click="$ctrl.swapProjects(project.id, $ctrl.projects[$index - 1].id)" class="todolist-project-control-arrow-up"></div>
+                        </div>
+                        <div class="todolist-project-control">
+                            <div ng-if="$ctrl.projects[$index + 1]" ng-click="$ctrl.swapProjects(project.id, $ctrl.projects[$index + 1].id)" class="todolist-project-control-arrow-down"></div>
+                        </div>
+                        <div ng-click="$ctrl.openDialog($ctrl.DIALOG.REMOVE_PROJECT); $ctrl.selectedProjectForRemove = project;" class="todolist-project-control todolist-project-control-remove"></div>
                     </div>
-                    <div class="todolist-project-control">
-                        <div ng-if="$ctrl.projects[$index + 1]" ng-click="$ctrl.swapProjects(project.id, $ctrl.projects[$index + 1].id)" class="todolist-project-control-arrow-down"></div>
-                    </div>
-                    <div ng-click="$ctrl.openDialog($ctrl.DIALOG.REMOVE_PROJECT); $ctrl.selectedProjectForRemove = project;" class="todolist-project-control todolist-project-control-remove"></div>
                 </div>
             </div>
             <div ng-if="$ctrl.selectedProject" class="todolist-tasks selectable">
@@ -91,6 +93,7 @@
         <div ng-if="!$ctrl.minimized">
             <div ng-if="!$ctrl.selectedProject">
                 <div ng-click="$ctrl.openDialog($ctrl.DIALOG.CREATE_PROJECT)" class="todolist-button todolist-footer-button">Create Project</div>
+                <div ng-click="$ctrl.controls = !$ctrl.controls" class="todolist-button todolist-footer-button todolist-footer-toggle-button" ng-class="{'todolist-footer-toggle-button-active': $ctrl.controls}">Controls</div>
             </div>
 
             <div ng-if="$ctrl.selectedProject">

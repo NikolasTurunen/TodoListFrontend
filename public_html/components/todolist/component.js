@@ -2,6 +2,8 @@ function Controller(ProjectsService, TasksService) {
     var ctrl = this;
     ctrl.minimized = true;
 
+    ctrl.controls = false;
+
     ctrl.tasks = null;
 
     ctrl.newProjectName = null;

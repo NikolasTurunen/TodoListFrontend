@@ -171,6 +171,15 @@
     float: left;
 }
 
+.todolist-footer-toggle-button {
+    background-color: #585858 !important;
+}
+
+.todolist-footer-toggle-button-active {
+    background: none;
+    background-color: #505050 !important;
+}
+
 .todolist-button {
     padding: 2px 6px 2px 6px;
     min-width: 50px;
