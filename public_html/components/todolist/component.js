@@ -2,27 +2,17 @@ function Controller(ProjectsService, TasksService) {
     var ctrl = this;
     ctrl.minimized = true;
 
-    ctrl.controls = false;
-
-    ctrl.tasks = null;
-
-    ctrl.newProjectName = null;
-    ctrl.newTaskText = null;
-
-    ctrl.selectProject = function (project) {
-        ctrl.tasks = null;
-        ctrl.getTasks(project.id);
-
-        ctrl.selectedProject = project;
-    };
-
     ctrl.currentDialog = null;
 
     ctrl.DIALOG = {
         CREATE_PROJECT: 1,
         RENAME_PROJECT: 2,
         REMOVE_PROJECT: 3,
-        CREATE_TASK: 4
+        CREATE_TASK: 4,
+        CONTROL_TASK: 5,
+        CREATE_TASK_DETAIL: 6,
+        EDIT_TASK: 7,
+        REMOVE_TASK: 8
     };
 
     ctrl.openDialog = function (dialog) {
@@ -35,6 +25,20 @@ function Controller(ProjectsService, TasksService) {
 
     ctrl.isDialogOpen = function (dialog) {
         return ctrl.currentDialog === dialog;
+    };
+
+    ctrl.controls = false;
+
+    ctrl.tasks = null;
+
+    ctrl.newProjectName = null;
+    ctrl.newTaskText = null;
+
+    ctrl.selectProject = function (project) {
+        ctrl.tasks = null;
+        ctrl.getTasks(project.id);
+
+        ctrl.selectedProject = project;
     };
 
     ctrl.getProjects = function () {
@@ -109,6 +113,50 @@ function Controller(ProjectsService, TasksService) {
             ctrl.createTaskError = "Failed to create task";
         });
     };
+
+    ctrl.createTaskDetail = function (taskId, detail) {
+        TasksService.createdetail.query({taskId: taskId, detail: detail}, {}, function (data) {
+            ctrl.createTaskDetailError = null;
+            ctrl.closeDialog();
+            ctrl.getTasks(ctrl.selectedProject.id);
+        }, function (error) {
+            ctrl.createTaskDetailError = "Failed to create task detail";
+        });
+    };
+
+    ctrl.swapTasks = function (taskId, taskId2) {
+        TasksService.swappositions.query({taskId: taskId, taskId2: taskId2}, {}, function (data) {
+            ctrl.error = null;
+            ctrl.closeDialog();
+            ctrl.getTasks(ctrl.selectedProject.id);
+        }, function (error) {
+            ctrl.error = "Failed to swap tasks";
+        });
+    };
+
+    ctrl.isMoveTaskUpEnabled = function () {
+        return ctrl.tasks[ctrl.tasks.indexOf(ctrl.selectedTask) - 1] !== undefined;
+    };
+
+    ctrl.isMoveTaskDownEnabled = function () {
+        return ctrl.tasks[ctrl.tasks.indexOf(ctrl.selectedTask) + 1] !== undefined;
+    };
+
+    ctrl.moveTaskUp = function () {
+        ctrl.swapTasks(ctrl.selectedTask.id, ctrl.tasks[ctrl.tasks.indexOf(ctrl.selectedTask) - 1].id);
+    };
+
+    ctrl.moveTaskDown = function () {
+        ctrl.swapTasks(ctrl.selectedTask.id, ctrl.tasks[ctrl.tasks.indexOf(ctrl.selectedTask) + 1].id);
+    };
+
+    ctrl.controlTaskActions = [
+        {text: 'Create detail', action: ctrl.openDialog.bind(null, ctrl.DIALOG.CREATE_TASK_DETAIL)},
+        {text: 'Edit', action: ctrl.openDialog.bind(null, ctrl.DIALOG.EDIT_TASK)},
+        {text: 'Move up', action: ctrl.moveTaskUp, enabled: ctrl.isMoveTaskUpEnabled},
+        {text: 'Move down', action: ctrl.moveTaskDown, enabled: ctrl.isMoveTaskDownEnabled},
+        {text: 'Remove', action: ctrl.openDialog.bind(null, ctrl.DIALOG.REMOVE_TASK)}
+    ];
 }
 
 angular.module("app").component("todolist", {

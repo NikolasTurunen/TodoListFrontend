@@ -12,17 +12,15 @@ function Controller($attrs) {
     };
 }
 
-angular.module("app").component("actionCancelDialog", {
+angular.module("app").component("actionListDialog", {
     controller: Controller,
-    templateUrl: "components/todolist/components/action-cancel-dialog/template.html",
+    templateUrl: "components/todolist/components/dialogs/action-list-dialog/template.html",
     bindings: {
         status: "<",
         titleText: "@",
         error: "=",
-        textInput: "=?",
-        text: "@",
-        action: "&",
-        actionText: "@",
+        actions: "<",
+        task: "<",
         cancelAction: "&"
     }
 });

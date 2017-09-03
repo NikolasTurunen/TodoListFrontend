@@ -13,6 +13,16 @@
                 "status": {}
             }
         },
+        "action-list-dialog": {
+            "attributes": {
+                "task": {},
+                "cancel-action": {},
+                "title-text": {},
+                "error": {},
+                "actions": {},
+                "status": {}
+            }
+        },
         "todolist": {}
     },
     "attributes": {}

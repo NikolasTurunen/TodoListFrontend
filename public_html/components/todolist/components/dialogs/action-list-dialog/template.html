@@ -1,0 +1,8 @@
+<div ng-if="$ctrl.status" class="todolist-dialog todolist-dialog-action-list">
+    <div class="todolist-dialog-title">{{$ctrl.titleText}}: <span ng-if="$ctrl.error" class="error">{{$ctrl.error}}</span></div>
+    <div ng-repeat="action in $ctrl.actions" class="todolist-dialog-action-list-buttons">
+        <div class="w100">
+            <div ng-click="(!action.enabled || action.enabled()) && action.action()" class="todolist-dialog-button todolist-dialog-action-list-button" ng-class="{'todolist-dialog-action-list-button-disabled': action.enabled && !action.enabled()}">{{action.text}}</div>
+        </div>
+    </div>
+</div>

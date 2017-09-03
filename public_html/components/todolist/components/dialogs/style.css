@@ -68,3 +68,25 @@
 .todolist-dialog-button-cancel:hover {
     background-color: #DD0000;
 }
+
+.todolist-dialog-action-list {
+    width: 170px;
+    height: auto;
+}
+
+.todolist-dialog-action-list-buttons {
+    margin-top: 5px;
+}
+
+.todolist-dialog-action-list-button {
+    margin-bottom: 5px;
+    margin-left: 10px;
+}
+
+.todolist-dialog-action-list-button-disabled {
+    color: #626262;
+}
+
+.todolist-dialog-action-list-button-disabled:hover {
+    background-color: #585858;
+}

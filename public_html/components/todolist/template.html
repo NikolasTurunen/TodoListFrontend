@@ -29,7 +29,7 @@
             </div>
             <div ng-if="$ctrl.selectedProject" class="todolist-tasks selectable">
                 <div ng-repeat="task in $ctrl.tasks" class="todolist-task">
-                    <div class="todolist-task-dash"></div>
+                    <div ng-click="$ctrl.openDialog($ctrl.DIALOG.CONTROL_TASK); $ctrl.selectedTask = task;" class="todolist-task-controls"></div>
                     <div class="todolist-task-text">{{task.taskString}}</div>
                     <div class="todolist-task-detail" ng-repeat="detail in task.details">
                         {{detail.taskString}}
@@ -38,6 +38,15 @@
             </div>
 
             <div ng-if="$ctrl.error" class="error">{{$ctrl.error}}</div>
+
+            <!-- Control task dialog -->
+            <action-list-dialog
+                status="$ctrl.isDialogOpen($ctrl.DIALOG.CONTROL_TASK)"
+                title-text="Control task"
+                error=""
+                actions="$ctrl.controlTaskActions"
+                task="$ctrl.selectedTask"
+                cancel-action=""></action-list-dialog>
 
             <!-- Create task dialog -->
             <action-cancel-dialog 
