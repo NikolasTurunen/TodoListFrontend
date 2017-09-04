@@ -33,6 +33,7 @@ function Controller(ProjectsService, TasksService) {
 
     ctrl.newProjectName = null;
     ctrl.newTaskText = null;
+    ctrl.newTaskDetailText = null;
 
     ctrl.selectProject = function (project) {
         ctrl.tasks = null;
@@ -118,6 +119,7 @@ function Controller(ProjectsService, TasksService) {
         TasksService.createdetail.query({taskId: taskId, detail: detail}, {}, function (data) {
             ctrl.createTaskDetailError = null;
             ctrl.closeDialog();
+            ctrl.newTaskDetailText = null;
             ctrl.getTasks(ctrl.selectedProject.id);
         }, function (error) {
             ctrl.createTaskDetailError = "Failed to create task detail";

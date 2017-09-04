@@ -29,10 +29,12 @@
             </div>
             <div ng-if="$ctrl.selectedProject" class="todolist-tasks selectable">
                 <div ng-repeat="task in $ctrl.tasks" class="todolist-task">
-                    <div ng-click="$ctrl.openDialog($ctrl.DIALOG.CONTROL_TASK); $ctrl.selectedTask = task;" class="todolist-task-controls"></div>
-                    <div class="todolist-task-text">{{task.taskString}}</div>
+                    <div class="w100">
+                        <div ng-click="$ctrl.openDialog($ctrl.DIALOG.CONTROL_TASK); $ctrl.selectedTask = task;" class="todolist-task-controls"></div>
+                        <div class="todolist-task-text">{{task.taskString}}</div>
+                    </div>
                     <div class="todolist-task-detail" ng-repeat="detail in task.details">
-                        {{detail.taskString}}
+                        <div class="todolist-task-detail-dash"></div>{{detail.taskString}}
                     </div>
                 </div>
             </div>
@@ -47,6 +49,17 @@
                 actions="$ctrl.controlTaskActions"
                 task="$ctrl.selectedTask"
                 cancel-action=""></action-list-dialog>
+
+            <!-- Create task detail dialog -->
+            <action-cancel-dialog
+                status="$ctrl.isDialogOpen($ctrl.DIALOG.CREATE_TASK_DETAIL)"
+                title-text="Create detail"
+                error="$ctrl.createTaskDetailError"
+                text-input="$ctrl.newTaskDetailText"
+                action="$ctrl.createTaskDetail($ctrl.selectedTask.id, $ctrl.newTaskDetailText)"
+                action-text="Create"
+                cancel-action="$ctrl.closeDialog()"
+                wide></action-cancel-dialog>
 
             <!-- Create task dialog -->
             <action-cancel-dialog 
