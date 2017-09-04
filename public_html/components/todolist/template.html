@@ -61,6 +61,16 @@
                 cancel-action="$ctrl.closeDialog()"
                 wide></action-cancel-dialog>
 
+            <!-- Remove task dialog -->
+            <action-cancel-dialog
+                status="$ctrl.isDialogOpen($ctrl.DIALOG.REMOVE_TASK)"
+                title-text="Remove task"
+                error="$ctrl.removeTaskError"
+                text="Are you sure you want to remove the task?"
+                action="$ctrl.removeTask($ctrl.selectedTask.id)"
+                action-text="Remove"
+                cancel-action="$ctrl.closeDialog()"></action-cancel-dialog>
+
             <!-- Create task dialog -->
             <action-cancel-dialog 
                 status="$ctrl.isDialogOpen($ctrl.DIALOG.CREATE_TASK)" 

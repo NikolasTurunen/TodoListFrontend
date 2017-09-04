@@ -136,6 +136,16 @@ function Controller(ProjectsService, TasksService) {
         });
     };
 
+    ctrl.removeTask = function (taskId) {
+        TasksService.remove.query({taskId: taskId}, {}, function (data) {
+            ctrl.removeTaskError = null;
+            ctrl.closeDialog();
+            ctrl.getTasks(ctrl.selectedProject.id);
+        }, function (error) {
+            ctrl.removeTaskError = "Failed to remove task";
+        });
+    };
+
     ctrl.isMoveTaskUpEnabled = function () {
         return ctrl.tasks[ctrl.tasks.indexOf(ctrl.selectedTask) - 1] !== undefined;
     };
