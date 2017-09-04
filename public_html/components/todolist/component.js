@@ -126,6 +126,16 @@ function Controller(ProjectsService, TasksService) {
         });
     };
 
+    ctrl.editTask = function (taskId, newTask) {
+        TasksService.edit.query({taskId: taskId, newTask: newTask}, {}, function (data) {
+            ctrl.editTaskError = null;
+            ctrl.closeDialog();
+            ctrl.getTasks(ctrl.selectedProject.id);
+        }, function (error) {
+            ctrl.editTaskError = "Failed to edit task";
+        });
+    };
+
     ctrl.swapTasks = function (taskId, taskId2) {
         TasksService.swappositions.query({taskId: taskId, taskId2: taskId2}, {}, function (data) {
             ctrl.error = null;

@@ -61,6 +61,17 @@
                 cancel-action="$ctrl.closeDialog()"
                 wide></action-cancel-dialog>
 
+            <!-- Edit task dialog -->
+            <action-cancel-dialog
+                status="$ctrl.isDialogOpen($ctrl.DIALOG.EDIT_TASK)"
+                title-text="Edit task"
+                error="$ctrl.editTaskError"
+                text-input="$ctrl.newTaskText"
+                action="$ctrl.editTask($ctrl.selectedTask.id, $ctrl.newTaskText)"
+                action-text="Edit"
+                cancel-action="$ctrl.closeDialog()"
+                wide></action-cancel-dialog>
+
             <!-- Remove task dialog -->
             <action-cancel-dialog
                 status="$ctrl.isDialogOpen($ctrl.DIALOG.REMOVE_TASK)"
