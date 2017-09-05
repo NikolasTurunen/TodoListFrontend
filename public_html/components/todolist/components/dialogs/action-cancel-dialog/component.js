@@ -18,6 +18,9 @@ function Controller($attrs) {
     this.$onChanges = function (changedObject) {
         if (changedObject.status.currentValue === true) {
             ctrl.resetInput();
+            if (ctrl.defaultTextInput !== undefined) {
+                ctrl.textInput = ctrl.defaultTextInput;
+            }
         }
     };
 }
@@ -30,6 +33,7 @@ angular.module("app").component("actionCancelDialog", {
         titleText: "@",
         error: "=",
         textInput: "=?",
+        defaultTextInput: "<?",
         text: "@",
         action: "&",
         actionText: "@",
