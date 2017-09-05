@@ -11,6 +11,10 @@
     <div class="todolist-content">
         <div ng-if="!$ctrl.minimized">
             <div ng-if="!$ctrl.selectedProject">
+                <div ng-if="$ctrl.loadingProjects">
+                    Loading...
+                </div>
+
                 <div ng-repeat="project in $ctrl.projects" class="w100">
                     <div ng-click="$ctrl.selectProject(project); $ctrl.closeDialog();" class="todolist-project">
                         <div class="todolist-project-name">{{project.name}}</div>

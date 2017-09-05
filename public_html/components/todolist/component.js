@@ -43,12 +43,15 @@ function Controller(ProjectsService, TasksService) {
     };
 
     ctrl.getProjects = function () {
+        ctrl.loadingProjects = true;
         ProjectsService.get.query(function (data) {
             ctrl.projects = data;
             ctrl.error = null;
+            ctrl.loadingProjects = false;
         }, function (error) {
             ctrl.error = "Failed to get projects";
             ctrl.projects = null;
+            ctrl.loadingProjects = false;
         });
     };
     ctrl.getProjects();
