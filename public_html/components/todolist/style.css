@@ -147,6 +147,7 @@
     width: 20px;
     height: 20px;
     background-image: url("icons/menu.png");
+    cursor: pointer;
     float: left;
 }
 
