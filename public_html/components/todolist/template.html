@@ -62,8 +62,8 @@
                 status="$ctrl.isDialogOpen($ctrl.DIALOG.CREATE_TASK_DETAIL)"
                 title-text="Create detail"
                 error="$ctrl.createTaskDetailError"
-                text-input="$ctrl.newTaskDetailText"
-                action="$ctrl.createTaskDetail($ctrl.selectedTask.id, $ctrl.newTaskDetailText)"
+                text-input="$ctrl.dialogInputText"
+                action="$ctrl.createTaskDetail($ctrl.selectedTask.id, $ctrl.dialogInputText)"
                 action-text="Create"
                 cancel-action="$ctrl.closeDialog()"
                 wide></action-cancel-dialog>
@@ -73,8 +73,8 @@
                 status="$ctrl.isDialogOpen($ctrl.DIALOG.EDIT_TASK)"
                 title-text="Edit task"
                 error="$ctrl.editTaskError"
-                text-input="$ctrl.newTaskText"
-                action="$ctrl.editTask($ctrl.selectedTask.id, $ctrl.newTaskText)"
+                text-input="$ctrl.dialogInputText"
+                action="$ctrl.editTask($ctrl.selectedTask.id, $ctrl.dialogInputText)"
                 action-text="Edit"
                 cancel-action="$ctrl.closeDialog()"
                 wide></action-cancel-dialog>
@@ -94,8 +94,8 @@
                 status="$ctrl.isDialogOpen($ctrl.DIALOG.CREATE_TASK)" 
                 title-text="New task" 
                 error="$ctrl.createTaskError" 
-                text-input="$ctrl.newTaskText" 
-                action="$ctrl.createTask($ctrl.selectedProject.id, $ctrl.newTaskText)" 
+                text-input="$ctrl.dialogInputText" 
+                action="$ctrl.createTask($ctrl.selectedProject.id, $ctrl.dialogInputText)" 
                 action-text="Create" 
                 cancel-action="$ctrl.closeDialog()" 
                 wide></action-cancel-dialog>
@@ -105,8 +105,8 @@
                 status="$ctrl.isDialogOpen($ctrl.DIALOG.CREATE_PROJECT)" 
                 title-text="Create project" 
                 error="$ctrl.createProjectError" 
-                text-input="$ctrl.newProjectName" 
-                action="$ctrl.createProject($ctrl.newProjectName)" 
+                text-input="$ctrl.dialogInputText" 
+                action="$ctrl.createProject($ctrl.dialogInputText)" 
                 action-text="Create"
                 cancel-action="$ctrl.closeDialog()"></action-cancel-dialog>
 
@@ -115,8 +115,8 @@
                 status="$ctrl.isDialogOpen($ctrl.DIALOG.RENAME_PROJECT)" 
                 title-text="Rename project" 
                 error="$ctrl.renameProjectError" 
-                text-input="$ctrl.newProjectName" 
-                action="$ctrl.renameProject($ctrl.selectedProjectForRename.id, $ctrl.newProjectName)" 
+                text-input="$ctrl.dialogInputText" 
+                action="$ctrl.renameProject($ctrl.selectedProjectForRename.id, $ctrl.dialogInputText)" 
                 action-text="Rename"
                 cancel-action="$ctrl.closeDialog()"></action-cancel-dialog>
 

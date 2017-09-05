@@ -31,9 +31,7 @@ function Controller(ProjectsService, TasksService) {
 
     ctrl.tasks = null;
 
-    ctrl.newProjectName = null;
-    ctrl.newTaskText = null;
-    ctrl.newTaskDetailText = null;
+    ctrl.dialogInputText = null;
 
     ctrl.selectProject = function (project) {
         ctrl.tasks = null;
@@ -60,7 +58,7 @@ function Controller(ProjectsService, TasksService) {
         ProjectsService.create.query({name: projectName}, {}, function (data) {
             ctrl.createProjectError = null;
             ctrl.closeDialog();
-            ctrl.newProjectName = null;
+            ctrl.dialogInputText = null;
             ctrl.getProjects();
         }, function (error) {
             ctrl.createProjectError = "Failed to create project";
@@ -81,7 +79,7 @@ function Controller(ProjectsService, TasksService) {
         ProjectsService.rename.query({projectId: projectId, newName: newName}, {}, function (data) {
             ctrl.renameProjectError = null;
             ctrl.closeDialog();
-            ctrl.newProjectName = null;
+            ctrl.dialogInputText = null;
             ctrl.getProjects();
         }, function (error) {
             ctrl.renameProjectError = "Failed to rename project";
@@ -114,7 +112,7 @@ function Controller(ProjectsService, TasksService) {
         TasksService.create.query({projectId: projectId, task: task}, {}, function (data) {
             ctrl.createTaskError = null;
             ctrl.closeDialog();
-            ctrl.newTaskText = null;
+            ctrl.dialogInputText = null;
             ctrl.getTasks(ctrl.selectedProject.id);
         }, function (error) {
             ctrl.createTaskError = "Failed to create task";
@@ -125,7 +123,7 @@ function Controller(ProjectsService, TasksService) {
         TasksService.createdetail.query({taskId: taskId, detail: detail}, {}, function (data) {
             ctrl.createTaskDetailError = null;
             ctrl.closeDialog();
-            ctrl.newTaskDetailText = null;
+            ctrl.dialogInputText = null;
             ctrl.getTasks(ctrl.selectedProject.id);
         }, function (error) {
             ctrl.createTaskDetailError = "Failed to create task detail";

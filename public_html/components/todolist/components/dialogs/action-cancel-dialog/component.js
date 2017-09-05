@@ -2,12 +2,22 @@ function Controller($attrs) {
     var ctrl = this;
     ctrl.attributes = $attrs;
 
+    ctrl.resetInput = function () {
+        if (ctrl.textInput !== undefined) {
+            ctrl.textInput = null;
+        }
+    };
+
     ctrl.cancel = function () {
         ctrl.cancelAction();
         ctrl.error = null;
 
-        if (ctrl.textInput !== undefined) {
-            ctrl.textInput = null;
+        ctrl.resetInput();
+    };
+
+    this.$onChanges = function (changedObject) {
+        if (changedObject.status.currentValue === true) {
+            ctrl.resetInput();
         }
     };
 }
