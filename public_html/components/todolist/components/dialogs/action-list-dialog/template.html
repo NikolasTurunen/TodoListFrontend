@@ -5,4 +5,5 @@
             <div ng-click="(!action.enabled || action.enabled()) && action.action()" class="todolist-dialog-button todolist-dialog-action-list-button" ng-class="{'todolist-dialog-action-list-button-disabled': action.enabled && !action.enabled()}">{{action.text}}</div>
         </div>
     </div>
+    <div ng-click="$ctrl.cancel()" class="todolist-button todolist-dialog-action-list-button todolist-dialog-action-list-button-cancel">Cancel</div>
 </div>

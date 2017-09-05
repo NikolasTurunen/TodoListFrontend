@@ -14,7 +14,7 @@ angular.module("app").component("actionListDialog", {
     bindings: {
         status: "<",
         titleText: "@",
-        error: "=",
+        error: "=?",
         actions: "<",
         task: "<",
         cancelAction: "&"
