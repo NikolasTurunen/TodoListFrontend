@@ -32,6 +32,10 @@
                 </div>
             </div>
             <div ng-if="$ctrl.selectedProject" class="todolist-tasks selectable">
+                <div ng-if="$ctrl.loadingTasks">
+                    Loading...
+                </div>
+
                 <div ng-repeat="task in $ctrl.tasks" class="todolist-task">
                     <div class="w100">
                         <div ng-click="$ctrl.openDialog($ctrl.DIALOG.CONTROL_TASK); $ctrl.selectedTask = task;" class="todolist-task-controls"></div>

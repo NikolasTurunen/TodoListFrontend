@@ -99,11 +99,14 @@ function Controller(ProjectsService, TasksService) {
     };
 
     ctrl.getTasks = function (projectId) {
+        ctrl.loadingTasks = true;
         TasksService.get.query({projectId: projectId}, {}, function (data) {
             ctrl.error = null;
             ctrl.tasks = data;
+            ctrl.loadingTasks = false;
         }, function (error) {
             ctrl.error = "Failed to get tasks";
+            ctrl.loadingTasks = false;
         });
     };
 
