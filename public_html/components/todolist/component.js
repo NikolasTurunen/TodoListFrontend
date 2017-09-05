@@ -176,9 +176,15 @@ function Controller(ProjectsService, TasksService) {
         ctrl.swapTasks(ctrl.selectedTask.id, ctrl.tasks[ctrl.tasks.indexOf(ctrl.selectedTask) + 1].id);
     };
 
+    ctrl.editTaskAction = function () {
+        ctrl.dialogInputText = ctrl.selectedTask.taskString;
+        
+        ctrl.openDialog(ctrl.DIALOG.EDIT_TASK);
+    };
+
     ctrl.controlTaskActions = [
         {text: 'Create detail', action: ctrl.openDialog.bind(null, ctrl.DIALOG.CREATE_TASK_DETAIL)},
-        {text: 'Edit', action: ctrl.openDialog.bind(null, ctrl.DIALOG.EDIT_TASK)},
+        {text: 'Edit', action: ctrl.editTaskAction.bind(null)},
         {text: 'Move up', action: ctrl.moveTaskUp, enabled: ctrl.isMoveTaskUpEnabled},
         {text: 'Move down', action: ctrl.moveTaskDown, enabled: ctrl.isMoveTaskDownEnabled},
         {text: 'Remove', action: ctrl.openDialog.bind(null, ctrl.DIALOG.REMOVE_TASK)}
