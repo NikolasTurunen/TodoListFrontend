@@ -16,7 +16,7 @@ function Controller($attrs) {
     };
 
     this.$onChanges = function (changedObject) {
-        if (changedObject.status.currentValue === true) {
+        if (changedObject.status !== undefined && changedObject.status.currentValue === true) {
             ctrl.resetInput();
             if (ctrl.defaultTextInput !== undefined) {
                 ctrl.textInput = ctrl.defaultTextInput;
