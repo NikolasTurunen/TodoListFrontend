@@ -1,4 +1,4 @@
-function Controller(ProjectsService, TasksService) {
+function Controller(ProjectsService, TasksService, $hotkey) {
     var ctrl = this;
     ctrl.minimized = true;
 
@@ -196,6 +196,32 @@ function Controller(ProjectsService, TasksService) {
                 || ctrl.isDialogOpen(ctrl.DIALOG.EDIT_TASK)
                 || ctrl.isDialogOpen(ctrl.DIALOG.REMOVE_TASK);
     };
+
+    $hotkey.bind("ESC", function (event) {
+        if (!ctrl.minimized) {
+            if (ctrl.isDialogOpen(null) && ctrl.selectedProject) {
+                ctrl.selectedProject = null;
+            }
+        }
+    });
+
+    $hotkey.bind("ENTER", function (event) {
+        if (!ctrl.minimized) {
+            if (ctrl.isDialogOpen(null)) {
+                if (!ctrl.selectedProject) {
+                    ctrl.openDialog(ctrl.DIALOG.CREATE_PROJECT);
+                } else {
+                    ctrl.openDialog(ctrl.DIALOG.CREATE_TASK);
+                }
+            }
+        }
+    });
+
+    $hotkey.bind("CTRL", function (event) {
+        if (!ctrl.selectedProject) {
+            ctrl.controls = !ctrl.controls;
+        }
+    });
 }
 
 angular.module("app").component("todolist", {

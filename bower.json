@@ -8,7 +8,8 @@
     ],
     "dependencies": {
         "angular": "1.5.x",
-        "angular-resource": "1.5.x"
+        "angular-resource": "1.5.x",
+        "angular-hotkeys": "0.2.x"
     },
     "devDependencies": {
     }

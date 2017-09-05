@@ -1,5 +1,6 @@
 angular.module("app", [
-    "ngResource"
+    "ngResource",
+    "drahak.hotkeys"
 ]);
 
 angular.module("app").directive('focusMe', function () {

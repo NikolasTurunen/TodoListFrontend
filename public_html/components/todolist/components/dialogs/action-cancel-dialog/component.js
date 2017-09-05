@@ -1,4 +1,4 @@
-function Controller($attrs) {
+function Controller($attrs, $hotkey) {
     var ctrl = this;
     ctrl.attributes = $attrs;
 
@@ -23,6 +23,18 @@ function Controller($attrs) {
             }
         }
     };
+
+    $hotkey.bind("ENTER", function (event) {
+        if (ctrl.status) {
+            ctrl.action();
+        }
+    });
+
+    $hotkey.bind("ESC", function (event) {
+        if (ctrl.status) {
+            ctrl.cancel();
+        }
+    });
 }
 
 angular.module("app").component("actionCancelDialog", {
