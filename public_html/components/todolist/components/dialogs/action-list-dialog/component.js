@@ -5,10 +5,6 @@ function Controller($attrs) {
     ctrl.cancel = function () {
         ctrl.cancelAction();
         ctrl.error = null;
-
-        if (ctrl.textInput !== undefined) {
-            ctrl.textInput = null;
-        }
     };
 }
 
