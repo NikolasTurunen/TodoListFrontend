@@ -131,6 +131,10 @@
     float: left;
 }
 
+.todolist-task-selected {
+    background-color: #585858;
+}
+
 .todolist-task-text {
     margin-top: 1px;
     width: 80%;

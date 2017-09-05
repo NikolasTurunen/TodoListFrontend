@@ -36,7 +36,7 @@
                     Loading...
                 </div>
 
-                <div ng-repeat="task in $ctrl.tasks" class="todolist-task">
+                <div ng-repeat="task in $ctrl.tasks" class="todolist-task" ng-class="{'todolist-task-selected': task === $ctrl.selectedTask}">
                     <div class="w100">
                         <div ng-click="$ctrl.openDialog($ctrl.DIALOG.CONTROL_TASK); $ctrl.selectedTask = task;" class="todolist-task-controls"></div>
                         <div class="todolist-task-text">{{task.taskString}}</div>
