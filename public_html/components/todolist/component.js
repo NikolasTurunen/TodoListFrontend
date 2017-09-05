@@ -178,7 +178,7 @@ function Controller(ProjectsService, TasksService) {
 
     ctrl.editTaskAction = function () {
         ctrl.dialogInputText = ctrl.selectedTask.taskString;
-        
+
         ctrl.openDialog(ctrl.DIALOG.EDIT_TASK);
     };
 
@@ -189,6 +189,13 @@ function Controller(ProjectsService, TasksService) {
         {text: 'Move down', action: ctrl.moveTaskDown, enabled: ctrl.isMoveTaskDownEnabled},
         {text: 'Remove', action: ctrl.openDialog.bind(null, ctrl.DIALOG.REMOVE_TASK)}
     ];
+
+    ctrl.isTaskBeingControlled = function () {
+        return ctrl.isDialogOpen(ctrl.DIALOG.CONTROL_TASK)
+                || ctrl.isDialogOpen(ctrl.DIALOG.CREATE_TASK_DETAIL)
+                || ctrl.isDialogOpen(ctrl.DIALOG.EDIT_TASK)
+                || ctrl.isDialogOpen(ctrl.DIALOG.REMOVE_TASK);
+    };
 }
 
 angular.module("app").component("todolist", {
