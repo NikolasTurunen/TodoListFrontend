@@ -83,6 +83,10 @@
     margin-left: 10px;
 }
 
+.todolist-dialog-action-list-button-traversed {
+    background-color: #505050;
+}
+
 .todolist-dialog-action-list-button-cancel {
     background-color: #FF0000;
 }

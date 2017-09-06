@@ -270,6 +270,7 @@ function Controller(ProjectsService, TasksService, $hotkey) {
                     if (ctrl.traversedTaskIndex !== null) {
                         ctrl.openDialog(ctrl.DIALOG.CONTROL_TASK);
                         ctrl.selectedTask = ctrl.tasks[ctrl.traversedTaskIndex];
+                        ctrl.traversedTaskIndex = null;
                     } else {
                         ctrl.openDialog(ctrl.DIALOG.CREATE_TASK);
                     }
