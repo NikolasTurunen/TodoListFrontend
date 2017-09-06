@@ -36,7 +36,7 @@
                     Loading...
                 </div>
 
-                <div ng-repeat="task in $ctrl.tasks" class="todolist-task" ng-class="{'todolist-task-selected': task === $ctrl.selectedTask && $ctrl.isTaskBeingControlled()}">
+                <div ng-repeat="task in $ctrl.tasks" class="todolist-task" ng-class="{'todolist-task-selected': (task === $ctrl.selectedTask && $ctrl.isTaskBeingControlled()) || $ctrl.traversedTaskIndex === $index}">
                     <div class="w100">
                         <div ng-click="$ctrl.openDialog($ctrl.DIALOG.CONTROL_TASK); $ctrl.selectedTask = task;" class="todolist-task-controls"></div>
                         <div class="todolist-task-text">{{task.taskString}}</div>
@@ -150,7 +150,7 @@
 
             <div ng-if="$ctrl.selectedProject">
                 <div ng-click="$ctrl.selectedProject = null; $ctrl.error = null; $ctrl.closeDialog();" class="todolist-button todolist-footer-button">Back</div>
-                <div ng-click="$ctrl.openDialog($ctrl.DIALOG.CREATE_TASK)" class="todolist-button todolist-footer-button">New Task</div>
+                <div ng-click="$ctrl.openDialog($ctrl.DIALOG.CREATE_TASK); $ctrl.traversedTaskIndex = null;" class="todolist-button todolist-footer-button">New Task</div>
             </div>
         </div>
     </div>

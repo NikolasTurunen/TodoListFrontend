@@ -28,6 +28,7 @@ function Controller(ProjectsService, TasksService, $hotkey) {
     };
 
     ctrl.traversedProjectIndex = null;
+    ctrl.traversedTaskIndex = null;
 
     ctrl.controls = false;
 
@@ -42,6 +43,7 @@ function Controller(ProjectsService, TasksService, $hotkey) {
         ctrl.selectedProject = project;
 
         ctrl.traversedProjectIndex = null;
+        ctrl.traversedTaskIndex = null;
     };
 
     ctrl.getProjects = function () {
@@ -210,6 +212,14 @@ function Controller(ProjectsService, TasksService, $hotkey) {
                 } else {
                     ctrl.traversedProjectIndex++;
                 }
+            } else {
+                if (ctrl.tasks.length > 0) {
+                    if (ctrl.traversedTaskIndex === null || ctrl.traversedTaskIndex === ctrl.tasks.length - 1) {
+                        ctrl.traversedTaskIndex = 0;
+                    } else {
+                        ctrl.traversedTaskIndex++;
+                    }
+                }
             }
         }
     });
@@ -223,6 +233,14 @@ function Controller(ProjectsService, TasksService, $hotkey) {
                 } else {
                     ctrl.traversedProjectIndex--;
                 }
+            } else {
+                if (ctrl.tasks.length > 0) {
+                    if (ctrl.traversedTaskIndex === null || ctrl.traversedTaskIndex === 0) {
+                        ctrl.traversedTaskIndex = ctrl.tasks.length - 1;
+                    } else {
+                        ctrl.traversedTaskIndex--;
+                    }
+                }
             }
         }
     });
@@ -231,6 +249,8 @@ function Controller(ProjectsService, TasksService, $hotkey) {
         if (!ctrl.minimized) {
             if (!ctrl.selectedProject && ctrl.traversedProjectIndex !== null) {
                 ctrl.traversedProjectIndex = null;
+            } else if (ctrl.selectedProject && ctrl.traversedTaskIndex !== null) {
+                ctrl.traversedTaskIndex = null;
             } else if (ctrl.isDialogOpen(null) && ctrl.selectedProject) {
                 ctrl.selectedProject = null;
             }
@@ -247,7 +267,12 @@ function Controller(ProjectsService, TasksService, $hotkey) {
                         ctrl.openDialog(ctrl.DIALOG.CREATE_PROJECT);
                     }
                 } else {
-                    ctrl.openDialog(ctrl.DIALOG.CREATE_TASK);
+                    if (ctrl.traversedTaskIndex !== null) {
+                        ctrl.openDialog(ctrl.DIALOG.CONTROL_TASK);
+                        ctrl.selectedTask = ctrl.tasks[ctrl.traversedTaskIndex];
+                    } else {
+                        ctrl.openDialog(ctrl.DIALOG.CREATE_TASK);
+                    }
                 }
             }
         }
