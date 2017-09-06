@@ -1,4 +1,4 @@
-function Controller(ProjectsService, TasksService, $hotkey) {
+function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
     var ctrl = this;
     ctrl.minimized = true;
 
@@ -209,22 +209,22 @@ function Controller(ProjectsService, TasksService, $hotkey) {
                 || ctrl.isDialogOpen(ctrl.DIALOG.REMOVE_TASK);
     };
 
+    ctrl.traverseProject = function (direction) {
+        ctrl.traversedProjectIndex = TabTraverseHelper.traverse(ctrl.traversedProjectIndex, ctrl.projects, direction);
+    };
+
+    ctrl.traverseTask = function (direction) {
+        ctrl.traversedTaskIndex = TabTraverseHelper.traverse(ctrl.traversedTaskIndex, ctrl.tasks, direction);
+    };
+
     $hotkey.bind("TAB", function (event) {
         event.preventDefault();
         if (!ctrl.minimized && ctrl.isDialogOpen(null)) {
             if (!ctrl.selectedProject) {
-                if (ctrl.traversedProjectIndex === null || ctrl.traversedProjectIndex === ctrl.projects.length - 1) {
-                    ctrl.traversedProjectIndex = 0;
-                } else {
-                    ctrl.traversedProjectIndex++;
-                }
+                ctrl.traverseProject(TabTraverseHelper.DIRECTION.DOWN);
             } else {
                 if (ctrl.tasks.length > 0) {
-                    if (ctrl.traversedTaskIndex === null || ctrl.traversedTaskIndex === ctrl.tasks.length - 1) {
-                        ctrl.traversedTaskIndex = 0;
-                    } else {
-                        ctrl.traversedTaskIndex++;
-                    }
+                    ctrl.traverseTask(TabTraverseHelper.DIRECTION.DOWN);
                 }
             }
         }
@@ -234,18 +234,10 @@ function Controller(ProjectsService, TasksService, $hotkey) {
         event.preventDefault();
         if (!ctrl.minimized && ctrl.isDialogOpen(null)) {
             if (!ctrl.selectedProject) {
-                if (ctrl.traversedProjectIndex === null || ctrl.traversedProjectIndex === 0) {
-                    ctrl.traversedProjectIndex = ctrl.projects.length - 1;
-                } else {
-                    ctrl.traversedProjectIndex--;
-                }
+                ctrl.traverseProject(TabTraverseHelper.DIRECTION.UP);
             } else {
                 if (ctrl.tasks.length > 0) {
-                    if (ctrl.traversedTaskIndex === null || ctrl.traversedTaskIndex === 0) {
-                        ctrl.traversedTaskIndex = ctrl.tasks.length - 1;
-                    } else {
-                        ctrl.traversedTaskIndex--;
-                    }
+                    ctrl.traverseTask(TabTraverseHelper.DIRECTION.UP);
                 }
             }
         }

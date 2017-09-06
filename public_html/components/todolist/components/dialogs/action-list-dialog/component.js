@@ -1,4 +1,4 @@
-function Controller($attrs, $hotkey) {
+function Controller($attrs, TabTraverseHelper, $hotkey) {
     var ctrl = this;
     ctrl.attributes = $attrs;
 
@@ -15,57 +15,29 @@ function Controller($attrs, $hotkey) {
         }
     };
 
+    ctrl.traverse = function (direction) {
+        for (i = 0; i < ctrl.actions.length; i++) {
+            ctrl.traversedActionIndex = TabTraverseHelper.traverse(ctrl.traversedActionIndex, ctrl.actions, direction);
+
+            if (ctrl.actions[ctrl.traversedActionIndex].enabled && ctrl.actions[ctrl.traversedActionIndex].enabled() === false) {
+                continue;
+            } else {
+                break;
+            }
+        }
+    };
+
     $hotkey.bind("TAB", function (event) {
         event.preventDefault();
         if (ctrl.status) {
-            if (ctrl.traversedActionIndex === null || ctrl.traversedActionIndex === ctrl.actions.length - 1) {
-                ctrl.traversedActionIndex = 0;
-            } else {
-                ctrl.traversedActionIndex++;
-            }
-
-            if (ctrl.actions[ctrl.traversedActionIndex].enabled && ctrl.actions[ctrl.traversedActionIndex].enabled() === false) {
-                for (i = 0; i < ctrl.actions.length; i++) {
-                    if (ctrl.traversedActionIndex === ctrl.actions.length - 1) {
-                        ctrl.traversedActionIndex = 0;
-                    } else {
-                        ctrl.traversedActionIndex++;
-                    }
-
-                    if (ctrl.actions[ctrl.traversedActionIndex].enabled && ctrl.actions[ctrl.traversedActionIndex].enabled() === false) {
-                        continue;
-                    } else {
-                        break;
-                    }
-                }
-            }
+            ctrl.traverse(TabTraverseHelper.DIRECTION.DOWN);
         }
     });
 
     $hotkey.bind("SHIFT+TAB", function (event) {
         event.preventDefault();
         if (ctrl.status) {
-            if (ctrl.traversedActionIndex === null || ctrl.traversedActionIndex === 0) {
-                ctrl.traversedActionIndex = ctrl.actions.length - 1;
-            } else {
-                ctrl.traversedActionIndex--;
-            }
-
-            if (ctrl.actions[ctrl.traversedActionIndex].enabled && ctrl.actions[ctrl.traversedActionIndex].enabled() === false) {
-                for (i = 0; i < ctrl.actions.length; i++) {
-                    if (ctrl.traversedActionIndex === 0) {
-                        ctrl.traversedActionIndex = ctrl.actions.length - 1;
-                    } else {
-                        ctrl.traversedActionIndex--;
-                    }
-
-                    if (ctrl.actions[ctrl.traversedActionIndex].enabled && ctrl.actions[ctrl.traversedActionIndex].enabled() === false) {
-                        continue;
-                    } else {
-                        break;
-                    }
-                }
-            }
+            ctrl.traverse(TabTraverseHelper.DIRECTION.UP);
         }
     });
 
