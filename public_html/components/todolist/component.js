@@ -27,6 +27,8 @@ function Controller(ProjectsService, TasksService, $hotkey) {
         return ctrl.currentDialog === dialog;
     };
 
+    ctrl.traversedProjectIndex = null;
+
     ctrl.controls = false;
 
     ctrl.tasks = null;
@@ -38,6 +40,8 @@ function Controller(ProjectsService, TasksService, $hotkey) {
         ctrl.getTasks(project.id);
 
         ctrl.selectedProject = project;
+
+        ctrl.traversedProjectIndex = null;
     };
 
     ctrl.getProjects = function () {
@@ -197,9 +201,37 @@ function Controller(ProjectsService, TasksService, $hotkey) {
                 || ctrl.isDialogOpen(ctrl.DIALOG.REMOVE_TASK);
     };
 
+    $hotkey.bind("TAB", function (event) {
+        event.preventDefault();
+        if (!ctrl.minimized && ctrl.isDialogOpen(null)) {
+            if (!ctrl.selectedProject) {
+                if (ctrl.traversedProjectIndex === null || ctrl.traversedProjectIndex === ctrl.projects.length - 1) {
+                    ctrl.traversedProjectIndex = 0;
+                } else {
+                    ctrl.traversedProjectIndex++;
+                }
+            }
+        }
+    });
+
+    $hotkey.bind("SHIFT+TAB", function (event) {
+        event.preventDefault();
+        if (!ctrl.minimized && ctrl.isDialogOpen(null)) {
+            if (!ctrl.selectedProject) {
+                if (ctrl.traversedProjectIndex === null || ctrl.traversedProjectIndex === 0) {
+                    ctrl.traversedProjectIndex = ctrl.projects.length - 1;
+                } else {
+                    ctrl.traversedProjectIndex--;
+                }
+            }
+        }
+    });
+
     $hotkey.bind("ESC", function (event) {
         if (!ctrl.minimized) {
-            if (ctrl.isDialogOpen(null) && ctrl.selectedProject) {
+            if (!ctrl.selectedProject && ctrl.traversedProjectIndex !== null) {
+                ctrl.traversedProjectIndex = null;
+            } else if (ctrl.isDialogOpen(null) && ctrl.selectedProject) {
                 ctrl.selectedProject = null;
             }
         }
@@ -209,7 +241,11 @@ function Controller(ProjectsService, TasksService, $hotkey) {
         if (!ctrl.minimized) {
             if (ctrl.isDialogOpen(null)) {
                 if (!ctrl.selectedProject) {
-                    ctrl.openDialog(ctrl.DIALOG.CREATE_PROJECT);
+                    if (ctrl.traversedProjectIndex !== null) {
+                        ctrl.selectProject(ctrl.projects[ctrl.traversedProjectIndex]);
+                    } else {
+                        ctrl.openDialog(ctrl.DIALOG.CREATE_PROJECT);
+                    }
                 } else {
                     ctrl.openDialog(ctrl.DIALOG.CREATE_TASK);
                 }

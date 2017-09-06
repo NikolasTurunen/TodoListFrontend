@@ -81,6 +81,10 @@
     cursor: pointer;
 }
 
+.todolist-project-traversed {
+    background-color: #484848;
+}
+
 .todolist-project-name {
     margin-top: 3px;
     margin-left: 10px;

@@ -16,18 +16,18 @@
                 </div>
 
                 <div ng-repeat="project in $ctrl.projects" class="w100">
-                    <div ng-click="$ctrl.selectProject(project); $ctrl.closeDialog();" class="todolist-project">
+                    <div ng-click="$ctrl.selectProject(project); $ctrl.closeDialog();" class="todolist-project" ng-class="{'todolist-project-traversed': $ctrl.traversedProjectIndex === $index}">
                         <div class="todolist-project-name">{{project.name}}</div>
                     </div>
                     <div ng-if="$ctrl.controls">
-                        <div ng-click="$ctrl.openDialog($ctrl.DIALOG.RENAME_PROJECT); $ctrl.selectedProjectForRename = project; $ctrl.dialogInputText = $ctrl.selectedProjectForRename.name" class="todolist-project-control todolist-project-control-edit"></div>
+                        <div ng-click="$ctrl.openDialog($ctrl.DIALOG.RENAME_PROJECT); $ctrl.selectedProjectForRename = project; $ctrl.dialogInputText = $ctrl.selectedProjectForRename.name; $ctrl.traversedProjectIndex = null;" class="todolist-project-control todolist-project-control-edit"></div>
                         <div class="todolist-project-control">
                             <div ng-if="$ctrl.projects[$index - 1]" ng-click="$ctrl.swapProjects(project.id, $ctrl.projects[$index - 1].id)" class="todolist-project-control-arrow-up"></div>
                         </div>
                         <div class="todolist-project-control">
                             <div ng-if="$ctrl.projects[$index + 1]" ng-click="$ctrl.swapProjects(project.id, $ctrl.projects[$index + 1].id)" class="todolist-project-control-arrow-down"></div>
                         </div>
-                        <div ng-click="$ctrl.openDialog($ctrl.DIALOG.REMOVE_PROJECT); $ctrl.selectedProjectForRemove = project;" class="todolist-project-control todolist-project-control-remove"></div>
+                        <div ng-click="$ctrl.openDialog($ctrl.DIALOG.REMOVE_PROJECT); $ctrl.selectedProjectForRemove = project; $ctrl.traversedProjectIndex = null;" class="todolist-project-control todolist-project-control-remove"></div>
                     </div>
                 </div>
             </div>
@@ -144,7 +144,7 @@
 
         <div ng-if="!$ctrl.minimized">
             <div ng-if="!$ctrl.selectedProject">
-                <div ng-click="$ctrl.openDialog($ctrl.DIALOG.CREATE_PROJECT)" class="todolist-button todolist-footer-button">Create Project</div>
+                <div ng-click="$ctrl.openDialog($ctrl.DIALOG.CREATE_PROJECT); $ctrl.traversedProjectIndex = null;" class="todolist-button todolist-footer-button">Create Project</div>
                 <div ng-click="$ctrl.controls = !$ctrl.controls" class="todolist-button todolist-footer-button todolist-footer-toggle-button" ng-class="{'todolist-footer-toggle-button-active': $ctrl.controls}">Controls</div>
             </div>
 
