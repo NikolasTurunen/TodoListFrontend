@@ -196,6 +196,12 @@ function Controller(ProjectsService, TasksService, $hotkey) {
         {text: 'Remove', action: ctrl.openDialog.bind(null, ctrl.DIALOG.REMOVE_TASK)}
     ];
 
+    ctrl.openControlTaskDialog = function (task) {
+        ctrl.openDialog(ctrl.DIALOG.CONTROL_TASK);
+        ctrl.selectedTask = task;
+        ctrl.traversedTaskIndex = null;
+    };
+
     ctrl.isTaskBeingControlled = function () {
         return ctrl.isDialogOpen(ctrl.DIALOG.CONTROL_TASK)
                 || ctrl.isDialogOpen(ctrl.DIALOG.CREATE_TASK_DETAIL)
@@ -268,9 +274,7 @@ function Controller(ProjectsService, TasksService, $hotkey) {
                     }
                 } else {
                     if (ctrl.traversedTaskIndex !== null) {
-                        ctrl.openDialog(ctrl.DIALOG.CONTROL_TASK);
-                        ctrl.selectedTask = ctrl.tasks[ctrl.traversedTaskIndex];
-                        ctrl.traversedTaskIndex = null;
+                        ctrl.openControlTaskDialog(ctrl.tasks[ctrl.traversedTaskIndex]);
                     } else {
                         ctrl.openDialog(ctrl.DIALOG.CREATE_TASK);
                     }

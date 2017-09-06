@@ -38,7 +38,7 @@
 
                 <div ng-repeat="task in $ctrl.tasks" class="todolist-task" ng-class="{'todolist-task-selected': (task === $ctrl.selectedTask && $ctrl.isTaskBeingControlled()) || ($ctrl.traversedTaskIndex === $index && !$ctrl.isTaskBeingControlled())}">
                     <div class="w100">
-                        <div ng-click="$ctrl.openDialog($ctrl.DIALOG.CONTROL_TASK); $ctrl.selectedTask = task; $ctrl.traversedTaskIndex = null;" class="todolist-task-controls"></div>
+                        <div ng-click="$ctrl.openControlTaskDialog(task)" class="todolist-task-controls"></div>
                         <div class="todolist-task-text">{{task.taskString}}</div>
                     </div>
                     <div class="todolist-task-detail" ng-repeat="detail in task.details">
