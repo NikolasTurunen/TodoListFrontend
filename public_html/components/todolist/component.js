@@ -166,20 +166,52 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
         });
     };
 
-    ctrl.isMoveTaskUpEnabled = function () {
+    ctrl.isMoveProjectUpEnabled = function (index) {
+        return ctrl.projects[index - 1] !== undefined;
+    };
+
+    ctrl.isMoveProjectDownEnabled = function (index) {
+        return ctrl.projects[index + 1] !== undefined;
+    };
+
+    ctrl.moveProjectUp = function (project, index) {
+        ctrl.swapProjects(project.id, ctrl.projects[index - 1].id);
+    };
+
+    ctrl.moveProjectDown = function (project, index) {
+        ctrl.swapProjects(project.id, ctrl.projects[index + 1].id);
+    };
+
+    ctrl.isMoveSelectedTaskUpEnabled = function () {
         return ctrl.tasks[ctrl.tasks.indexOf(ctrl.selectedTask) - 1] !== undefined;
     };
 
-    ctrl.isMoveTaskDownEnabled = function () {
+    ctrl.isMoveSelectedTaskDownEnabled = function () {
         return ctrl.tasks[ctrl.tasks.indexOf(ctrl.selectedTask) + 1] !== undefined;
     };
 
-    ctrl.moveTaskUp = function () {
+    ctrl.isMoveTraversedTaskUpEnabled = function () {
+        return ctrl.tasks[ctrl.traversedTaskIndex - 1] !== undefined;
+    };
+
+    ctrl.isMoveTraversedTaskDownEnabled = function () {
+        return ctrl.tasks[ctrl.traversedTaskIndex + 1] !== undefined;
+    };
+
+    ctrl.moveSelectedTaskUp = function () {
         ctrl.swapTasks(ctrl.selectedTask.id, ctrl.tasks[ctrl.tasks.indexOf(ctrl.selectedTask) - 1].id);
     };
 
-    ctrl.moveTaskDown = function () {
+    ctrl.moveSelectedTaskDown = function () {
         ctrl.swapTasks(ctrl.selectedTask.id, ctrl.tasks[ctrl.tasks.indexOf(ctrl.selectedTask) + 1].id);
+    };
+
+    ctrl.moveTraversedTaskUp = function () {
+        ctrl.swapTasks(ctrl.tasks[ctrl.traversedTaskIndex].id, ctrl.tasks[ctrl.traversedTaskIndex - 1].id);
+    };
+
+    ctrl.moveTraversedTaskDown = function () {
+        ctrl.swapTasks(ctrl.tasks[ctrl.traversedTaskIndex].id, ctrl.tasks[ctrl.traversedTaskIndex + 1].id);
     };
 
     ctrl.editTaskAction = function () {
@@ -191,8 +223,8 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
     ctrl.controlTaskActions = [
         {text: 'Create detail', action: ctrl.openDialog.bind(null, ctrl.DIALOG.CREATE_TASK_DETAIL)},
         {text: 'Edit', action: ctrl.editTaskAction.bind(null)},
-        {text: 'Move up', action: ctrl.moveTaskUp, enabled: ctrl.isMoveTaskUpEnabled},
-        {text: 'Move down', action: ctrl.moveTaskDown, enabled: ctrl.isMoveTaskDownEnabled},
+        {text: 'Move up', action: ctrl.moveSelectedTaskUp, enabled: ctrl.isMoveSelectedTaskUpEnabled},
+        {text: 'Move down', action: ctrl.moveSelectedTaskDown, enabled: ctrl.isMoveSelectedTaskDownEnabled},
         {text: 'Remove', action: ctrl.openDialog.bind(null, ctrl.DIALOG.REMOVE_TASK)}
     ];
 
@@ -275,24 +307,12 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
         }
     });
 
-    ctrl.isMoveProjectUpEnabled = function (index) {
-        return ctrl.projects[index - 1] !== undefined;
-    };
-
-    ctrl.isMoveProjectDownEnabled = function (index) {
-        return ctrl.projects[index + 1] !== undefined;
-    };
-
-    ctrl.moveProjectUp = function (project, index) {
-        ctrl.swapProjects(project.id, ctrl.projects[index - 1].id);
-    };
-
-    ctrl.moveProjectDown = function (project, index) {
-        ctrl.swapProjects(project.id, ctrl.projects[index + 1].id);
-    };
-
     ctrl.canMoveProjectWithHotkeys = function () {
         return ctrl.traversedProjectIndex !== null && !ctrl.selectedProject && ctrl.controls && ctrl.isDialogOpen(null);
+    };
+
+    ctrl.canMoveTaskWithHotkeys = function () {
+        return ctrl.traversedTaskIndex !== null && ctrl.selectedProject && ctrl.isDialogOpen(null);
     };
 
     $hotkey.bind("UP", function (event) {
@@ -301,6 +321,10 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
                 ctrl.moveProjectUp(ctrl.projects[ctrl.traversedProjectIndex], ctrl.traversedProjectIndex);
 
                 ctrl.traversedProjectIndex--;
+            } else if (ctrl.canMoveTaskWithHotkeys() && ctrl.isMoveTraversedTaskUpEnabled()) {
+                ctrl.moveTraversedTaskUp();
+
+                ctrl.traversedTaskIndex--;
             }
         }
     });
@@ -311,6 +335,10 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
                 ctrl.moveProjectDown(ctrl.projects[ctrl.traversedProjectIndex], ctrl.traversedProjectIndex);
 
                 ctrl.traversedProjectIndex++;
+            } else if (ctrl.canMoveTaskWithHotkeys() && ctrl.isMoveTraversedTaskDownEnabled()) {
+                ctrl.moveTraversedTaskDown();
+
+                ctrl.traversedTaskIndex++;
             }
         }
     });
