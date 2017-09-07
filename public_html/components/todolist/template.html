@@ -22,10 +22,10 @@
                     <div ng-if="$ctrl.controls">
                         <div ng-click="$ctrl.openDialog($ctrl.DIALOG.RENAME_PROJECT); $ctrl.selectedProjectForRename = project; $ctrl.dialogInputText = $ctrl.selectedProjectForRename.name; $ctrl.traversedProjectIndex = null;" class="todolist-project-control todolist-project-control-edit"></div>
                         <div class="todolist-project-control">
-                            <div ng-if="$ctrl.isMoveProjectUpEnabled($index)" ng-click="$ctrl.moveProjectUp(project, $index)" class="todolist-project-control-arrow-up"></div>
+                            <div ng-if="$ctrl.isMoveProjectUpEnabled($index)" ng-click="$ctrl.moveProjectUp(project, $index); $ctrl.traversedProjectIndex = null;" class="todolist-project-control-arrow-up"></div>
                         </div>
                         <div class="todolist-project-control">
-                            <div ng-if="$ctrl.isMoveProjectDownEnabled($index)" ng-click="$ctrl.moveProjectDown(project, $index)" class="todolist-project-control-arrow-down"></div>
+                            <div ng-if="$ctrl.isMoveProjectDownEnabled($index)" ng-click="$ctrl.moveProjectDown(project, $index); $ctrl.traversedProjectIndex = null;" class="todolist-project-control-arrow-down"></div>
                         </div>
                         <div ng-click="$ctrl.openDialog($ctrl.DIALOG.REMOVE_PROJECT); $ctrl.selectedProjectForRemove = project; $ctrl.traversedProjectIndex = null;" class="todolist-project-control todolist-project-control-remove"></div>
                     </div>
