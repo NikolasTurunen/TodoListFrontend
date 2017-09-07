@@ -275,6 +275,46 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
         }
     });
 
+    ctrl.isMoveProjectUpEnabled = function (index) {
+        return ctrl.projects[index - 1] !== undefined;
+    };
+
+    ctrl.isMoveProjectDownEnabled = function (index) {
+        return ctrl.projects[index + 1] !== undefined;
+    };
+
+    ctrl.moveProjectUp = function (project, index) {
+        ctrl.swapProjects(project.id, ctrl.projects[index - 1].id);
+    };
+
+    ctrl.moveProjectDown = function (project, index) {
+        ctrl.swapProjects(project.id, ctrl.projects[index + 1].id);
+    };
+
+    ctrl.canMoveProjectWithHotkeys = function () {
+        return ctrl.traversedProjectIndex !== null && !ctrl.selectedProject && ctrl.controls && ctrl.isDialogOpen(null);
+    };
+
+    $hotkey.bind("UP", function (event) {
+        if (!ctrl.minimized) {
+            if (ctrl.canMoveProjectWithHotkeys() && ctrl.isMoveProjectUpEnabled(ctrl.traversedProjectIndex)) {
+                ctrl.moveProjectUp(ctrl.projects[ctrl.traversedProjectIndex], ctrl.traversedProjectIndex);
+
+                ctrl.traversedProjectIndex--;
+            }
+        }
+    });
+
+    $hotkey.bind("DOWN", function (event) {
+        if (!ctrl.minimized) {
+            if (ctrl.canMoveProjectWithHotkeys() && ctrl.isMoveProjectDownEnabled(ctrl.traversedProjectIndex)) {
+                ctrl.moveProjectDown(ctrl.projects[ctrl.traversedProjectIndex], ctrl.traversedProjectIndex);
+
+                ctrl.traversedProjectIndex++;
+            }
+        }
+    });
+
     $hotkey.bind("CTRL", function (event) {
         if (!ctrl.selectedProject) {
             ctrl.controls = !ctrl.controls;
