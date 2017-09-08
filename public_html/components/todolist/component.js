@@ -183,10 +183,18 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
     };
 
     ctrl.isMoveSelectedTaskUpEnabled = function () {
+        if (ctrl.taskWorkedOn) {
+            return false;
+        }
+
         return ctrl.tasks[ctrl.tasks.indexOf(ctrl.selectedTask) - 1] !== undefined;
     };
 
     ctrl.isMoveSelectedTaskDownEnabled = function () {
+        if (ctrl.taskWorkedOn) {
+            return false;
+        }
+
         return ctrl.tasks[ctrl.tasks.indexOf(ctrl.selectedTask) + 1] !== undefined;
     };
 
@@ -214,6 +222,26 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
         ctrl.swapTasks(ctrl.tasks[ctrl.traversedTaskIndex].id, ctrl.tasks[ctrl.traversedTaskIndex + 1].id);
     };
 
+    ctrl.selectTaskToWorkOn = function () {
+        ctrl.taskWorkedOn = ctrl.selectedTask;
+
+        ctrl.closeDialog();
+    };
+
+    ctrl.resetTaskWorkedOn = function () {
+        ctrl.taskWorkedOn = null;
+
+        ctrl.closeDialog();
+    };
+
+    ctrl.isSelectedTaskBeingWorkedOn = function () {
+        return ctrl.selectedTask === ctrl.taskWorkedOn;
+    };
+
+    ctrl.isSelectedTaskNotBeingWorkedOn = function () {
+        return !ctrl.isSelectedTaskBeingWorkedOn();
+    };
+
     ctrl.editTaskAction = function () {
         ctrl.dialogInputText = ctrl.selectedTask.taskString;
 
@@ -221,17 +249,42 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
     };
 
     ctrl.controlTaskActions = [
-        {text: 'Create detail', action: ctrl.openDialog.bind(null, ctrl.DIALOG.CREATE_TASK_DETAIL)},
-        {text: 'Edit', action: ctrl.editTaskAction.bind(null)},
-        {text: 'Move up', action: ctrl.moveSelectedTaskUp, enabled: ctrl.isMoveSelectedTaskUpEnabled},
-        {text: 'Move down', action: ctrl.moveSelectedTaskDown, enabled: ctrl.isMoveSelectedTaskDownEnabled},
-        {text: 'Remove', action: ctrl.openDialog.bind(null, ctrl.DIALOG.REMOVE_TASK)}
+        {text: 'Work on', action: ctrl.selectTaskToWorkOn, hidden: ctrl.isSelectedTaskBeingWorkedOn},
+        {text: 'Stop working on', action: ctrl.resetTaskWorkedOn, hidden: ctrl.isSelectedTaskNotBeingWorkedOn},
+        {text: 'Create detail', action: ctrl.openDialog.bind(null, ctrl.DIALOG.CREATE_TASK_DETAIL), hidden: ctrl.isSelectedTaskBeingWorkedOn},
+        {text: 'Edit', action: ctrl.editTaskAction.bind(null), hidden: ctrl.isSelectedTaskBeingWorkedOn},
+        {text: 'Move up', action: ctrl.moveSelectedTaskUp, enabled: ctrl.isMoveSelectedTaskUpEnabled, hidden: ctrl.isSelectedTaskBeingWorkedOn},
+        {text: 'Move down', action: ctrl.moveSelectedTaskDown, enabled: ctrl.isMoveSelectedTaskDownEnabled, hidden: ctrl.isSelectedTaskBeingWorkedOn},
+        {text: 'Remove', action: ctrl.openDialog.bind(null, ctrl.DIALOG.REMOVE_TASK), hidden: ctrl.isSelectedTaskBeingWorkedOn}
     ];
 
+    ctrl.isTaskWorkedOn = function (task) {
+        return task === ctrl.taskWorkedOn;
+    };
+
     ctrl.openControlTaskDialog = function (task) {
-        ctrl.openDialog(ctrl.DIALOG.CONTROL_TASK);
-        ctrl.selectedTask = task;
-        ctrl.traversedTaskIndex = null;
+        if (!ctrl.taskWorkedOn || ctrl.isTaskWorkedOn(task)) {
+            ctrl.openDialog(ctrl.DIALOG.CONTROL_TASK);
+            ctrl.selectedTask = task;
+            ctrl.traversedTaskIndex = null;
+        }
+    };
+
+    ctrl.openCreateTaskDialog = function () {
+        if (!ctrl.taskWorkedOn) {
+            ctrl.openDialog(ctrl.DIALOG.CREATE_TASK);
+        }
+    };
+
+    ctrl.backFromTasks = function () {
+        ctrl.selectedProject = null;
+        ctrl.error = null;
+    };
+
+    ctrl.isTaskSelected = function (task, index) {
+        return (task === ctrl.selectedTask && ctrl.isTaskBeingControlled())
+                || (ctrl.traversedTaskIndex === index && !ctrl.isTaskBeingControlled())
+                || task === ctrl.taskWorkedOn;
     };
 
     ctrl.isTaskBeingControlled = function () {
@@ -256,7 +309,11 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
                 ctrl.traverseProject(TabTraverseHelper.DIRECTION.DOWN);
             } else {
                 if (ctrl.tasks.length > 0) {
-                    ctrl.traverseTask(TabTraverseHelper.DIRECTION.DOWN);
+                    if (!ctrl.taskWorkedOn) {
+                        ctrl.traverseTask(TabTraverseHelper.DIRECTION.DOWN);
+                    } else {
+                        // Traverse details
+                    }
                 }
             }
         }
@@ -269,7 +326,11 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
                 ctrl.traverseProject(TabTraverseHelper.DIRECTION.UP);
             } else {
                 if (ctrl.tasks.length > 0) {
-                    ctrl.traverseTask(TabTraverseHelper.DIRECTION.UP);
+                    if (!ctrl.taskWorkedOn) {
+                        ctrl.traverseTask(TabTraverseHelper.DIRECTION.UP);
+                    } else {
+                        // Traverse details
+                    }
                 }
             }
         }
@@ -277,12 +338,18 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
 
     $hotkey.bind("ESC", function (event) {
         if (!ctrl.minimized) {
-            if (!ctrl.selectedProject && ctrl.traversedProjectIndex !== null) {
-                ctrl.traversedProjectIndex = null;
-            } else if (ctrl.selectedProject && ctrl.traversedTaskIndex !== null) {
-                ctrl.traversedTaskIndex = null;
-            } else if (ctrl.isDialogOpen(null) && ctrl.selectedProject) {
-                ctrl.selectedProject = null;
+            if (!ctrl.selectedProject) {
+                if (ctrl.traversedProjectIndex !== null) {
+                    ctrl.traversedProjectIndex = null;
+                }
+            } else if (ctrl.selectedProject) {
+                if (ctrl.taskWorkedOn && ctrl.isDialogOpen(null)) {
+                    ctrl.taskWorkedOn = null;
+                } else if (ctrl.traversedTaskIndex !== null) {
+                    ctrl.traversedTaskIndex = null;
+                } else if (ctrl.isDialogOpen(null)) {
+                    ctrl.backFromTasks();
+                }
             }
         }
     });
@@ -299,8 +366,8 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
                 } else {
                     if (ctrl.traversedTaskIndex !== null) {
                         ctrl.openControlTaskDialog(ctrl.tasks[ctrl.traversedTaskIndex]);
-                    } else {
-                        ctrl.openDialog(ctrl.DIALOG.CREATE_TASK);
+                    } else if (!ctrl.taskWorkedOn) {
+                        ctrl.openCreateTaskDialog();
                     }
                 }
             }

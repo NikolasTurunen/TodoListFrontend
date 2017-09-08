@@ -139,6 +139,10 @@
     background-color: #585858;
 }
 
+.todolist-task-grayed {
+    color: #848484;
+}
+
 .todolist-task-text {
     margin-top: 1px;
     width: 80%;
@@ -153,6 +157,10 @@
     background-image: url("icons/menu.png");
     cursor: pointer;
     float: left;
+}
+
+.todolist-task-controls-disabled {
+    background-image: url("icons/menu-disabled.png");
 }
 
 .todolist-task-detail-dash {
@@ -191,6 +199,11 @@
 .todolist-footer-button {
     margin-left: 40px;
     float: left;
+}
+
+.todolist-footer-button-disabled {
+    background-color: #585858 !important;
+    color: #626262 !important; 
 }
 
 .todolist-footer-toggle-button {

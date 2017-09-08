@@ -2,9 +2,9 @@
     <div class="todolist-dialog-title">{{$ctrl.titleText}}: <span ng-if="$ctrl.error" class="error">{{$ctrl.error}}</span></div>
     <div ng-repeat="action in $ctrl.actions" class="todolist-dialog-action-list-buttons">
         <div class="w100">
-            <div ng-click="(!action.enabled || action.enabled()) && action.action()" 
+            <div ng-if="!$ctrl.isActionHidden(action)" ng-click="!$ctrl.isActionDisabled(action) && action.action()" 
                  class="todolist-dialog-button todolist-dialog-action-list-button" 
-                 ng-class="{'todolist-dialog-action-list-button-disabled': action.enabled && !action.enabled()
+                 ng-class="{'todolist-dialog-action-list-button-disabled': $ctrl.isActionDisabled(action)
                      , 'todolist-dialog-action-list-button-traversed': $index === $ctrl.traversedActionIndex}">{{action.text}}
             </div>
         </div>

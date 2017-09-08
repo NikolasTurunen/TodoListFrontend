@@ -7,6 +7,14 @@ function Controller($attrs, TabTraverseHelper, $hotkey) {
         ctrl.error = null;
     };
 
+    ctrl.isActionDisabled = function (action) {
+        return action.enabled && !action.enabled();
+    };
+
+    ctrl.isActionHidden = function (action) {
+        return action.hidden && action.hidden();
+    };
+
     ctrl.traversedActionIndex = null;
 
     this.$onChanges = function (changedObject) {
@@ -19,7 +27,7 @@ function Controller($attrs, TabTraverseHelper, $hotkey) {
         for (i = 0; i < ctrl.actions.length; i++) {
             ctrl.traversedActionIndex = TabTraverseHelper.traverse(ctrl.traversedActionIndex, ctrl.actions, direction);
 
-            if (ctrl.actions[ctrl.traversedActionIndex].enabled && ctrl.actions[ctrl.traversedActionIndex].enabled() === false) {
+            if (ctrl.isActionDisabled(ctrl.actions[ctrl.traversedActionIndex]) || ctrl.isActionHidden(ctrl.actions[ctrl.traversedActionIndex])) {
                 continue;
             } else {
                 break;

@@ -36,9 +36,10 @@
                     Loading...
                 </div>
 
-                <div ng-repeat="task in $ctrl.tasks" class="todolist-task" ng-class="{'todolist-task-selected': (task === $ctrl.selectedTask && $ctrl.isTaskBeingControlled()) || ($ctrl.traversedTaskIndex === $index && !$ctrl.isTaskBeingControlled())}">
+                <div ng-repeat="task in $ctrl.tasks" class="todolist-task" 
+                     ng-class="{'todolist-task-selected': $ctrl.isTaskSelected(task, $index), 'todolist-task-grayed': $ctrl.taskWorkedOn && !$ctrl.isTaskWorkedOn(task)}">
                     <div class="w100">
-                        <div ng-click="$ctrl.openControlTaskDialog(task)" class="todolist-task-controls"></div>
+                        <div ng-click="$ctrl.openControlTaskDialog(task)" class="todolist-task-controls" ng-class="{'todolist-task-controls-disabled': $ctrl.taskWorkedOn && !$ctrl.isTaskWorkedOn(task)}"></div>
                         <div class="todolist-task-text">{{task.taskString}}</div>
                     </div>
                     <div class="todolist-task-detail" ng-repeat="detail in task.details">
@@ -149,8 +150,8 @@
             </div>
 
             <div ng-if="$ctrl.selectedProject">
-                <div ng-click="$ctrl.selectedProject = null; $ctrl.error = null; $ctrl.closeDialog();" class="todolist-button todolist-footer-button">Back</div>
-                <div ng-click="$ctrl.openDialog($ctrl.DIALOG.CREATE_TASK); $ctrl.traversedTaskIndex = null;" class="todolist-button todolist-footer-button">New Task</div>
+                <div ng-click="$ctrl.backFromTasks(); $ctrl.taskWorkedOn = null; $ctrl.closeDialog();" class="todolist-button todolist-footer-button">Back</div>
+                <div ng-click="$ctrl.openCreateTaskDialog(); $ctrl.traversedTaskIndex = null;" class="todolist-button todolist-footer-button" ng-class="{'todolist-footer-button-disabled': $ctrl.taskWorkedOn}">New Task</div>
             </div>
         </div>
     </div>
