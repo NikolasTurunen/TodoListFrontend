@@ -29,6 +29,7 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
 
     ctrl.traversedProjectIndex = null;
     ctrl.traversedTaskIndex = null;
+    ctrl.traversedTaskDetailIndex = null;
 
     ctrl.controls = false;
 
@@ -224,6 +225,7 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
 
     ctrl.selectTaskToWorkOn = function () {
         ctrl.taskWorkedOn = ctrl.selectedTask;
+        ctrl.traversedTaskDetailIndex = null;
 
         ctrl.closeDialog();
     };
@@ -302,6 +304,10 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
         ctrl.traversedTaskIndex = TabTraverseHelper.traverse(ctrl.traversedTaskIndex, ctrl.tasks, direction);
     };
 
+    ctrl.traverseTaskDetails = function (direction) {
+        ctrl.traversedTaskDetailIndex = TabTraverseHelper.traverse(ctrl.traversedTaskDetailIndex, ctrl.selectedTask.details, direction);
+    };
+
     $hotkey.bind("TAB", function (event) {
         event.preventDefault();
         if (!ctrl.minimized && ctrl.isDialogOpen(null)) {
@@ -312,7 +318,7 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
                     if (!ctrl.taskWorkedOn) {
                         ctrl.traverseTask(TabTraverseHelper.DIRECTION.DOWN);
                     } else {
-                        // Traverse details
+                        ctrl.traverseTaskDetails(TabTraverseHelper.DIRECTION.DOWN);
                     }
                 }
             }
@@ -329,7 +335,7 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
                     if (!ctrl.taskWorkedOn) {
                         ctrl.traverseTask(TabTraverseHelper.DIRECTION.UP);
                     } else {
-                        // Traverse details
+                        ctrl.traverseTaskDetails(TabTraverseHelper.DIRECTION.UP);
                     }
                 }
             }
@@ -343,7 +349,9 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
                     ctrl.traversedProjectIndex = null;
                 }
             } else if (ctrl.selectedProject) {
-                if (ctrl.taskWorkedOn && ctrl.isDialogOpen(null)) {
+                if (ctrl.taskWorkedOn && ctrl.traversedTaskDetailIndex !== null && ctrl.isDialogOpen(null)) {
+                    ctrl.traversedTaskDetailIndex = null;
+                } else if (ctrl.taskWorkedOn && ctrl.isDialogOpen(null)) {
                     ctrl.taskWorkedOn = null;
                 } else if (ctrl.traversedTaskIndex !== null) {
                     ctrl.traversedTaskIndex = null;

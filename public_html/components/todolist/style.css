@@ -178,6 +178,10 @@
     font-size: 12px;
 }
 
+.todolist-task-detail-traversed {
+    background-color: #505050;
+}
+
 .todolist-create-task-dialog {
     padding: 5px 10px 4px 5px;
     margin-top: 20px;

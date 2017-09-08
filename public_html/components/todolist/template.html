@@ -42,8 +42,10 @@
                         <div ng-click="$ctrl.openControlTaskDialog(task)" class="todolist-task-controls" ng-class="{'todolist-task-controls-disabled': $ctrl.taskWorkedOn && !$ctrl.isTaskWorkedOn(task)}"></div>
                         <div class="todolist-task-text">{{task.taskString}}</div>
                     </div>
-                    <div class="todolist-task-detail" ng-repeat="detail in task.details">
-                        <div class="todolist-task-detail-dash"></div>{{detail.taskString}}
+                    <div class="w100">
+                        <div ng-repeat="detail in task.details" class="todolist-task-detail" ng-class="{'todolist-task-detail-traversed': task === $ctrl.taskWorkedOn && $index === $ctrl.traversedTaskDetailIndex}">
+                            <div class="todolist-task-detail-dash"></div>{{detail.taskString}}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -138,10 +140,10 @@
     <div class="todolist-footer">
         <div ng-click="$ctrl.minimized = !$ctrl.minimized" class="todolist-maximize-minimize-button" 
              ng-class="{'todolist-big-arrow-right': $ctrl.minimized
-                 , 'todolist-maximize-minimize-button-left': $ctrl.minimized
-                 , 'todolist-big-arrow-left': !$ctrl.minimized
-                 , 'todolist-maximize-minimize-button-right': !$ctrl.minimized
-             }"></div>
+                         , 'todolist-maximize-minimize-button-left': $ctrl.minimized
+                         , 'todolist-big-arrow-left': !$ctrl.minimized
+                         , 'todolist-maximize-minimize-button-right': !$ctrl.minimized
+                 }"></div>
 
         <div ng-if="!$ctrl.minimized">
             <div ng-if="!$ctrl.selectedProject">

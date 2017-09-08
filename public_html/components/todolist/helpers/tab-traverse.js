@@ -5,6 +5,11 @@ angular.module("app").factory("TabTraverseHelper", function () {
             DOWN: 2
         },
         traverse: function (traversedIndex, traversedArray, direction) {
+            // Dont traverse if the array is empty
+            if (traversedArray.length === 0) {
+                return null;
+            }
+
             // Initialize index bounds
             var firstIndexByDirection = null;
             var lastIndexByDirection = null;
