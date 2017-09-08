@@ -308,38 +308,30 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
         ctrl.traversedTaskDetailIndex = TabTraverseHelper.traverse(ctrl.traversedTaskDetailIndex, ctrl.selectedTask.details, direction);
     };
 
-    $hotkey.bind("TAB", function (event) {
-        event.preventDefault();
+    ctrl.traverse = function (direction) {
         if (!ctrl.minimized && ctrl.isDialogOpen(null)) {
             if (!ctrl.selectedProject) {
-                ctrl.traverseProject(TabTraverseHelper.DIRECTION.DOWN);
+                ctrl.traverseProject(direction);
             } else {
                 if (ctrl.tasks.length > 0) {
                     if (!ctrl.taskWorkedOn) {
-                        ctrl.traverseTask(TabTraverseHelper.DIRECTION.DOWN);
+                        ctrl.traverseTask(direction);
                     } else {
-                        ctrl.traverseTaskDetails(TabTraverseHelper.DIRECTION.DOWN);
+                        ctrl.traverseTaskDetails(direction);
                     }
                 }
             }
         }
+    };
+
+    $hotkey.bind("TAB", function (event) {
+        event.preventDefault();
+        ctrl.traverse(TabTraverseHelper.DIRECTION.DOWN);
     });
 
     $hotkey.bind("SHIFT+TAB", function (event) {
         event.preventDefault();
-        if (!ctrl.minimized && ctrl.isDialogOpen(null)) {
-            if (!ctrl.selectedProject) {
-                ctrl.traverseProject(TabTraverseHelper.DIRECTION.UP);
-            } else {
-                if (ctrl.tasks.length > 0) {
-                    if (!ctrl.taskWorkedOn) {
-                        ctrl.traverseTask(TabTraverseHelper.DIRECTION.UP);
-                    } else {
-                        ctrl.traverseTaskDetails(TabTraverseHelper.DIRECTION.UP);
-                    }
-                }
-            }
-        }
+        ctrl.traverse(TabTraverseHelper.DIRECTION.UP);
     });
 
     $hotkey.bind("ESC", function (event) {
