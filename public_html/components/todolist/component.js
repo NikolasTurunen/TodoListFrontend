@@ -106,10 +106,29 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
 
     ctrl.getTasks = function (projectId) {
         ctrl.loadingTasks = true;
+
+        if (ctrl.selectedTask) {
+            ctrl.selectedTaskId = ctrl.selectedTask.id;
+        }
+
+        if (ctrl.taskWorkedOn) {
+            ctrl.taskWorkedOnId = ctrl.taskWorkedOn.id;
+        }
+
         TasksService.get.query({projectId: projectId}, {}, function (data) {
             ctrl.error = null;
             ctrl.tasks = data;
             ctrl.loadingTasks = false;
+
+            angular.forEach(ctrl.tasks, function (value, key) {
+                var task = value;
+                if (ctrl.selectedTask && task.id === ctrl.selectedTaskId) {
+                    ctrl.selectedTask = task;
+                }
+                if (ctrl.taskWorkedOn && task.id === ctrl.taskWorkedOnId) {
+                    ctrl.taskWorkedOn = task;
+                }
+            });
         }, function (error) {
             ctrl.error = "Failed to get tasks";
             ctrl.loadingTasks = false;
