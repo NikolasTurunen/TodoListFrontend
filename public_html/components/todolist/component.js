@@ -12,7 +12,8 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
         CONTROL_TASK: 5,
         CREATE_TASK_DETAIL: 6,
         EDIT_TASK: 7,
-        REMOVE_TASK: 8
+        REMOVE_TASK: 8,
+        CONTROL_TASK_DETAIL: 9
     };
 
     ctrl.openDialog = function (dialog) {
@@ -272,6 +273,12 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
         }
     };
 
+    ctrl.openControlTaskDetailDialog = function (task) {
+        ctrl.openDialog(ctrl.DIALOG.CONTROL_TASK);
+        ctrl.selectedTask = task;
+        ctrl.traversedTaskDetailIndex = null;
+    };
+
     ctrl.openCreateTaskDialog = function () {
         if (!ctrl.taskWorkedOn) {
             ctrl.openDialog(ctrl.DIALOG.CREATE_TASK);
@@ -305,7 +312,7 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
     };
 
     ctrl.traverseTaskDetails = function (direction) {
-        ctrl.traversedTaskDetailIndex = TabTraverseHelper.traverse(ctrl.traversedTaskDetailIndex, ctrl.selectedTask.details, direction);
+        ctrl.traversedTaskDetailIndex = TabTraverseHelper.traverse(ctrl.traversedTaskDetailIndex, ctrl.taskWorkedOn.details, direction);
     };
 
     ctrl.traverse = function (direction) {
@@ -366,6 +373,10 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
                 } else {
                     if (ctrl.traversedTaskIndex !== null) {
                         ctrl.openControlTaskDialog(ctrl.tasks[ctrl.traversedTaskIndex]);
+                    } else if (ctrl.traversedTaskDetailIndex !== null) {
+                        ctrl.openControlTaskDetailDialog(ctrl.taskWorkedOn.details[ctrl.traversedTaskDetailIndex]);
+                    } else if (ctrl.taskWorkedOn) {
+                        ctrl.openControlTaskDialog(ctrl.taskWorkedOn);
                     } else if (!ctrl.taskWorkedOn) {
                         ctrl.openCreateTaskDialog();
                     }
