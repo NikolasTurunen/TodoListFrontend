@@ -12,8 +12,7 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
         CONTROL_TASK: 5,
         CREATE_TASK_DETAIL: 6,
         EDIT_TASK: 7,
-        REMOVE_TASK: 8,
-        CONTROL_TASK_DETAIL: 9
+        REMOVE_TASK: 8
     };
 
     ctrl.openDialog = function (dialog) {
