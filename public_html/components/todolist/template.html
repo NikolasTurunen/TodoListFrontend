@@ -137,7 +137,7 @@
         </div>
     </div>
 
-    <div class="todolist-footer">
+    <div class="todolist-footer" ng-class="{'todolist-footer-minimized': $ctrl.minimized}">
         <div ng-click="$ctrl.minimized = !$ctrl.minimized" class="todolist-maximize-minimize-button" 
              ng-class="{'todolist-big-arrow-right': $ctrl.minimized
                          , 'todolist-maximize-minimize-button-left': $ctrl.minimized

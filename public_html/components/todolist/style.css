@@ -38,7 +38,7 @@
 }
 
 .todolist-content {
-    height: 476px;
+    height: 467px;
     width: 100%;
     min-width: 1px;
     overflow: auto;
@@ -46,10 +46,16 @@
 }
 
 .todolist-footer {
+    padding-top: 8px;
     height: 30px;
     width: 100%;
     min-width: 1px;
+    background-color: #747474;
     float: left;
+}
+
+.todolist-footer-minimized {
+    background-color: #565452;
 }
 
 .todolist-title-row {
