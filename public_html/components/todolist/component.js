@@ -314,6 +314,12 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
                 || task === ctrl.taskWorkedOn;
     };
 
+    ctrl.isTaskDetailSelected = function (detail, index) {
+        return (detail === ctrl.selectedTask && ctrl.isTaskBeingControlled())
+                || (ctrl.traversedTaskDetailIndex === index && detail.parentTaskId === ctrl.taskWorkedOn.id && !ctrl.isTaskBeingControlled())
+                || detail === ctrl.taskWorkedOn;
+    };
+
     ctrl.isTaskBeingControlled = function () {
         return ctrl.isDialogOpen(ctrl.DIALOG.CONTROL_TASK)
                 || ctrl.isDialogOpen(ctrl.DIALOG.CREATE_TASK_DETAIL)
