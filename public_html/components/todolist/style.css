@@ -185,6 +185,10 @@
     color: white;
 }
 
+.todolist-task-detail-of-detail {
+    margin-left: 16px;
+}
+
 .todolist-task-detail-traversed {
     background-color: #505050;
 }

@@ -27,6 +27,7 @@
         "task-details-list": {
             "attributes": {
                 "task": {},
+                "detail-of-detail": {},
                 "is-any-parent-task-worked-on": {},
                 "is-task-worked-on": {},
                 "task-worked-on": {},
