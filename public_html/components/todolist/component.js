@@ -103,15 +103,40 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
         });
     };
 
+    ctrl.selectTaskById = function (taskId, tasks) {
+        angular.forEach(tasks, function (value, key) {
+            var task = value;
+            if (ctrl.selectedTask && task.id === taskId) {
+                ctrl.selectedTask = task;
+            } else {
+                ctrl.selectTaskById(taskId, task.details);
+            }
+        });
+    };
+
+    ctrl.setTaskWorkedOnById = function (taskId, tasks) {
+        angular.forEach(tasks, function (value, key) {
+            var task = value;
+            if (ctrl.taskWorkedOn && task.id === taskId) {
+                ctrl.taskWorkedOn = task;
+            } else {
+                ctrl.setTaskWorkedOnById(taskId, task.details);
+            }
+        });
+    };
+
     ctrl.getTasks = function (projectId) {
         ctrl.loadingTasks = true;
 
+        var selectedTaskId;
+        var taskWorkedOnId;
+
         if (ctrl.selectedTask) {
-            ctrl.selectedTaskId = ctrl.selectedTask.id;
+            selectedTaskId = ctrl.selectedTask.id;
         }
 
         if (ctrl.taskWorkedOn) {
-            ctrl.taskWorkedOnId = ctrl.taskWorkedOn.id;
+            taskWorkedOnId = ctrl.taskWorkedOn.id;
         }
 
         TasksService.get.query({projectId: projectId}, {}, function (data) {
@@ -119,15 +144,8 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
             ctrl.tasks = data;
             ctrl.loadingTasks = false;
 
-            angular.forEach(ctrl.tasks, function (value, key) {
-                var task = value;
-                if (ctrl.selectedTask && task.id === ctrl.selectedTaskId) {
-                    ctrl.selectedTask = task;
-                }
-                if (ctrl.taskWorkedOn && task.id === ctrl.taskWorkedOnId) {
-                    ctrl.taskWorkedOn = task;
-                }
-            });
+            ctrl.selectTaskById(selectedTaskId, ctrl.tasks);
+            ctrl.setTaskWorkedOnById(taskWorkedOnId, ctrl.tasks);
         }, function (error) {
             ctrl.error = "Failed to get tasks";
             ctrl.loadingTasks = false;
@@ -272,11 +290,11 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
     ctrl.controlTaskActions = [
         {text: 'Work on', action: ctrl.selectTaskToWorkOn, hidden: ctrl.isSelectedTaskBeingWorkedOn},
         {text: 'Stop working on', action: ctrl.resetTaskWorkedOn, hidden: ctrl.isSelectedTaskNotBeingWorkedOn},
-        {text: 'Create detail', action: ctrl.openDialog.bind(null, ctrl.DIALOG.CREATE_TASK_DETAIL), hidden: ctrl.isSelectedTaskBeingWorkedOn},
-        {text: 'Edit', action: ctrl.editTaskAction.bind(null), hidden: ctrl.isSelectedTaskBeingWorkedOn},
+        {text: 'Create detail', action: ctrl.openDialog.bind(null, ctrl.DIALOG.CREATE_TASK_DETAIL)},
+        {text: 'Edit', action: ctrl.editTaskAction.bind(null)},
         {text: 'Move up', action: ctrl.moveSelectedTaskUp, enabled: ctrl.isMoveSelectedTaskUpEnabled, hidden: ctrl.isSelectedTaskBeingWorkedOn},
         {text: 'Move down', action: ctrl.moveSelectedTaskDown, enabled: ctrl.isMoveSelectedTaskDownEnabled, hidden: ctrl.isSelectedTaskBeingWorkedOn},
-        {text: 'Remove', action: ctrl.openDialog.bind(null, ctrl.DIALOG.REMOVE_TASK), hidden: ctrl.isSelectedTaskBeingWorkedOn}
+        {text: 'Remove', action: ctrl.openDialog.bind(null, ctrl.DIALOG.REMOVE_TASK)}
     ];
 
     ctrl.isTaskWorkedOn = function (task) {
