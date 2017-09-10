@@ -1,7 +1,7 @@
 <div ng-repeat="detail in $ctrl.task.details" class="todolist-task-detail" 
      ng-class="{'todolist-task-detail-of-detail': $ctrl.attributes.hasOwnProperty('detailOfDetail')
      , 'todolist-task-detail-traversed': $ctrl.task === $ctrl.taskWorkedOn && $index === $ctrl.traversedTaskDetailIndex
-     , 'todolist-task-selected': $ctrl.isTaskDetailSelected(detail, $index)
+     , 'todolist-task-detail-selected': $ctrl.isTaskDetailSelected(detail, $index)
      , 'todolist-task-grayed': !$ctrl.isAnyParentTaskWorkedOn && $ctrl.isGrayed(detail)}">
     <div class="todolist-task-detail-dash"></div>{{detail.taskString}}
 
