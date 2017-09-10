@@ -412,6 +412,7 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
     };
 
     $hotkey.bind("UP", function (event) {
+        event.preventDefault();
         if (!ctrl.minimized) {
             if (ctrl.canMoveProjectWithHotkeys() && ctrl.isMoveProjectUpEnabled(ctrl.traversedProjectIndex)) {
                 ctrl.moveProjectUp(ctrl.projects[ctrl.traversedProjectIndex], ctrl.traversedProjectIndex);
@@ -426,6 +427,7 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
     });
 
     $hotkey.bind("DOWN", function (event) {
+        event.preventDefault();
         if (!ctrl.minimized) {
             if (ctrl.canMoveProjectWithHotkeys() && ctrl.isMoveProjectDownEnabled(ctrl.traversedProjectIndex)) {
                 ctrl.moveProjectDown(ctrl.projects[ctrl.traversedProjectIndex], ctrl.traversedProjectIndex);
