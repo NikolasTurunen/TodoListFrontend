@@ -190,11 +190,11 @@
 }
 
 .todolist-task-detail-traversed {
-    background-color: #505050;
+    background-color: #505050 !important;
 }
 
 .todolist-task-detail-selected {
-    background-color: #505050;
+    background-color: #585858;
 }
 
 .todolist-create-task-dialog {
