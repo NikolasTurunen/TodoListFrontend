@@ -260,6 +260,22 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
         ctrl.swapTasks(ctrl.tasks[ctrl.traversedTaskIndex].id, ctrl.tasks[ctrl.traversedTaskIndex + 1].id);
     };
 
+    ctrl.isMoveTraversedTaskDetailUpEnabled = function () {
+        return ctrl.taskWorkedOn.details[ctrl.traversedTaskDetailIndex - 1] !== undefined;
+    };
+
+    ctrl.isMoveTraversedTaskDetailDownEnabled = function () {
+        return ctrl.taskWorkedOn.details[ctrl.traversedTaskDetailIndex + 1] !== undefined;
+    };
+
+    ctrl.moveTraversedTaskDetailUp = function () {
+        ctrl.swapTasks(ctrl.taskWorkedOn.details[ctrl.traversedTaskDetailIndex].id, ctrl.taskWorkedOn.details[ctrl.traversedTaskDetailIndex - 1].id);
+    };
+
+    ctrl.moveTraversedTaskDetailDown = function () {
+        ctrl.swapTasks(ctrl.taskWorkedOn.details[ctrl.traversedTaskDetailIndex].id, ctrl.taskWorkedOn.details[ctrl.traversedTaskDetailIndex + 1].id);
+    };
+
     ctrl.selectTaskToWorkOn = function () {
         ctrl.taskWorkedOn = ctrl.selectedTask;
         ctrl.traversedTaskDetailIndex = null;
@@ -435,6 +451,10 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
         return ctrl.traversedTaskIndex !== null && ctrl.selectedProject && ctrl.isDialogOpen(null);
     };
 
+    ctrl.canMoveTaskDetailWithHotkeys = function () {
+        return ctrl.traversedTaskDetailIndex !== null && ctrl.selectedProject && ctrl.isDialogOpen(null);
+    };
+
     $hotkey.bind("UP", function (event) {
         event.preventDefault();
         if (!ctrl.minimized) {
@@ -446,6 +466,10 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
                 ctrl.moveTraversedTaskUp();
 
                 ctrl.traversedTaskIndex--;
+            } else if (ctrl.canMoveTaskDetailWithHotkeys() && ctrl.isMoveTraversedTaskDetailUpEnabled()) {
+                ctrl.moveTraversedTaskDetailUp();
+
+                ctrl.traversedTaskDetailIndex--;
             }
         }
     });
@@ -461,6 +485,10 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
                 ctrl.moveTraversedTaskDown();
 
                 ctrl.traversedTaskIndex++;
+            } else if (ctrl.canMoveTaskDetailWithHotkeys() && ctrl.isMoveTraversedTaskDetailDownEnabled()) {
+                ctrl.moveTraversedTaskDetailDown();
+
+                ctrl.traversedTaskDetailIndex++;
             }
         }
     });
