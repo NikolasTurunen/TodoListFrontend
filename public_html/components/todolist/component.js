@@ -107,7 +107,7 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
         angular.forEach(tasks, function (value, key) {
             var task = value;
             if (ctrl.selectedTask && task.id === taskId) {
-                ctrl.selectedTask = task;
+                ctrl.selectTask(task);
             } else {
                 ctrl.selectTaskById(taskId, task.details);
             }
@@ -204,6 +204,17 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
         });
     };
 
+    ctrl.findTaskById = function (taskId, tasks) {
+        for (var i = 0; i < tasks.length; i++) {
+            var task = tasks[i];
+            if (task.id === taskId) {
+                return task;
+            } else {
+                return ctrl.findTaskById(taskId, task.details);
+            }
+        }
+    };
+
     ctrl.isMoveProjectUpEnabled = function (index) {
         return ctrl.projects[index - 1] !== undefined;
     };
@@ -221,19 +232,11 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
     };
 
     ctrl.isMoveSelectedTaskUpEnabled = function () {
-        if (ctrl.taskWorkedOn) {
-            return false;
-        }
-
-        return ctrl.tasks[ctrl.tasks.indexOf(ctrl.selectedTask) - 1] !== undefined;
+        return ctrl.selectedTaskTasks[ctrl.selectedTaskTasks.indexOf(ctrl.selectedTask) - 1] !== undefined;
     };
 
     ctrl.isMoveSelectedTaskDownEnabled = function () {
-        if (ctrl.taskWorkedOn) {
-            return false;
-        }
-
-        return ctrl.tasks[ctrl.tasks.indexOf(ctrl.selectedTask) + 1] !== undefined;
+        return ctrl.selectedTaskTasks[ctrl.selectedTaskTasks.indexOf(ctrl.selectedTask) + 1] !== undefined;
     };
 
     ctrl.isMoveTraversedTaskUpEnabled = function () {
@@ -245,11 +248,11 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
     };
 
     ctrl.moveSelectedTaskUp = function () {
-        ctrl.swapTasks(ctrl.selectedTask.id, ctrl.tasks[ctrl.tasks.indexOf(ctrl.selectedTask) - 1].id);
+        ctrl.swapTasks(ctrl.selectedTask.id, ctrl.selectedTaskTasks[ctrl.selectedTaskTasks.indexOf(ctrl.selectedTask) - 1].id);
     };
 
     ctrl.moveSelectedTaskDown = function () {
-        ctrl.swapTasks(ctrl.selectedTask.id, ctrl.tasks[ctrl.tasks.indexOf(ctrl.selectedTask) + 1].id);
+        ctrl.swapTasks(ctrl.selectedTask.id, ctrl.selectedTaskTasks[ctrl.selectedTaskTasks.indexOf(ctrl.selectedTask) + 1].id);
     };
 
     ctrl.moveTraversedTaskUp = function () {
@@ -274,6 +277,16 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
 
     ctrl.moveTraversedTaskDetailDown = function () {
         ctrl.swapTasks(ctrl.taskWorkedOn.details[ctrl.traversedTaskDetailIndex].id, ctrl.taskWorkedOn.details[ctrl.traversedTaskDetailIndex + 1].id);
+    };
+
+    ctrl.selectTask = function (task) {
+        if (task.parentTaskId !== null) {
+            ctrl.selectedTaskTasks = ctrl.findTaskById(task.parentTaskId, ctrl.tasks).details;
+        } else {
+            ctrl.selectedTaskTasks = ctrl.tasks;
+        }
+
+        ctrl.selectedTask = task;
     };
 
     ctrl.selectTaskToWorkOn = function () {
@@ -320,14 +333,14 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
     ctrl.openControlTaskDialog = function (task) {
         if (!ctrl.taskWorkedOn || ctrl.isTaskWorkedOn(task)) {
             ctrl.openDialog(ctrl.DIALOG.CONTROL_TASK);
-            ctrl.selectedTask = task;
+            ctrl.selectTask(task);
             ctrl.traversedTaskIndex = null;
         }
     };
 
     ctrl.openControlTaskDetailDialog = function (task) {
         ctrl.openDialog(ctrl.DIALOG.CONTROL_TASK);
-        ctrl.selectedTask = task;
+        ctrl.selectTask(task);
         ctrl.traversedTaskDetailIndex = null;
     };
 

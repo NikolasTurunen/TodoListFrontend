@@ -175,6 +175,7 @@
     width: 10px;
     height: 10px;
     background-image: url("icons/hierarchy-dash.png");
+    cursor: pointer;
     float: left;
 }
 

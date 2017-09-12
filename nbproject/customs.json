@@ -30,6 +30,7 @@
                 "detail-of-detail": {},
                 "is-any-parent-task-worked-on": {},
                 "is-task-worked-on": {},
+                "open-control-task-detail-dialog": {},
                 "task-worked-on": {},
                 "traversed-task-detail-index": {},
                 "is-task-detail-selected": {}

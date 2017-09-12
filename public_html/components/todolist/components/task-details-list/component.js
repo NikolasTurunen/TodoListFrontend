@@ -16,7 +16,8 @@ angular.module("app").component("taskDetailsList", {
         traversedTaskDetailIndex: "<",
         isTaskDetailSelected: "<",
         isTaskWorkedOn: "<",
-        isAnyParentTaskWorkedOn: "<"
+        isAnyParentTaskWorkedOn: "<",
+        openControlTaskDetailDialog: "<"
     }
 });
 
