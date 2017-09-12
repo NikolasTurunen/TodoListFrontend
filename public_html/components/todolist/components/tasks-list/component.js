@@ -378,11 +378,7 @@ function Controller(TasksService, Dialog, TabTraverseHelper, $hotkey, $scope) {
         }
 
         if (!ctrl.minimized) {
-            if (ctrl.canMoveProjectWithHotkeys() && ctrl.isMoveProjectUpEnabled(ctrl.traversedProjectIndex)) {
-                ctrl.moveProjectUp(ctrl.projects[ctrl.traversedProjectIndex], ctrl.traversedProjectIndex);
-
-                ctrl.traversedProjectIndex--;
-            } else if (ctrl.canMoveTaskWithHotkeys() && ctrl.isMoveTraversedTaskUpEnabled()) {
+            if (ctrl.canMoveTaskWithHotkeys() && ctrl.isMoveTraversedTaskUpEnabled()) {
                 ctrl.moveTraversedTaskUp();
 
                 ctrl.traversedTaskIndex--;
@@ -402,11 +398,7 @@ function Controller(TasksService, Dialog, TabTraverseHelper, $hotkey, $scope) {
         }
 
         if (!ctrl.minimized) {
-            if (ctrl.canMoveProjectWithHotkeys() && ctrl.isMoveProjectDownEnabled(ctrl.traversedProjectIndex)) {
-                ctrl.moveProjectDown(ctrl.projects[ctrl.traversedProjectIndex], ctrl.traversedProjectIndex);
-
-                ctrl.traversedProjectIndex++;
-            } else if (ctrl.canMoveTaskWithHotkeys() && ctrl.isMoveTraversedTaskDownEnabled()) {
+            if (ctrl.canMoveTaskWithHotkeys() && ctrl.isMoveTraversedTaskDownEnabled()) {
                 ctrl.moveTraversedTaskDown();
 
                 ctrl.traversedTaskIndex++;
