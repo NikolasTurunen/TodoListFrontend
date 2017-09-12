@@ -210,7 +210,10 @@ function Controller(ProjectsService, TasksService, TabTraverseHelper, $hotkey) {
             if (task.id === taskId) {
                 return task;
             } else {
-                return ctrl.findTaskById(taskId, task.details);
+                var foundTask = ctrl.findTaskById(taskId, task.details);
+                if (foundTask !== undefined) {
+                    return foundTask;
+                }
             }
         }
     };
