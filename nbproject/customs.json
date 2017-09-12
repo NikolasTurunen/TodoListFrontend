@@ -1,5 +1,11 @@
 {
     "elements": {
+        "projects-list": {
+            "attributes": {
+                "minimized": {},
+                "selected-project": {}
+            }
+        },
         "action-cancel-dialog": {
             "attributes": {
                 "action-text": {},
@@ -36,7 +42,13 @@
                 "is-task-detail-selected": {}
             }
         },
-        "todolist": {}
+        "todolist": {},
+        "tasks-list": {
+            "attributes": {
+                "minimized": {},
+                "selected-project": {}
+            }
+        }
     },
     "attributes": {}
 }

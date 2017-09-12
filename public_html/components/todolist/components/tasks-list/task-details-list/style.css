@@ -1,0 +1,32 @@
+.todolist-task-detail {
+    min-height: 14px;
+    margin-left: 30px;
+    font-size: 12px;
+    color: white;
+}
+
+.todolist-task-detail-of-detail {
+    margin-left: 16px;
+}
+
+.todolist-task-detail-traversed {
+    background-color: #505050 !important;
+}
+
+.todolist-task-detail-selected {
+    background-color: #585858;
+}
+
+.todolist-task-detail-grayed {
+    color: #848484 !important;
+}
+
+.todolist-task-detail-dash {
+    margin-top: 3px;
+    margin-right: 8px;
+    width: 10px;
+    height: 10px;
+    background-image: url("icons/hierarchy-dash.png");
+    cursor: pointer;
+    float: left;
+}

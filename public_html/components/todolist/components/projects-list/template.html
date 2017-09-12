@@ -1,0 +1,78 @@
+<div class="todolist-header">
+    <div ng-if="!$ctrl.minimized">
+        <div class="todolist-title-row">
+            <div class="todolist-title-text">Projects</div>
+        </div>
+    </div>
+</div>
+
+<div class="todolist-content">
+    <div ng-if="!$ctrl.minimized">
+        <div ng-if="$ctrl.loadingProjects">
+            Loading...
+        </div>
+
+        <div ng-repeat="project in $ctrl.projects" class="w100">
+            <div ng-click="$ctrl.selectProject(project); $ctrl.Dialog.closeDialog();" class="todolist-project" ng-class="{'todolist-project-traversed': $ctrl.traversedProjectIndex === $index}">
+                <div class="todolist-project-name">{{project.name}}</div>
+            </div>
+            <div ng-if="$ctrl.controls">
+                <div ng-click="$ctrl.Dialog.openDialog($ctrl.Dialog.DIALOG.RENAME_PROJECT); $ctrl.selectedProjectForRename = project; $ctrl.dialogInputText = $ctrl.selectedProjectForRename.name; $ctrl.traversedProjectIndex = null;" class="todolist-project-control todolist-project-control-edit"></div>
+                <div class="todolist-project-control">
+                    <div ng-if="$ctrl.isMoveProjectUpEnabled($index)" ng-click="$ctrl.moveProjectUp(project, $index); $ctrl.traversedProjectIndex = null;" class="todolist-project-control-arrow-up"></div>
+                </div>
+                <div class="todolist-project-control">
+                    <div ng-if="$ctrl.isMoveProjectDownEnabled($index)" ng-click="$ctrl.moveProjectDown(project, $index); $ctrl.traversedProjectIndex = null;" class="todolist-project-control-arrow-down"></div>
+                </div>
+                <div ng-click="$ctrl.Dialog.openDialog($ctrl.Dialog.DIALOG.REMOVE_PROJECT); $ctrl.selectedProjectForRemove = project; $ctrl.traversedProjectIndex = null;" class="todolist-project-control todolist-project-control-remove"></div>
+            </div>
+        </div>
+
+        <div ng-if="$ctrl.error" class="error">{{$ctrl.error}}</div>
+
+        <!-- Create project dialog -->
+        <action-cancel-dialog 
+            status="$ctrl.Dialog.isDialogOpen($ctrl.Dialog.DIALOG.CREATE_PROJECT)" 
+            title-text="Create project" 
+            error="$ctrl.createProjectError" 
+            text-input="$ctrl.dialogInputText" 
+            action="$ctrl.createProject($ctrl.dialogInputText)" 
+            action-text="Create"
+            cancel-action="$ctrl.Dialog.closeDialog()"></action-cancel-dialog>
+
+        <!-- Rename project dialog -->
+        <action-cancel-dialog 
+            status="$ctrl.Dialog.isDialogOpen($ctrl.Dialog.DIALOG.RENAME_PROJECT)" 
+            title-text="Rename project" 
+            error="$ctrl.renameProjectError" 
+            text-input="$ctrl.dialogInputText" 
+            default-text-input="$ctrl.dialogInputText"
+            action="$ctrl.renameProject($ctrl.selectedProjectForRename.id, $ctrl.dialogInputText)" 
+            action-text="Rename"
+            cancel-action="$ctrl.Dialog.closeDialog()"></action-cancel-dialog>
+
+        <!-- Remove project dialog -->
+        <action-cancel-dialog 
+            status="$ctrl.Dialog.isDialogOpen($ctrl.Dialog.DIALOG.REMOVE_PROJECT)" 
+            title-text="Remove project" 
+            error="$ctrl.removeProjectError" 
+            text="Are you sure you want to remove the project?"
+            action="$ctrl.removeProject($ctrl.selectedProjectForRemove.id)" 
+            action-text="Remove"
+            cancel-action="$ctrl.Dialog.closeDialog()"></action-cancel-dialog>
+    </div>
+</div>
+
+<div class="todolist-footer" ng-class="{'todolist-footer-minimized': $ctrl.minimized}">
+    <div ng-click="$ctrl.minimized = !$ctrl.minimized" class="todolist-maximize-minimize-button" 
+         ng-class="{'todolist-big-arrow-right': $ctrl.minimized
+                         , 'todolist-maximize-minimize-button-left': $ctrl.minimized
+                         , 'todolist-big-arrow-left': !$ctrl.minimized
+                         , 'todolist-maximize-minimize-button-right': !$ctrl.minimized
+                 }"></div>
+
+    <div ng-if="!$ctrl.minimized">
+        <div ng-click="$ctrl.Dialog.openDialog($ctrl.Dialog.DIALOG.CREATE_PROJECT); $ctrl.traversedProjectIndex = null;" class="todolist-button todolist-footer-button">Create Project</div>
+        <div ng-click="$ctrl.controls = !$ctrl.controls" class="todolist-button todolist-footer-button todolist-footer-toggle-button" ng-class="{'todolist-footer-toggle-button-active': $ctrl.controls}">Controls</div>
+    </div>
+</div>

@@ -2,7 +2,7 @@
      ng-class="{'todolist-task-detail-of-detail': $ctrl.attributes.hasOwnProperty('detailOfDetail')
      , 'todolist-task-detail-traversed': $ctrl.task === $ctrl.taskWorkedOn && $index === $ctrl.traversedTaskDetailIndex
      , 'todolist-task-detail-selected': $ctrl.isTaskDetailSelected(detail, $index)
-     , 'todolist-task-grayed': !$ctrl.isAnyParentTaskWorkedOn && $ctrl.isGrayed(detail)}">
+     , 'todolist-task-detail-grayed': !$ctrl.isAnyParentTaskWorkedOn && $ctrl.isGrayed(detail)}">
     <div ng-click="($ctrl.isAnyParentTaskWorkedOn || !$ctrl.isGrayed(detail)) && $ctrl.openControlTaskDetailDialog(detail)" class="todolist-task-detail-dash"></div>{{detail.taskString}}
 
     <task-details-list 

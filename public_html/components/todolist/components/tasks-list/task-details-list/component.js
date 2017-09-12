@@ -9,7 +9,7 @@ function Controller($attrs) {
 
 angular.module("app").component("taskDetailsList", {
     controller: Controller,
-    templateUrl: "components/todolist/components/task-details-list/template.html",
+    templateUrl: "components/todolist/components/tasks-list/task-details-list/template.html",
     bindings: {
         task: "<",
         taskWorkedOn: "<",
