@@ -197,6 +197,16 @@ function Controller(TasksService, Dialog, TabTraverseHelper, $hotkey, $scope) {
         ctrl.selectedTask = task;
     };
 
+    ctrl.selectTraversedTaskToWorkOn = function () {
+        if (!ctrl.taskWorkedOn && ctrl.traversedTaskIndex !== null) {
+            ctrl.taskWorkedOn = ctrl.tasks[ctrl.traversedTaskIndex];
+            ctrl.traversedTaskIndex = null;
+        } else if (ctrl.traversedTaskDetailIndex !== null) {
+            ctrl.taskWorkedOn = ctrl.taskWorkedOn.details[ctrl.traversedTaskDetailIndex];
+            ctrl.traversedTaskDetailIndex = null;
+        }
+    };
+
     ctrl.selectTaskToWorkOn = function () {
         ctrl.taskWorkedOn = ctrl.selectedTask;
         ctrl.traversedTaskDetailIndex = null;
@@ -407,6 +417,16 @@ function Controller(TasksService, Dialog, TabTraverseHelper, $hotkey, $scope) {
 
                 ctrl.traversedTaskDetailIndex++;
             }
+        }
+    });
+
+    $hotkey.bind("CTRL", function (event) {
+        if (!ctrl.isActive()) {
+            return null;
+        }
+
+        if (Dialog.isDialogOpen(null)) {
+            ctrl.selectTraversedTaskToWorkOn();
         }
     });
 }
