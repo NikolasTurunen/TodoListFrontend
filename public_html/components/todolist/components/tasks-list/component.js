@@ -271,7 +271,7 @@ function Controller(TasksService, Dialog, TabTraverseHelper, $hotkey, $scope) {
 
     ctrl.isTaskDetailSelected = function (detail, index) {
         return (detail === ctrl.selectedTask && ctrl.isTaskBeingControlled())
-                || (ctrl.traversedTaskDetailIndex === index && detail.parentTaskId === ctrl.taskWorkedOn.id && !ctrl.isTaskBeingControlled())
+                || (ctrl.traversedTaskDetailIndex === index && ctrl.taskWorkedOn && detail.parentTaskId === ctrl.taskWorkedOn.id && !ctrl.isTaskBeingControlled())
                 || detail === ctrl.taskWorkedOn;
     };
 
