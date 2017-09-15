@@ -1,4 +1,4 @@
-function Controller(TasksService, Dialog, TabTraverseHelper, $scope) {
+function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder, $scope) {
     var ctrl = this;
 
     ctrl.Dialog = Dialog;
@@ -58,8 +58,8 @@ function Controller(TasksService, Dialog, TabTraverseHelper, $scope) {
             ctrl.selectTaskById(selectedTaskId, ctrl.tasks);
             ctrl.setTaskWorkedOnById(taskWorkedOnId, ctrl.tasks);
         }, function (error) {
-            ctrl.error = error.data;
-            ctrl.error.clientMessage = "Failed to get tasks";
+            ctrl.error = ErrorObjectBuilder.build(error, "Failed to get tasks");
+
             ctrl.loadingTasks = false;
         });
     };
@@ -75,8 +75,7 @@ function Controller(TasksService, Dialog, TabTraverseHelper, $scope) {
             ctrl.dialogInputText = null;
             ctrl.getTasks(ctrl.selectedProject.id);
         }, function (error) {
-            ctrl.error = error.data;
-            ctrl.error.clientMessage = "Failed to create task";
+            ctrl.error = ErrorObjectBuilder.build(error, "Failed to create task");
         });
     };
 
@@ -86,8 +85,7 @@ function Controller(TasksService, Dialog, TabTraverseHelper, $scope) {
             ctrl.dialogInputText = null;
             ctrl.getTasks(ctrl.selectedProject.id);
         }, function (error) {
-            ctrl.error = error.data;
-            ctrl.error.clientMessage = "Failed to create task detail";
+            ctrl.error = ErrorObjectBuilder.build(error, "Failed to create task detail");
         });
     };
 
@@ -96,8 +94,7 @@ function Controller(TasksService, Dialog, TabTraverseHelper, $scope) {
             Dialog.closeDialog();
             ctrl.getTasks(ctrl.selectedProject.id);
         }, function (error) {
-            ctrl.error = error.data;
-            ctrl.error.clientMessage = "Failed to edit task";
+            ctrl.error = ErrorObjectBuilder.build(error, "Failed to edit task");
         });
     };
 
@@ -106,8 +103,7 @@ function Controller(TasksService, Dialog, TabTraverseHelper, $scope) {
             Dialog.closeDialog();
             ctrl.getTasks(ctrl.selectedProject.id);
         }, function (error) {
-            ctrl.error = error.data;
-            ctrl.error.clientMessage = "Failed to swap tasks";
+            ctrl.error = ErrorObjectBuilder.build(error, "Failed to swap tasks");
         });
     };
 
@@ -116,8 +112,7 @@ function Controller(TasksService, Dialog, TabTraverseHelper, $scope) {
             Dialog.closeDialog();
             ctrl.getTasks(ctrl.selectedProject.id);
         }, function (error) {
-            ctrl.error = error.data;
-            ctrl.error.clientMessage = "Failed to remove task";
+            ctrl.error = ErrorObjectBuilder.build(error, "Failed to remove task");
         });
     };
 

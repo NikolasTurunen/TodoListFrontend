@@ -1,4 +1,4 @@
-function Controller(ProjectsService, Dialog, TabTraverseHelper) {
+function Controller(ProjectsService, Dialog, TabTraverseHelper, ErrorObjectBuilder) {
     var ctrl = this;
 
     ctrl.Dialog = Dialog;
@@ -21,8 +21,7 @@ function Controller(ProjectsService, Dialog, TabTraverseHelper) {
             ctrl.projects = data;
             ctrl.loadingProjects = false;
         }, function (error) {
-            ctrl.error = error.data;
-            ctrl.error.clientMessage = "Failed to get projects";
+            ctrl.error = ErrorObjectBuilder.build(error, "Failed to get projects");
 
             ctrl.projects = null;
             ctrl.loadingProjects = false;
@@ -36,8 +35,7 @@ function Controller(ProjectsService, Dialog, TabTraverseHelper) {
             ctrl.dialogInputText = null;
             ctrl.getProjects();
         }, function (error) {
-            ctrl.error = error.data;
-            ctrl.error.clientMessage = "Failed to create project";
+            ctrl.error = ErrorObjectBuilder.build(error, "Failed to create project");
         });
     };
 
@@ -46,8 +44,7 @@ function Controller(ProjectsService, Dialog, TabTraverseHelper) {
             Dialog.closeDialog();
             ctrl.getProjects();
         }, function (error) {
-            ctrl.error = error.data;
-            ctrl.error.clientMessage = "Failed to swap projects";
+            ctrl.error = ErrorObjectBuilder.build(error, "Failed to swap projects");
         });
     };
 
@@ -57,8 +54,7 @@ function Controller(ProjectsService, Dialog, TabTraverseHelper) {
             ctrl.dialogInputText = null;
             ctrl.getProjects();
         }, function (error) {
-            ctrl.error = error.data;
-            ctrl.error.clientMessage = "Failed to rename project";
+            ctrl.error = ErrorObjectBuilder.build(error, "Failed to rename project");
         });
     };
 
@@ -67,8 +63,7 @@ function Controller(ProjectsService, Dialog, TabTraverseHelper) {
             Dialog.closeDialog();
             ctrl.getProjects();
         }, function (error) {
-            ctrl.error = error.data;
-            ctrl.error.clientMessage = "Failed to remove project";
+            ctrl.error = ErrorObjectBuilder.build(error, "Failed to remove project");
         });
     };
 
