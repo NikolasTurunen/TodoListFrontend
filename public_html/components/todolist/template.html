@@ -2,12 +2,18 @@
     <div ng-if="$ctrl.selectedProject">
         <tasks-list
             minimized="$ctrl.minimized"
-            selected-project="$ctrl.selectedProject"></tasks-list>
+            selected-project="$ctrl.selectedProject"
+            error="$ctrl.error"
+            process-hotkey="$ctrl.processHotkeyTasksList"></tasks-list>
     </div>
 
     <div ng-if="!$ctrl.selectedProject">
         <projects-list 
             minimized="$ctrl.minimized"
-            selected-project="$ctrl.selectedProject"></projects-list>
+            selected-project="$ctrl.selectedProject"
+            error="$ctrl.error"
+            process-hotkey="$ctrl.processHotkeyProjectsList"></projects-list>
     </div>
+
+    <error-dialog status="$ctrl.error" error="$ctrl.error"></error-dialog>
 </div>

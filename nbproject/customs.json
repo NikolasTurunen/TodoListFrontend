@@ -2,7 +2,9 @@
     "elements": {
         "projects-list": {
             "attributes": {
+                "process-hotkey": {},
                 "minimized": {},
+                "error": {},
                 "selected-project": {}
             }
         },
@@ -15,6 +17,7 @@
                 "text-input": {},
                 "action": {},
                 "title-text": {},
+                "process-hotkey": {},
                 "text": {},
                 "error": {},
                 "status": {}
@@ -25,6 +28,7 @@
                 "task": {},
                 "cancel-action": {},
                 "title-text": {},
+                "process-hotkey": {},
                 "error": {},
                 "actions": {},
                 "status": {}
@@ -43,9 +47,17 @@
             }
         },
         "todolist": {},
+        "error-dialog": {
+            "attributes": {
+                "error": {},
+                "status": {}
+            }
+        },
         "tasks-list": {
             "attributes": {
+                "process-hotkey": {},
                 "minimized": {},
+                "error": {},
                 "selected-project": {}
             }
         }

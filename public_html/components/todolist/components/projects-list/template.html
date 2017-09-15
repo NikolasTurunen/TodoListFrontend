@@ -28,38 +28,39 @@
             </div>
         </div>
 
-        <div ng-if="$ctrl.error" class="error">{{$ctrl.error}}</div>
-
         <!-- Create project dialog -->
         <action-cancel-dialog 
             status="$ctrl.Dialog.isDialogOpen($ctrl.Dialog.DIALOG.CREATE_PROJECT)" 
             title-text="Create project" 
-            error="$ctrl.createProjectError" 
+            error="$ctrl.error" 
             text-input="$ctrl.dialogInputText" 
             action="$ctrl.createProject($ctrl.dialogInputText)" 
             action-text="Create"
-            cancel-action="$ctrl.Dialog.closeDialog()"></action-cancel-dialog>
+            cancel-action="$ctrl.Dialog.closeDialog()"
+            process-hotkey="$ctrl.processHotkeyCreateProjectDialog"></action-cancel-dialog>
 
         <!-- Rename project dialog -->
         <action-cancel-dialog 
             status="$ctrl.Dialog.isDialogOpen($ctrl.Dialog.DIALOG.RENAME_PROJECT)" 
             title-text="Rename project" 
-            error="$ctrl.renameProjectError" 
+            error="$ctrl.error" 
             text-input="$ctrl.dialogInputText" 
             default-text-input="$ctrl.dialogInputText"
             action="$ctrl.renameProject($ctrl.selectedProjectForRename.id, $ctrl.dialogInputText)" 
             action-text="Rename"
-            cancel-action="$ctrl.Dialog.closeDialog()"></action-cancel-dialog>
+            cancel-action="$ctrl.Dialog.closeDialog()"
+            process-hotkey="$ctrl.processHotkeyRenameProjectDialog"></action-cancel-dialog>
 
         <!-- Remove project dialog -->
         <action-cancel-dialog 
             status="$ctrl.Dialog.isDialogOpen($ctrl.Dialog.DIALOG.REMOVE_PROJECT)" 
             title-text="Remove project" 
-            error="$ctrl.removeProjectError" 
+            error="$ctrl.error" 
             text="Are you sure you want to remove the project?"
             action="$ctrl.removeProject($ctrl.selectedProjectForRemove.id)" 
             action-text="Remove"
-            cancel-action="$ctrl.Dialog.closeDialog()"></action-cancel-dialog>
+            cancel-action="$ctrl.Dialog.closeDialog()"
+            process-hotkey="$ctrl.processHotkeyRemoveProjectDialog"></action-cancel-dialog>
     </div>
 </div>
 

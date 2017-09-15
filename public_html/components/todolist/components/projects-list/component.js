@@ -1,4 +1,4 @@
-function Controller(ProjectsService, Dialog, TabTraverseHelper, $hotkey) {
+function Controller(ProjectsService, Dialog, TabTraverseHelper) {
     var ctrl = this;
 
     ctrl.Dialog = Dialog;
@@ -19,10 +19,11 @@ function Controller(ProjectsService, Dialog, TabTraverseHelper, $hotkey) {
         ctrl.loadingProjects = true;
         ProjectsService.get.query(function (data) {
             ctrl.projects = data;
-            ctrl.error = null;
             ctrl.loadingProjects = false;
         }, function (error) {
-            ctrl.error = "Failed to get projects";
+            ctrl.error = error.data;
+            ctrl.error.clientMessage = "Failed to get projects";
+
             ctrl.projects = null;
             ctrl.loadingProjects = false;
         });
@@ -31,43 +32,43 @@ function Controller(ProjectsService, Dialog, TabTraverseHelper, $hotkey) {
 
     ctrl.createProject = function (projectName) {
         ProjectsService.create.query({name: projectName}, {}, function (data) {
-            ctrl.createProjectError = null;
             Dialog.closeDialog();
             ctrl.dialogInputText = null;
             ctrl.getProjects();
         }, function (error) {
-            ctrl.createProjectError = "Failed to create project";
+            ctrl.error = error.data;
+            ctrl.error.clientMessage = "Failed to create project";
         });
     };
 
     ctrl.swapProjects = function (projectId1, projectId2) {
         ProjectsService.swappositions.query({projectId: projectId1, projectId2: projectId2}, {}, function (data) {
-            ctrl.error = null;
             Dialog.closeDialog();
             ctrl.getProjects();
         }, function (error) {
-            ctrl.error = "Failed to swap projects";
+            ctrl.error = error.data;
+            ctrl.error.clientMessage = "Failed to swap projects";
         });
     };
 
     ctrl.renameProject = function (projectId, newName) {
         ProjectsService.rename.query({projectId: projectId, newName: newName}, {}, function (data) {
-            ctrl.renameProjectError = null;
             Dialog.closeDialog();
             ctrl.dialogInputText = null;
             ctrl.getProjects();
         }, function (error) {
-            ctrl.renameProjectError = "Failed to rename project";
+            ctrl.error = error.data;
+            ctrl.error.clientMessage = "Failed to rename project";
         });
     };
 
     ctrl.removeProject = function (projectId) {
         ProjectsService.remove.query({projectId: projectId}, {}, function (data) {
-            ctrl.removeProjectError = null;
             Dialog.closeDialog();
             ctrl.getProjects();
         }, function (error) {
-            ctrl.removeProjectError = "Failed to remove project";
+            ctrl.error = error.data;
+            ctrl.error.clientMessage = "Failed to remove project";
         });
     };
 
@@ -99,27 +100,62 @@ function Controller(ProjectsService, Dialog, TabTraverseHelper, $hotkey) {
         ctrl.traversedProjectIndex = TabTraverseHelper.traverse(ctrl.traversedProjectIndex, ctrl.projects, direction);
     };
 
-    $hotkey.bind("TAB", function (event) {
-        event.preventDefault();
+    ctrl.processHotkeyCreateProjectDialog = null;
+    ctrl.processHotkeyRenameProjectDialog = null;
+    ctrl.processHotkeyRemoveProjectDialog = null;
 
+    ctrl.processHotkeyDialog = function (key) {
+        ctrl.processHotkeyCreateProjectDialog(key);
+        ctrl.processHotkeyRenameProjectDialog(key);
+        ctrl.processHotkeyRemoveProjectDialog(key);
+    };
+
+    ctrl.processHotkey = function (key) {
+        if (!Dialog.isDialogOpen(null)) {
+            ctrl.processHotkeyDialog(key);
+        } else {
+            switch (key) {
+                case "ENTER":
+                    ctrl.processHotkeyEnter();
+                    break;
+                case "TAB":
+                    ctrl.processHotkeyTab();
+                    break;
+                case "SHIFT+TAB":
+                    ctrl.processHotkeyShiftTab();
+                    break;
+                case "ESC":
+                    ctrl.processHotkeyEsc();
+                    break;
+                case "UP":
+                    ctrl.processHotkeyUp();
+                    break;
+                case "DOWN":
+                    ctrl.processHotkeyDown();
+                    break;
+                case "CTRL":
+                    ctrl.processHotkeyCtrl();
+            }
+        }
+    };
+
+    ctrl.processHotkeyTab = function () {
         if (!ctrl.isActive()) {
             return null;
         }
 
         ctrl.traverseProject(TabTraverseHelper.DIRECTION.DOWN);
-    });
+    };
 
-    $hotkey.bind("SHIFT+TAB", function (event) {
-        event.preventDefault();
-
+    ctrl.processHotkeyShiftTab = function () {
         if (!ctrl.isActive()) {
             return null;
         }
 
         ctrl.traverseProject(TabTraverseHelper.DIRECTION.UP);
-    });
+    };
 
-    $hotkey.bind("ESC", function (event) {
+    ctrl.processHotkeyEsc = function () {
         if (!ctrl.isActive()) {
             return null;
         }
@@ -127,9 +163,9 @@ function Controller(ProjectsService, Dialog, TabTraverseHelper, $hotkey) {
         if (ctrl.traversedProjectIndex !== null) {
             ctrl.traversedProjectIndex = null;
         }
-    });
+    };
 
-    $hotkey.bind("ENTER", function (event) {
+    ctrl.processHotkeyEnter = function () {
         if (!ctrl.isActive()) {
             return null;
         }
@@ -141,11 +177,9 @@ function Controller(ProjectsService, Dialog, TabTraverseHelper, $hotkey) {
                 Dialog.openDialog(Dialog.DIALOG.CREATE_PROJECT);
             }
         }
-    });
+    };
 
-    $hotkey.bind("UP", function (event) {
-        event.preventDefault();
-
+    ctrl.processHotkeyUp = function () {
         if (!ctrl.isActive()) {
             return null;
         }
@@ -155,11 +189,9 @@ function Controller(ProjectsService, Dialog, TabTraverseHelper, $hotkey) {
 
             ctrl.traversedProjectIndex--;
         }
-    });
+    };
 
-    $hotkey.bind("DOWN", function (event) {
-        event.preventDefault();
-
+    ctrl.processHotkeyDown = function () {
         if (!ctrl.isActive()) {
             return null;
         }
@@ -169,15 +201,15 @@ function Controller(ProjectsService, Dialog, TabTraverseHelper, $hotkey) {
 
             ctrl.traversedProjectIndex++;
         }
-    });
+    };
 
-    $hotkey.bind("CTRL", function (event) {
+    ctrl.processHotkeyCtrl = function () {
         if (!ctrl.isActive()) {
             return null;
         }
 
         ctrl.controls = !ctrl.controls;
-    });
+    };
 }
 
 angular.module("app").component("projectsList", {
@@ -185,7 +217,9 @@ angular.module("app").component("projectsList", {
     templateUrl: "components/todolist/components/projects-list/template.html",
     bindings: {
         minimized: "=",
-        selectedProject: "="
+        selectedProject: "=",
+        error: "=",
+        processHotkey: "="
     }
 });
 

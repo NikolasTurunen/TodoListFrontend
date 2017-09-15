@@ -32,59 +32,62 @@
             </div>
         </div>
 
-        <div ng-if="$ctrl.error" class="error">{{$ctrl.error}}</div>
-
         <!-- Control task dialog -->
         <action-list-dialog
             status="$ctrl.Dialog.isDialogOpen($ctrl.Dialog.DIALOG.CONTROL_TASK)"
             title-text="Control task"
             actions="$ctrl.controlTaskActions"
             task="$ctrl.selectedTask"
-            cancel-action="$ctrl.Dialog.closeDialog()"></action-list-dialog>
+            cancel-action="$ctrl.Dialog.closeDialog()"
+            process-hotkey="$ctrl.processHotkeyControlTaskDialog"></action-list-dialog>
 
         <!-- Create task detail dialog -->
         <action-cancel-dialog
             status="$ctrl.Dialog.isDialogOpen($ctrl.Dialog.DIALOG.CREATE_TASK_DETAIL)"
             title-text="Create detail"
-            error="$ctrl.createTaskDetailError"
+            error="$ctrl.error"
             text-input="$ctrl.dialogInputText"
             action="$ctrl.createTaskDetail($ctrl.selectedTask.id, $ctrl.dialogInputText)"
             action-text="Create"
             cancel-action="$ctrl.Dialog.closeDialog()"
-            wide></action-cancel-dialog>
+            wide
+            process-hotkey="$ctrl.processHotkeyCreateTaskDetailDialog"></action-cancel-dialog>
 
         <!-- Edit task dialog -->
         <action-cancel-dialog
             status="$ctrl.Dialog.isDialogOpen($ctrl.Dialog.DIALOG.EDIT_TASK)"
             title-text="Edit task"
-            error="$ctrl.editTaskError"
+            error="$ctrl.error"
             text-input="$ctrl.dialogInputText"
             default-text-input="$ctrl.dialogInputText"
             action="$ctrl.editTask($ctrl.selectedTask.id, $ctrl.dialogInputText)"
             action-text="Edit"
             cancel-action="$ctrl.Dialog.closeDialog()"
-            wide></action-cancel-dialog>
+            wide
+            process-hotkey="$ctrl.processHotkeyEditTaskDialog"></action-cancel-dialog>
 
         <!-- Remove task dialog -->
         <action-cancel-dialog
             status="$ctrl.Dialog.isDialogOpen($ctrl.Dialog.DIALOG.REMOVE_TASK)"
             title-text="Remove task"
-            error="$ctrl.removeTaskError"
+            error="$ctrl.error"
             text="Are you sure you want to remove the task?"
             action="$ctrl.removeTask($ctrl.selectedTask.id)"
             action-text="Remove"
-            cancel-action="$ctrl.Dialog.closeDialog()"></action-cancel-dialog>
+            cancel-action="$ctrl.Dialog.closeDialog()"
+            process-hotkey="$ctrl.processHotkeyRemoveTaskDialog"></action-cancel-dialog>
 
         <!-- Create task dialog -->
         <action-cancel-dialog 
             status="$ctrl.Dialog.isDialogOpen($ctrl.Dialog.DIALOG.CREATE_TASK)" 
             title-text="New task" 
-            error="$ctrl.createTaskError" 
+            error="$ctrl.error" 
             text-input="$ctrl.dialogInputText" 
             action="$ctrl.createTask($ctrl.selectedProject.id, $ctrl.dialogInputText)" 
             action-text="Create" 
             cancel-action="$ctrl.Dialog.closeDialog()" 
-            wide></action-cancel-dialog>
+            wide
+            process-hotkey="$ctrl.processHotkeyCreateTaskDialog"></action-cancel-dialog>
     </div>
 </div>
 

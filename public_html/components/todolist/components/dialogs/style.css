@@ -102,3 +102,27 @@
 .todolist-dialog-action-list-button-disabled:hover {
     background-color: #585858;
 }
+
+.todolist-dialog-error-root {
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.todolist-dialog-error {
+    height: auto;
+}
+
+.todolist-dialog-error-button {
+    position: relative;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    margin-bottom: 10px;
+    background-color: #00ad31;
+    text-align: center;
+}
+
+.todolist-dialog-error-button:hover {
+    background-color: #008e28;
+}

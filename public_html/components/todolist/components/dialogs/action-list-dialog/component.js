@@ -35,33 +35,48 @@ function Controller($attrs, TabTraverseHelper, $hotkey) {
         }
     };
 
-    $hotkey.bind("TAB", function (event) {
-        event.preventDefault();
+    ctrl.processHotkey = function (key) {
+        switch (key) {
+            case "TAB":
+                ctrl.processHotkeyTab();
+                break;
+            case "SHIFT+TAB":
+                ctrl.processHotkeyShiftTab();
+                break;
+            case "ESC":
+                ctrl.processHotkeyEsc();
+                break;
+            case "ENTER":
+                ctrl.processHotkeyEnter();
+                break;
+        }
+    };
+
+    ctrl.processHotkeyTab = function () {
         if (ctrl.status) {
             ctrl.traverse(TabTraverseHelper.DIRECTION.DOWN);
         }
-    });
+    };
 
-    $hotkey.bind("SHIFT+TAB", function (event) {
-        event.preventDefault();
+    ctrl.processHotkeyShiftTab = function () {
         if (ctrl.status) {
             ctrl.traverse(TabTraverseHelper.DIRECTION.UP);
         }
-    });
+    };
 
-    $hotkey.bind("ENTER", function (event) {
+    ctrl.processHotkeyEnter = function () {
         if (ctrl.status) {
             if (ctrl.traversedActionIndex !== null) {
                 ctrl.actions[ctrl.traversedActionIndex].action();
             }
         }
-    });
+    };
 
-    $hotkey.bind("ESC", function (event) {
+    ctrl.processHotkeyEsc = function () {
         if (ctrl.status) {
             ctrl.cancel();
         }
-    });
+    };
 }
 
 angular.module("app").component("actionListDialog", {
@@ -73,6 +88,7 @@ angular.module("app").component("actionListDialog", {
         error: "=?",
         actions: "<",
         task: "<",
-        cancelAction: "&"
+        cancelAction: "&",
+        processHotkey: "="
     }
 });

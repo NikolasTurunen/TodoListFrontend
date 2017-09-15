@@ -1,5 +1,5 @@
 <div ng-if="$ctrl.status" class="todolist-dialog todolist-dialog-action-list">
-    <div class="todolist-dialog-title">{{$ctrl.titleText}}: <span ng-if="$ctrl.error" class="error">{{$ctrl.error}}</span></div>
+    <div class="todolist-dialog-title">{{$ctrl.titleText}}:</div>
     <div ng-repeat="action in $ctrl.actions" class="todolist-dialog-action-list-buttons">
         <div class="w100">
             <div ng-if="!$ctrl.isActionHidden(action)" ng-click="!$ctrl.isActionDisabled(action) && action.action()" 

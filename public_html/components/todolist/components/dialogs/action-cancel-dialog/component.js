@@ -1,4 +1,4 @@
-function Controller($attrs, $hotkey) {
+function Controller($attrs) {
     var ctrl = this;
     ctrl.attributes = $attrs;
 
@@ -24,17 +24,25 @@ function Controller($attrs, $hotkey) {
         }
     };
 
-    $hotkey.bind("ENTER", function (event) {
+    ctrl.processHotkey = function (key) {
+        if (key === "ENTER") {
+            ctrl.processHotkeyEnter();
+        } else if (key === "ESC") {
+            ctrl.processHotkeyEsc();
+        }
+    };
+
+    ctrl.processHotkeyEnter = function () {
         if (ctrl.status) {
             ctrl.action();
         }
-    });
+    };
 
-    $hotkey.bind("ESC", function (event) {
+    ctrl.processHotkeyEsc = function () {
         if (ctrl.status) {
             ctrl.cancel();
         }
-    });
+    };
 }
 
 angular.module("app").component("actionCancelDialog", {
@@ -49,6 +57,7 @@ angular.module("app").component("actionCancelDialog", {
         text: "@",
         action: "&",
         actionText: "@",
-        cancelAction: "&"
+        cancelAction: "&",
+        processHotkey: "="
     }
 });

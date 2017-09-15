@@ -1,4 +1,4 @@
-function Controller(TasksService, Dialog, TabTraverseHelper, $hotkey, $scope) {
+function Controller(TasksService, Dialog, TabTraverseHelper, $scope) {
     var ctrl = this;
 
     ctrl.Dialog = Dialog;
@@ -52,14 +52,14 @@ function Controller(TasksService, Dialog, TabTraverseHelper, $hotkey, $scope) {
         }
 
         TasksService.get.query({projectId: projectId}, {}, function (data) {
-            ctrl.error = null;
             ctrl.tasks = data;
             ctrl.loadingTasks = false;
 
             ctrl.selectTaskById(selectedTaskId, ctrl.tasks);
             ctrl.setTaskWorkedOnById(taskWorkedOnId, ctrl.tasks);
         }, function (error) {
-            ctrl.error = "Failed to get tasks";
+            ctrl.error = error.data;
+            ctrl.error.clientMessage = "Failed to get tasks";
             ctrl.loadingTasks = false;
         });
     };
@@ -71,53 +71,53 @@ function Controller(TasksService, Dialog, TabTraverseHelper, $hotkey, $scope) {
 
     ctrl.createTask = function (projectId, task) {
         TasksService.create.query({projectId: projectId, task: task}, {}, function (data) {
-            ctrl.createTaskError = null;
             Dialog.closeDialog();
             ctrl.dialogInputText = null;
             ctrl.getTasks(ctrl.selectedProject.id);
         }, function (error) {
-            ctrl.createTaskError = "Failed to create task";
+            ctrl.error = error.data;
+            ctrl.error.clientMessage = "Failed to create task";
         });
     };
 
     ctrl.createTaskDetail = function (taskId, detail) {
         TasksService.createdetail.query({taskId: taskId, detail: detail}, {}, function (data) {
-            ctrl.createTaskDetailError = null;
             Dialog.closeDialog();
             ctrl.dialogInputText = null;
             ctrl.getTasks(ctrl.selectedProject.id);
         }, function (error) {
-            ctrl.createTaskDetailError = "Failed to create task detail";
+            ctrl.error = error.data;
+            ctrl.error.clientMessage = "Failed to create task detail";
         });
     };
 
     ctrl.editTask = function (taskId, newTask) {
         TasksService.edit.query({taskId: taskId, newTask: newTask}, {}, function (data) {
-            ctrl.editTaskError = null;
             Dialog.closeDialog();
             ctrl.getTasks(ctrl.selectedProject.id);
         }, function (error) {
-            ctrl.editTaskError = "Failed to edit task";
+            ctrl.error = error.data;
+            ctrl.error.clientMessage = "Failed to edit task";
         });
     };
 
     ctrl.swapTasks = function (taskId, taskId2) {
         TasksService.swappositions.query({taskId: taskId, taskId2: taskId2}, {}, function (data) {
-            ctrl.error = null;
             Dialog.closeDialog();
             ctrl.getTasks(ctrl.selectedProject.id);
         }, function (error) {
-            ctrl.error = "Failed to swap tasks";
+            ctrl.error = error.data;
+            ctrl.error.clientMessage = "Failed to swap tasks";
         });
     };
 
     ctrl.removeTask = function (taskId) {
         TasksService.remove.query({taskId: taskId}, {}, function (data) {
-            ctrl.removeTaskError = null;
             Dialog.closeDialog();
             ctrl.getTasks(ctrl.selectedProject.id);
         }, function (error) {
-            ctrl.removeTaskError = "Failed to remove task";
+            ctrl.error = error.data;
+            ctrl.error.clientMessage = "Failed to remove task";
         });
     };
 
@@ -314,27 +314,67 @@ function Controller(TasksService, Dialog, TabTraverseHelper, $hotkey, $scope) {
         }
     };
 
-    $hotkey.bind("TAB", function (event) {
-        event.preventDefault();
+    ctrl.processHotkeyControlTaskDialog = null;
+    ctrl.processHotkeyCreateTaskDetailDialog = null;
+    ctrl.processHotkeyCreateTaskDialog = null;
+    ctrl.processHotkeyEditTaskDialog = null;
+    ctrl.processHotkeyRemoveTaskDialog = null;
 
+    ctrl.processHotkeyDialog = function (key) {
+        ctrl.processHotkeyControlTaskDialog(key);
+        ctrl.processHotkeyCreateTaskDetailDialog(key);
+        ctrl.processHotkeyCreateTaskDialog(key);
+        ctrl.processHotkeyEditTaskDialog(key);
+        ctrl.processHotkeyRemoveTaskDialog(key);
+    };
+
+    ctrl.processHotkey = function (key) {
+        if (!Dialog.isDialogOpen(null)) {
+            ctrl.processHotkeyDialog(key);
+        } else {
+            switch (key) {
+                case "TAB":
+                    ctrl.processHotkeyTab();
+                    break;
+                case "SHIFT+TAB":
+                    ctrl.processHotkeyShiftTab();
+                    break;
+                case "ESC":
+                    ctrl.processHotkeyEsc();
+                    break;
+                case "ENTER":
+                    ctrl.processHotkeyEnter();
+                    break;
+                case "UP":
+                    ctrl.processHotkeyUp();
+                    break;
+                case "DOWN":
+                    ctrl.processHotkeyDown();
+                    break;
+                case "CTRL":
+                    ctrl.processHotkeyCtrl();
+                    break;
+            }
+        }
+    };
+
+    ctrl.processHotkeyTab = function () {
         if (!ctrl.isActive()) {
             return null;
         }
 
         ctrl.traverse(TabTraverseHelper.DIRECTION.DOWN);
-    });
+    };
 
-    $hotkey.bind("SHIFT+TAB", function (event) {
-        event.preventDefault();
-
+    ctrl.processHotkeyShiftTab = function () {
         if (!ctrl.isActive()) {
             return null;
         }
 
         ctrl.traverse(TabTraverseHelper.DIRECTION.UP);
-    });
+    };
 
-    $hotkey.bind("ESC", function (event) {
+    ctrl.processHotkeyEsc = function () {
         if (!ctrl.isActive()) {
             return null;
         }
@@ -350,9 +390,9 @@ function Controller(TasksService, Dialog, TabTraverseHelper, $hotkey, $scope) {
                 ctrl.backFromTasks();
             }
         }
-    });
+    };
 
-    $hotkey.bind("ENTER", function (event) {
+    ctrl.processHotkeyEnter = function () {
         if (!ctrl.isActive()) {
             return null;
         }
@@ -370,7 +410,7 @@ function Controller(TasksService, Dialog, TabTraverseHelper, $hotkey, $scope) {
                 }
             }
         }
-    });
+    };
 
     ctrl.canMoveTaskWithHotkeys = function () {
         return ctrl.traversedTaskIndex !== null && ctrl.selectedProject && Dialog.isDialogOpen(null);
@@ -380,9 +420,7 @@ function Controller(TasksService, Dialog, TabTraverseHelper, $hotkey, $scope) {
         return ctrl.traversedTaskDetailIndex !== null && ctrl.selectedProject && Dialog.isDialogOpen(null);
     };
 
-    $hotkey.bind("UP", function (event) {
-        event.preventDefault();
-
+    ctrl.processHotkeyUp = function () {
         if (!ctrl.isActive()) {
             return null;
         }
@@ -398,11 +436,9 @@ function Controller(TasksService, Dialog, TabTraverseHelper, $hotkey, $scope) {
                 ctrl.traversedTaskDetailIndex--;
             }
         }
-    });
+    };
 
-    $hotkey.bind("DOWN", function (event) {
-        event.preventDefault();
-
+    ctrl.processHotkeyDown = function () {
         if (!ctrl.isActive()) {
             return null;
         }
@@ -418,9 +454,9 @@ function Controller(TasksService, Dialog, TabTraverseHelper, $hotkey, $scope) {
                 ctrl.traversedTaskDetailIndex++;
             }
         }
-    });
+    };
 
-    $hotkey.bind("CTRL", function (event) {
+    ctrl.processHotkeyCtrl = function () {
         if (!ctrl.isActive()) {
             return null;
         }
@@ -428,7 +464,7 @@ function Controller(TasksService, Dialog, TabTraverseHelper, $hotkey, $scope) {
         if (Dialog.isDialogOpen(null)) {
             ctrl.selectTraversedTaskToWorkOn();
         }
-    });
+    };
 }
 
 angular.module("app").component("tasksList", {
@@ -436,6 +472,8 @@ angular.module("app").component("tasksList", {
     templateUrl: "components/todolist/components/tasks-list/template.html",
     bindings: {
         minimized: "=",
-        selectedProject: "="
+        selectedProject: "=",
+        error: "=",
+        processHotkey: "="
     }
 });

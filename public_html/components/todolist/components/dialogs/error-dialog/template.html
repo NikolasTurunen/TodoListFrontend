@@ -1,0 +1,11 @@
+<div ng-if="$ctrl.status" class="todolist-dialog-error-root">
+    <div class="todolist-dialog todolist-dialog-error">
+        <div class="todolist-dialog-title"><span class="error">Error:</span> [{{$ctrl.error.status}}]</div>
+        <div class="todolist-dialog-text">
+            <div>Message: {{$ctrl.error.clientMessage}}</div>
+            <div>Cause: {{$ctrl.error.message}}</div>
+        </div>
+
+        <div ng-click="$ctrl.error = null" class="todolist-dialog-button todolist-dialog-error-button">OK</div>
+    </div>
+</div>
