@@ -17,13 +17,15 @@ function Controller($hotkey) {
             return function (event) {
                 event.preventDefault();
 
-                if (hotkey === "ENTER" && ctrl.error !== null) {
-                    ctrl.error = null;
-                } else {
-                    if (!ctrl.selectedProject) {
-                        ctrl.processHotkeyProjectsList(hotkey);
+                if (!ctrl.minimized) {
+                    if (hotkey === "ENTER" && ctrl.error !== null) {
+                        ctrl.error = null;
                     } else {
-                        ctrl.processHotkeyTasksList(hotkey);
+                        if (!ctrl.selectedProject) {
+                            ctrl.processHotkeyProjectsList(hotkey);
+                        } else {
+                            ctrl.processHotkeyTasksList(hotkey);
+                        }
                     }
                 }
             };
