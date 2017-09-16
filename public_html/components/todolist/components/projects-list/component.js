@@ -39,10 +39,14 @@ function Controller(ProjectsService, Dialog, TabTraverseHelper, ErrorObjectBuild
         });
     };
 
-    ctrl.swapProjects = function (projectId1, projectId2) {
+    ctrl.swapProjects = function (projectId1, projectId2, callback) {
         ProjectsService.swappositions.query({projectId: projectId1, projectId2: projectId2}, {}, function (data) {
             Dialog.closeDialog();
             ctrl.getProjects();
+
+            if (callback) {
+                callback();
+            }
         }, function (error) {
             ctrl.error = ErrorObjectBuilder.build(error, "Failed to swap projects");
         });
@@ -84,11 +88,19 @@ function Controller(ProjectsService, Dialog, TabTraverseHelper, ErrorObjectBuild
     };
 
     ctrl.moveProjectUp = function (project, index) {
-        ctrl.swapProjects(project.id, ctrl.projects[index - 1].id);
+        var callback = function () {
+            ctrl.traversedProjectIndex--;
+        };
+
+        ctrl.swapProjects(project.id, ctrl.projects[index - 1].id, callback);
     };
 
     ctrl.moveProjectDown = function (project, index) {
-        ctrl.swapProjects(project.id, ctrl.projects[index + 1].id);
+        var callback = function () {
+            ctrl.traversedProjectIndex++;
+        };
+
+        ctrl.swapProjects(project.id, ctrl.projects[index + 1].id, callback);
     };
 
     ctrl.traverseProject = function (direction) {
@@ -181,8 +193,6 @@ function Controller(ProjectsService, Dialog, TabTraverseHelper, ErrorObjectBuild
 
         if (ctrl.canMoveProjectWithHotkeys() && ctrl.isMoveProjectUpEnabled(ctrl.traversedProjectIndex)) {
             ctrl.moveProjectUp(ctrl.projects[ctrl.traversedProjectIndex], ctrl.traversedProjectIndex);
-
-            ctrl.traversedProjectIndex--;
         }
     };
 
@@ -193,8 +203,6 @@ function Controller(ProjectsService, Dialog, TabTraverseHelper, ErrorObjectBuild
 
         if (ctrl.canMoveProjectWithHotkeys() && ctrl.isMoveProjectDownEnabled(ctrl.traversedProjectIndex)) {
             ctrl.moveProjectDown(ctrl.projects[ctrl.traversedProjectIndex], ctrl.traversedProjectIndex);
-
-            ctrl.traversedProjectIndex++;
         }
     };
 

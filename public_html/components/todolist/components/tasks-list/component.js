@@ -98,10 +98,14 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
         });
     };
 
-    ctrl.swapTasks = function (taskId, taskId2) {
+    ctrl.swapTasks = function (taskId, taskId2, callback) {
         TasksService.swappositions.query({taskId: taskId, taskId2: taskId2}, {}, function (data) {
             Dialog.closeDialog();
             ctrl.getTasks(ctrl.selectedProject.id);
+
+            if (callback) {
+                callback();
+            }
         }, function (error) {
             ctrl.error = ErrorObjectBuilder.build(error, "Failed to swap tasks");
         });
@@ -159,11 +163,19 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
     };
 
     ctrl.moveTraversedTaskUp = function () {
-        ctrl.swapTasks(ctrl.tasks[ctrl.traversedTaskIndex].id, ctrl.tasks[ctrl.traversedTaskIndex - 1].id);
+        var callback = function () {
+            ctrl.traversedTaskIndex--;
+        };
+
+        ctrl.swapTasks(ctrl.tasks[ctrl.traversedTaskIndex].id, ctrl.tasks[ctrl.traversedTaskIndex - 1].id, callback);
     };
 
     ctrl.moveTraversedTaskDown = function () {
-        ctrl.swapTasks(ctrl.tasks[ctrl.traversedTaskIndex].id, ctrl.tasks[ctrl.traversedTaskIndex + 1].id);
+        var callback = function () {
+            ctrl.traversedTaskIndex++;
+        };
+
+        ctrl.swapTasks(ctrl.tasks[ctrl.traversedTaskIndex].id, ctrl.tasks[ctrl.traversedTaskIndex + 1].id, callback);
     };
 
     ctrl.isMoveTraversedTaskDetailUpEnabled = function () {
@@ -175,11 +187,19 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
     };
 
     ctrl.moveTraversedTaskDetailUp = function () {
-        ctrl.swapTasks(ctrl.taskWorkedOn.details[ctrl.traversedTaskDetailIndex].id, ctrl.taskWorkedOn.details[ctrl.traversedTaskDetailIndex - 1].id);
+        var callback = function () {
+            ctrl.traversedTaskDetailIndex--;
+        };
+
+        ctrl.swapTasks(ctrl.taskWorkedOn.details[ctrl.traversedTaskDetailIndex].id, ctrl.taskWorkedOn.details[ctrl.traversedTaskDetailIndex - 1].id, callback);
     };
 
     ctrl.moveTraversedTaskDetailDown = function () {
-        ctrl.swapTasks(ctrl.taskWorkedOn.details[ctrl.traversedTaskDetailIndex].id, ctrl.taskWorkedOn.details[ctrl.traversedTaskDetailIndex + 1].id);
+        var callback = function () {
+            ctrl.traversedTaskDetailIndex++;
+        };
+
+        ctrl.swapTasks(ctrl.taskWorkedOn.details[ctrl.traversedTaskDetailIndex].id, ctrl.taskWorkedOn.details[ctrl.traversedTaskDetailIndex + 1].id, callback);
     };
 
     ctrl.selectTask = function (task) {
@@ -423,12 +443,8 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
         if (!ctrl.minimized) {
             if (ctrl.canMoveTaskWithHotkeys() && ctrl.isMoveTraversedTaskUpEnabled()) {
                 ctrl.moveTraversedTaskUp();
-
-                ctrl.traversedTaskIndex--;
             } else if (ctrl.canMoveTaskDetailWithHotkeys() && ctrl.isMoveTraversedTaskDetailUpEnabled()) {
                 ctrl.moveTraversedTaskDetailUp();
-
-                ctrl.traversedTaskDetailIndex--;
             }
         }
     };
@@ -441,12 +457,8 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
         if (!ctrl.minimized) {
             if (ctrl.canMoveTaskWithHotkeys() && ctrl.isMoveTraversedTaskDownEnabled()) {
                 ctrl.moveTraversedTaskDown();
-
-                ctrl.traversedTaskIndex++;
             } else if (ctrl.canMoveTaskDetailWithHotkeys() && ctrl.isMoveTraversedTaskDetailDownEnabled()) {
                 ctrl.moveTraversedTaskDetailDown();
-
-                ctrl.traversedTaskDetailIndex++;
             }
         }
     };
