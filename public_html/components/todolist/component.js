@@ -20,7 +20,7 @@ function Controller($hotkey) {
                 if (!ctrl.minimized) {
                     if (hotkey === "ENTER" && ctrl.error !== null) {
                         ctrl.error = null;
-                    } else {
+                    } else if (ctrl.error === null) {
                         if (!ctrl.selectedProject) {
                             ctrl.processHotkeyProjectsList(hotkey);
                         } else {
