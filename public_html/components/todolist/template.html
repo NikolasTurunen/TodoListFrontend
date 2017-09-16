@@ -15,5 +15,7 @@
             process-hotkey="$ctrl.processHotkeyProjectsList"></projects-list>
     </div>
 
-    <error-dialog status="$ctrl.error" error="$ctrl.error"></error-dialog>
+    <div ng-if="!$ctrl.minimized">
+        <error-dialog status="$ctrl.error" error="$ctrl.error"></error-dialog>
+    </div>
 </div>
