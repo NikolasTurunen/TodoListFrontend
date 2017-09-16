@@ -57,8 +57,11 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
 
             ctrl.selectTaskById(selectedTaskId, ctrl.tasks);
             ctrl.setTaskWorkedOnById(taskWorkedOnId, ctrl.tasks);
+
+            ctrl.loadingTasksError = false;
         }, function (error) {
             ctrl.error = ErrorObjectBuilder.build(error, "Failed to get tasks");
+            ctrl.loadingTasksError = ctrl.error;
 
             ctrl.loadingTasks = false;
         });

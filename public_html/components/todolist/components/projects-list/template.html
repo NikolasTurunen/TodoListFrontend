@@ -28,6 +28,8 @@
             </div>
         </div>
 
+        <div ng-if="$ctrl.loadingProjectsError" class="error">{{$ctrl.loadingProjectsError.clientMessage}}</div>
+
         <!-- Create project dialog -->
         <action-cancel-dialog 
             status="$ctrl.Dialog.isDialogOpen($ctrl.Dialog.DIALOG.CREATE_PROJECT)" 

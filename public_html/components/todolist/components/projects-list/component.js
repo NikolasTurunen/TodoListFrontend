@@ -20,8 +20,10 @@ function Controller(ProjectsService, Dialog, TabTraverseHelper, ErrorObjectBuild
         ProjectsService.get.query(function (data) {
             ctrl.projects = data;
             ctrl.loadingProjects = false;
+            ctrl.loadingProjectsError = false;
         }, function (error) {
             ctrl.error = ErrorObjectBuilder.build(error, "Failed to get projects");
+            ctrl.loadingProjectsError = ctrl.error;
 
             ctrl.projects = null;
             ctrl.loadingProjects = false;

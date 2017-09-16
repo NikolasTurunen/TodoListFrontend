@@ -32,6 +32,8 @@
             </div>
         </div>
 
+        <div ng-if="$ctrl.loadingTasksError" class="error">{{$ctrl.loadingTasksError.clientMessage}}</div>
+
         <!-- Control task dialog -->
         <action-list-dialog
             status="$ctrl.Dialog.isDialogOpen($ctrl.Dialog.DIALOG.CONTROL_TASK)"
