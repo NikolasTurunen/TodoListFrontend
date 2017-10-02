@@ -2,16 +2,13 @@
     <div ng-if="!$ctrl.minimized">
         <div class="todolist-title-row">
             <div class="todolist-title-text">Projects</div>
+            <div class="todolist-title-loading" ng-if="$ctrl.loadingProjects">Loading...</div>
         </div>
     </div>
 </div>
 
 <div class="todolist-content">
     <div ng-if="!$ctrl.minimized">
-        <div ng-if="$ctrl.loadingProjects">
-            Loading...
-        </div>
-
         <div ng-repeat="project in $ctrl.projects" class="w100">
             <div ng-click="$ctrl.selectProject(project); $ctrl.Dialog.closeDialog();" class="todolist-project" ng-class="{'todolist-project-traversed': $ctrl.traversedProjectIndex === $index}">
                 <div class="todolist-project-name">{{project.name}}</div>

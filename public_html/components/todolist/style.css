@@ -45,6 +45,28 @@
     float: left;
 }
 
+.todolist-title-row {
+    margin-top: 6px;
+    height: 28px;
+    background-color: #747474;
+    width: 100%;
+    float: left;
+}
+
+.todolist-title-text {
+    margin-top: 2px;
+    margin-left: 20px;
+    font-size: 20px;
+    float: left;
+}
+
+.todolist-title-loading {
+    margin-top: 4px;
+    margin-left: 200px;
+    font-size: 18px;
+    float: left;
+}
+
 .todolist-footer {
     padding-top: 8px;
     height: 30px;

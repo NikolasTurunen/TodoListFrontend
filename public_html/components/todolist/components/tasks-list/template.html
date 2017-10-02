@@ -2,6 +2,7 @@
     <div ng-if="!$ctrl.minimized">
         <div class="todolist-title-row">
             <div class="todolist-title-text">Project: {{$ctrl.selectedProject.name}}</div>
+            <div class="todolist-title-loading" ng-if="$ctrl.loadingTasks">Loading...</div>
         </div>
     </div>
 </div>
@@ -9,10 +10,6 @@
 <div class="todolist-content">
     <div ng-if="!$ctrl.minimized">
         <div class="todolist-tasks selectable">
-            <div ng-if="$ctrl.loadingTasks">
-                Loading...
-            </div>
-
             <div ng-repeat="task in $ctrl.tasks" class="todolist-task" 
                  ng-class="{'todolist-task-selected': $ctrl.isTaskSelected(task, $index), 'todolist-task-grayed': $ctrl.taskWorkedOn && !$ctrl.isTaskWorkedOn(task)}">
                 <div class="w100">
