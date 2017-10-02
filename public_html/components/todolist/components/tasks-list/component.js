@@ -116,6 +116,9 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
 
     ctrl.removeTask = function (taskId) {
         TasksService.remove.query({taskId: taskId}, {}, function (data) {
+            if (ctrl.taskWorkedOn.id === taskId) {
+                ctrl.taskWorkedOn = null;
+            }
             Dialog.closeDialog();
             ctrl.getTasks(ctrl.selectedProject.id);
         }, function (error) {
