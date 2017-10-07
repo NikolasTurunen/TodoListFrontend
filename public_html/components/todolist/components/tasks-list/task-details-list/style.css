@@ -18,7 +18,15 @@
 }
 
 .todolist-task-detail-grayed {
-    color: #848484 !important;
+    color: #848484;
+}
+
+.todolist-task-detail-completed {
+    color: #06ce00;
+}
+
+.todolist-task-detail-grayed-completed {
+    color: #527b5b !important;
 }
 
 .todolist-task-detail-dash {

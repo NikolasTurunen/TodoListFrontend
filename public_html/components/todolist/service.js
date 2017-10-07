@@ -68,6 +68,16 @@ angular.module("app").factory("TasksService", ["$resource", "$location",
                 query: {
                     method: "POST"
                 }
+            }),
+            complete: $resource(url + "/complete", {}, {
+                query: {
+                    method: "POST"
+                }
+            }),
+            uncomplete: $resource(url + "/decomplete", {}, {
+                query: {
+                    method: "POST"
+                }
             })
         };
     }

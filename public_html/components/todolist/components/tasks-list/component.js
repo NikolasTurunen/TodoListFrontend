@@ -126,6 +126,24 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
         });
     };
 
+    ctrl.completeTask = function (taskId) {
+        TasksService.complete.query({taskId: taskId}, {}, function (data) {
+            Dialog.closeDialog();
+            ctrl.getTasks(ctrl.selectedProject.id);
+        }, function (error) {
+            ctrl.error = ErrorObjectBuilder.build(error, "Failed to complete task");
+        });
+    };
+
+    ctrl.uncompleteTask = function (taskId) {
+        TasksService.uncomplete.query({taskId: taskId}, {}, function (data) {
+            Dialog.closeDialog();
+            ctrl.getTasks(ctrl.selectedProject.id);
+        }, function (error) {
+            ctrl.error = ErrorObjectBuilder.build(error, "Failed to uncomplete task");
+        });
+    };
+
     ctrl.findTaskById = function (taskId, tasks) {
         for (var i = 0; i < tasks.length; i++) {
             var task = tasks[i];
@@ -255,6 +273,22 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
         Dialog.openDialog(Dialog.DIALOG.EDIT_TASK);
     };
 
+    ctrl.isSelectedTaskCompleted = function () {
+        return ctrl.selectedTask.completed;
+    };
+
+    ctrl.isSelectedTaskNotCompleted = function () {
+        return !ctrl.isSelectedTaskCompleted();
+    };
+
+    ctrl.completeSelectedTask = function () {
+        ctrl.completeTask(ctrl.selectedTask.id);
+    };
+
+    ctrl.uncompleteSelectedTask = function () {
+        ctrl.uncompleteTask(ctrl.selectedTask.id);
+    };
+
     ctrl.controlTaskActions = [
         {text: 'Work on', action: ctrl.selectTaskToWorkOn, hidden: ctrl.isSelectedTaskBeingWorkedOn},
         {text: 'Stop working on', action: ctrl.resetTaskWorkedOn, hidden: ctrl.isSelectedTaskNotBeingWorkedOn},
@@ -262,11 +296,17 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
         {text: 'Edit', action: ctrl.editTaskAction.bind(null)},
         {text: 'Move up', action: ctrl.moveSelectedTaskUp, enabled: ctrl.isMoveSelectedTaskUpEnabled, hidden: ctrl.isSelectedTaskBeingWorkedOn},
         {text: 'Move down', action: ctrl.moveSelectedTaskDown, enabled: ctrl.isMoveSelectedTaskDownEnabled, hidden: ctrl.isSelectedTaskBeingWorkedOn},
+        {text: 'Complete', action: ctrl.completeSelectedTask, hidden: ctrl.isSelectedTaskCompleted},
+        {text: 'Uncomplete', action: ctrl.uncompleteSelectedTask, hidden: ctrl.isSelectedTaskNotCompleted},
         {text: 'Remove', action: Dialog.openDialog.bind(null, Dialog.DIALOG.REMOVE_TASK)}
     ];
 
     ctrl.isTaskWorkedOn = function (task) {
         return task === ctrl.taskWorkedOn;
+    };
+
+    ctrl.isTaskCompleted = function (task) {
+        return task.completed;
     };
 
     ctrl.openControlTaskDialog = function (task) {
@@ -304,6 +344,10 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
         return (detail === ctrl.selectedTask && ctrl.isTaskBeingControlled())
                 || (ctrl.traversedTaskDetailIndex === index && ctrl.taskWorkedOn && detail.parentTaskId === ctrl.taskWorkedOn.id && !ctrl.isTaskBeingControlled())
                 || detail === ctrl.taskWorkedOn;
+    };
+
+    ctrl.isTaskGrayed = function (task) {
+        return ctrl.taskWorkedOn && !ctrl.isTaskWorkedOn(task);
     };
 
     ctrl.isTaskBeingControlled = function () {

@@ -3,7 +3,11 @@ function Controller($attrs) {
     ctrl.attributes = $attrs;
 
     ctrl.isGrayed = function (detail) {
-        return ctrl.taskWorkedOn && !ctrl.isTaskWorkedOn(detail);
+        return !ctrl.isAnyParentTaskWorkedOn && ctrl.taskWorkedOn && !ctrl.isTaskWorkedOn(detail);
+    };
+
+    ctrl.isCompleted = function (detail) {
+        return ctrl.isAnyParentTaskCompleted || detail.completed;
     };
 }
 
@@ -17,6 +21,7 @@ angular.module("app").component("taskDetailsList", {
         isTaskDetailSelected: "<",
         isTaskWorkedOn: "<",
         isAnyParentTaskWorkedOn: "<",
+        isAnyParentTaskCompleted: "<",
         openControlTaskDetailDialog: "<"
     }
 });

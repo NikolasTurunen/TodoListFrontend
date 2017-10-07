@@ -11,7 +11,10 @@
     <div ng-if="!$ctrl.minimized">
         <div class="todolist-tasks selectable">
             <div ng-repeat="task in $ctrl.tasks" class="todolist-task" 
-                 ng-class="{'todolist-task-selected': $ctrl.isTaskSelected(task, $index), 'todolist-task-grayed': $ctrl.taskWorkedOn && !$ctrl.isTaskWorkedOn(task)}">
+                 ng-class="{'todolist-task-selected': $ctrl.isTaskSelected(task, $index)
+                 , 'todolist-task-grayed': $ctrl.isTaskGrayed(task)
+                 , 'todolist-task-completed': $ctrl.isTaskCompleted(task)
+                 , 'todolist-task-grayed-completed': $ctrl.isTaskGrayed(task) && $ctrl.isTaskCompleted(task)}">
                 <div class="w100">
                     <div ng-click="$ctrl.openControlTaskDialog(task)" class="todolist-task-controls" ng-class="{'todolist-task-controls-disabled': $ctrl.taskWorkedOn && !$ctrl.isTaskWorkedOn(task)}"></div>
                     <div class="todolist-task-text">{{task.taskString}}</div>
@@ -24,6 +27,7 @@
                         is-task-detail-selected="$ctrl.isTaskDetailSelected" 
                         is-task-worked-on="$ctrl.isTaskWorkedOn"
                         is-any-parent-task-worked-on="$ctrl.isTaskWorkedOn(task)"
+                        is-any-parent-task-completed="$ctrl.isTaskCompleted(task)"
                         open-control-task-detail-dialog="$ctrl.openControlTaskDetailDialog"></task-details-list>
                 </div>
             </div>
