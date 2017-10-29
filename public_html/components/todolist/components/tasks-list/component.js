@@ -37,34 +37,50 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
         ctrl.getTasks(ctrl.selectedProject.id);
     });
 
+    ctrl.serviceCallsBlocked = false;
+
+    ctrl.blockServiceCalls = function () {
+        ctrl.serviceCallsBlocked = true;
+    };
+
+    ctrl.unblockServiceCalls = function () {
+        ctrl.serviceCallsBlocked = false;
+    };
+
     ctrl.getTasks = function (projectId) {
-        ctrl.loadingTasks = true;
+        if (!ctrl.serviceCallsBlocked) {
+            ctrl.blockServiceCalls();
 
-        var selectedTaskId;
-        var taskWorkedOnId;
+            ctrl.loadingTasks = true;
 
-        if (ctrl.selectedTask) {
-            selectedTaskId = ctrl.selectedTask.id;
+            var selectedTaskId;
+            var taskWorkedOnId;
+
+            if (ctrl.selectedTask) {
+                selectedTaskId = ctrl.selectedTask.id;
+            }
+
+            if (ctrl.taskWorkedOn) {
+                taskWorkedOnId = ctrl.taskWorkedOn.id;
+            }
+
+            TasksService.get.query({projectId: projectId}, {}, function (data) {
+                ctrl.tasks = data;
+                ctrl.loadingTasks = false;
+
+                ctrl.selectTaskById(selectedTaskId, ctrl.tasks);
+                ctrl.setTaskWorkedOnById(taskWorkedOnId, ctrl.tasks);
+
+                ctrl.loadingTasksError = false;
+                ctrl.unblockServiceCalls();
+            }, function (error) {
+                ctrl.error = ErrorObjectBuilder.build(error, "Failed to get tasks");
+                ctrl.loadingTasksError = ctrl.error;
+
+                ctrl.loadingTasks = false;
+                ctrl.unblockServiceCalls();
+            });
         }
-
-        if (ctrl.taskWorkedOn) {
-            taskWorkedOnId = ctrl.taskWorkedOn.id;
-        }
-
-        TasksService.get.query({projectId: projectId}, {}, function (data) {
-            ctrl.tasks = data;
-            ctrl.loadingTasks = false;
-
-            ctrl.selectTaskById(selectedTaskId, ctrl.tasks);
-            ctrl.setTaskWorkedOnById(taskWorkedOnId, ctrl.tasks);
-
-            ctrl.loadingTasksError = false;
-        }, function (error) {
-            ctrl.error = ErrorObjectBuilder.build(error, "Failed to get tasks");
-            ctrl.loadingTasksError = ctrl.error;
-
-            ctrl.loadingTasks = false;
-        });
     };
 
     ctrl.resetTasks = function () {
@@ -73,75 +89,124 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
     };
 
     ctrl.createTask = function (projectId, task) {
-        TasksService.create.query({projectId: projectId, task: task}, {}, function (data) {
-            Dialog.closeDialog();
-            ctrl.dialogInputText = null;
-            ctrl.getTasks(ctrl.selectedProject.id);
-        }, function (error) {
-            ctrl.error = ErrorObjectBuilder.build(error, "Failed to create task");
-        });
+        if (!ctrl.serviceCallsBlocked) {
+            ctrl.blockServiceCalls();
+
+            TasksService.create.query({projectId: projectId, task: task}, {}, function (data) {
+                Dialog.closeDialog();
+                ctrl.dialogInputText = null;
+                ctrl.unblockServiceCalls();
+
+                ctrl.getTasks(ctrl.selectedProject.id);
+            }, function (error) {
+                ctrl.error = ErrorObjectBuilder.build(error, "Failed to create task");
+                ctrl.unblockServiceCalls();
+            });
+        }
     };
 
     ctrl.createTaskDetail = function (taskId, detail) {
-        TasksService.createdetail.query({taskId: taskId, detail: detail}, {}, function (data) {
-            Dialog.closeDialog();
-            ctrl.dialogInputText = null;
-            ctrl.getTasks(ctrl.selectedProject.id);
-        }, function (error) {
-            ctrl.error = ErrorObjectBuilder.build(error, "Failed to create task detail");
-        });
+        if (!ctrl.serviceCallsBlocked) {
+            ctrl.blockServiceCalls();
+
+            TasksService.createdetail.query({taskId: taskId, detail: detail}, {}, function (data) {
+                Dialog.closeDialog();
+                ctrl.dialogInputText = null;
+                ctrl.unblockServiceCalls();
+
+                ctrl.getTasks(ctrl.selectedProject.id);
+            }, function (error) {
+                ctrl.error = ErrorObjectBuilder.build(error, "Failed to create task detail");
+                ctrl.unblockServiceCalls();
+            });
+        }
     };
 
     ctrl.editTask = function (taskId, newTask) {
-        TasksService.edit.query({taskId: taskId, newTask: newTask}, {}, function (data) {
-            Dialog.closeDialog();
-            ctrl.getTasks(ctrl.selectedProject.id);
-        }, function (error) {
-            ctrl.error = ErrorObjectBuilder.build(error, "Failed to edit task");
-        });
+        if (!ctrl.serviceCallsBlocked) {
+            ctrl.blockServiceCalls();
+
+            TasksService.edit.query({taskId: taskId, newTask: newTask}, {}, function (data) {
+                Dialog.closeDialog();
+                ctrl.unblockServiceCalls();
+
+                ctrl.getTasks(ctrl.selectedProject.id);
+            }, function (error) {
+                ctrl.error = ErrorObjectBuilder.build(error, "Failed to edit task");
+                ctrl.unblockServiceCalls();
+            });
+        }
     };
 
     ctrl.swapTasks = function (taskId, taskId2, callback) {
-        TasksService.swappositions.query({taskId: taskId, taskId2: taskId2}, {}, function (data) {
-            Dialog.closeDialog();
-            ctrl.getTasks(ctrl.selectedProject.id);
+        if (!ctrl.serviceCallsBlocked) {
+            ctrl.blockServiceCalls();
 
-            if (callback) {
-                callback();
-            }
-        }, function (error) {
-            ctrl.error = ErrorObjectBuilder.build(error, "Failed to swap tasks");
-        });
+            TasksService.swappositions.query({taskId: taskId, taskId2: taskId2}, {}, function (data) {
+                Dialog.closeDialog();
+                ctrl.unblockServiceCalls();
+
+                ctrl.getTasks(ctrl.selectedProject.id);
+
+                if (callback) {
+                    callback();
+                }
+            }, function (error) {
+                ctrl.error = ErrorObjectBuilder.build(error, "Failed to swap tasks");
+                ctrl.unblockServiceCalls();
+            });
+        }
     };
 
     ctrl.removeTask = function (taskId) {
-        TasksService.remove.query({taskId: taskId}, {}, function (data) {
-            if (ctrl.taskWorkedOn && ctrl.taskWorkedOn.id === taskId) {
-                ctrl.taskWorkedOn = null;
-            }
-            Dialog.closeDialog();
-            ctrl.getTasks(ctrl.selectedProject.id);
-        }, function (error) {
-            ctrl.error = ErrorObjectBuilder.build(error, "Failed to remove task");
-        });
+        if (!ctrl.serviceCallsBlocked) {
+            ctrl.blockServiceCalls();
+
+            TasksService.remove.query({taskId: taskId}, {}, function (data) {
+                if (ctrl.taskWorkedOn && ctrl.taskWorkedOn.id === taskId) {
+                    ctrl.taskWorkedOn = null;
+                }
+                Dialog.closeDialog();
+                ctrl.unblockServiceCalls();
+
+                ctrl.getTasks(ctrl.selectedProject.id);
+            }, function (error) {
+                ctrl.error = ErrorObjectBuilder.build(error, "Failed to remove task");
+                ctrl.unblockServiceCalls();
+            });
+        }
     };
 
     ctrl.completeTask = function (taskId) {
-        TasksService.complete.query({taskId: taskId}, {}, function (data) {
-            Dialog.closeDialog();
-            ctrl.getTasks(ctrl.selectedProject.id);
-        }, function (error) {
-            ctrl.error = ErrorObjectBuilder.build(error, "Failed to complete task");
-        });
+        if (!ctrl.serviceCallsBlocked) {
+            ctrl.blockServiceCalls();
+
+            TasksService.complete.query({taskId: taskId}, {}, function (data) {
+                Dialog.closeDialog();
+                ctrl.unblockServiceCalls();
+
+                ctrl.getTasks(ctrl.selectedProject.id);
+            }, function (error) {
+                ctrl.error = ErrorObjectBuilder.build(error, "Failed to complete task");
+                ctrl.unblockServiceCalls();
+            });
+        }
     };
 
     ctrl.uncompleteTask = function (taskId) {
-        TasksService.uncomplete.query({taskId: taskId}, {}, function (data) {
-            Dialog.closeDialog();
-            ctrl.getTasks(ctrl.selectedProject.id);
-        }, function (error) {
-            ctrl.error = ErrorObjectBuilder.build(error, "Failed to uncomplete task");
-        });
+        if (!ctrl.serviceCallsBlocked) {
+            ctrl.blockServiceCalls();
+
+            TasksService.uncomplete.query({taskId: taskId}, {}, function (data) {
+                Dialog.closeDialog();
+                ctrl.unblockServiceCalls();
+
+                ctrl.getTasks(ctrl.selectedProject.id);
+            }, function (error) {
+                ctrl.error = ErrorObjectBuilder.build(error, "Failed to uncomplete task");
+                ctrl.unblockServiceCalls();
+            });
+        }
     };
 
     ctrl.findTaskById = function (taskId, tasks) {

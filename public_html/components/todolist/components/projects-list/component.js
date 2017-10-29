@@ -15,62 +15,102 @@ function Controller(ProjectsService, Dialog, TabTraverseHelper, ErrorObjectBuild
         ctrl.traversedProjectIndex = null;
     };
 
-    ctrl.getProjects = function () {
-        ctrl.loadingProjects = true;
-        ProjectsService.get.query(function (data) {
-            ctrl.projects = data;
-            ctrl.loadingProjects = false;
-            ctrl.loadingProjectsError = false;
-        }, function (error) {
-            ctrl.error = ErrorObjectBuilder.build(error, "Failed to get projects");
-            ctrl.loadingProjectsError = ctrl.error;
+    ctrl.serviceCallsBlocked = false;
 
-            ctrl.projects = null;
-            ctrl.loadingProjects = false;
-        });
+    ctrl.blockServiceCalls = function () {
+        ctrl.serviceCallsBlocked = true;
+    };
+
+    ctrl.unblockServiceCalls = function () {
+        ctrl.serviceCallsBlocked = false;
+    };
+
+    ctrl.getProjects = function () {
+        if (!ctrl.serviceCallsBlocked) {
+            ctrl.blockServiceCalls();
+
+            ctrl.loadingProjects = true;
+            ProjectsService.get.query(function (data) {
+                ctrl.projects = data;
+                ctrl.loadingProjects = false;
+                ctrl.loadingProjectsError = false;
+
+                ctrl.unblockServiceCalls();
+            }, function (error) {
+                ctrl.error = ErrorObjectBuilder.build(error, "Failed to get projects");
+                ctrl.loadingProjectsError = ctrl.error;
+
+                ctrl.projects = null;
+                ctrl.loadingProjects = false;
+
+                ctrl.unblockServiceCalls();
+            });
+        }
     };
     ctrl.getProjects();
 
     ctrl.createProject = function (projectName) {
-        ProjectsService.create.query({name: projectName}, {}, function (data) {
-            Dialog.closeDialog();
-            ctrl.dialogInputText = null;
-            ctrl.getProjects();
-        }, function (error) {
-            ctrl.error = ErrorObjectBuilder.build(error, "Failed to create project");
-        });
+        if (!ctrl.serviceCallsBlocked) {
+            ctrl.blockServiceCalls();
+
+            ProjectsService.create.query({name: projectName}, {}, function (data) {
+                Dialog.closeDialog();
+                ctrl.dialogInputText = null;
+                ctrl.unblockServiceCalls();
+
+                ctrl.getProjects();
+            }, function (error) {
+                ctrl.error = ErrorObjectBuilder.build(error, "Failed to create project");
+                ctrl.unblockServiceCalls();
+            });
+        }
     };
 
     ctrl.swapProjects = function (projectId1, projectId2, callback) {
-        ProjectsService.swappositions.query({projectId: projectId1, projectId2: projectId2}, {}, function (data) {
-            Dialog.closeDialog();
-            ctrl.getProjects();
+        if (!ctrl.serviceCallsBlocked) {
+            ctrl.blockServiceCalls();
 
-            if (callback) {
-                callback();
-            }
-        }, function (error) {
-            ctrl.error = ErrorObjectBuilder.build(error, "Failed to swap projects");
-        });
+            ProjectsService.swappositions.query({projectId: projectId1, projectId2: projectId2}, {}, function (data) {
+                Dialog.closeDialog();
+                ctrl.unblockServiceCalls();
+
+                ctrl.getProjects();
+
+                if (callback) {
+                    callback();
+                }
+            }, function (error) {
+                ctrl.error = ErrorObjectBuilder.build(error, "Failed to swap projects");
+                ctrl.unblockServiceCalls();
+            });
+        }
     };
 
     ctrl.renameProject = function (projectId, newName) {
-        ProjectsService.rename.query({projectId: projectId, newName: newName}, {}, function (data) {
-            Dialog.closeDialog();
-            ctrl.dialogInputText = null;
-            ctrl.getProjects();
-        }, function (error) {
-            ctrl.error = ErrorObjectBuilder.build(error, "Failed to rename project");
-        });
+        if (!ctrl.serviceCallsBlocked) {
+            ctrl.blockServiceCalls();
+
+            ProjectsService.rename.query({projectId: projectId, newName: newName}, {}, function (data) {
+                Dialog.closeDialog();
+                ctrl.dialogInputText = null;
+                ctrl.getProjects();
+            }, function (error) {
+                ctrl.error = ErrorObjectBuilder.build(error, "Failed to rename project");
+            });
+        }
     };
 
     ctrl.removeProject = function (projectId) {
-        ProjectsService.remove.query({projectId: projectId}, {}, function (data) {
-            Dialog.closeDialog();
-            ctrl.getProjects();
-        }, function (error) {
-            ctrl.error = ErrorObjectBuilder.build(error, "Failed to remove project");
-        });
+        if (!ctrl.serviceCallsBlocked) {
+            ctrl.blockServiceCalls();
+
+            ProjectsService.remove.query({projectId: projectId}, {}, function (data) {
+                Dialog.closeDialog();
+                ctrl.getProjects();
+            }, function (error) {
+                ctrl.error = ErrorObjectBuilder.build(error, "Failed to remove project");
+            });
+        }
     };
 
     ctrl.isActive = function () {
