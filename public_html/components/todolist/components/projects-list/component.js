@@ -93,9 +93,12 @@ function Controller(ProjectsService, Dialog, TabTraverseHelper, ErrorObjectBuild
             ProjectsService.rename.query({projectId: projectId, newName: newName}, {}, function (data) {
                 Dialog.closeDialog();
                 ctrl.dialogInputText = null;
+                ctrl.unblockServiceCalls();
+
                 ctrl.getProjects();
             }, function (error) {
                 ctrl.error = ErrorObjectBuilder.build(error, "Failed to rename project");
+                ctrl.unblockServiceCalls();
             });
         }
     };
@@ -106,9 +109,12 @@ function Controller(ProjectsService, Dialog, TabTraverseHelper, ErrorObjectBuild
 
             ProjectsService.remove.query({projectId: projectId}, {}, function (data) {
                 Dialog.closeDialog();
+                ctrl.unblockServiceCalls();
+
                 ctrl.getProjects();
             }, function (error) {
                 ctrl.error = ErrorObjectBuilder.build(error, "Failed to remove project");
+                ctrl.unblockServiceCalls();
             });
         }
     };
