@@ -2,8 +2,6 @@
     <div ng-if="!$ctrl.minimized">
         <div class="todolist-title-row">
             <div class="todolist-title-text">Project: {{$ctrl.selectedProject.name}}</div>
-            <div class="todolist-title-loading" ng-if="$ctrl.serviceCallsBlocked && !$ctrl.loadingTasks">A change is being processed, please wait...</div>
-            <div class="todolist-title-loading" ng-if="$ctrl.loadingTasks">Loading...</div>
         </div>
     </div>
 </div>
@@ -92,6 +90,14 @@
             cancel-action="$ctrl.Dialog.closeDialog()" 
             wide
             process-hotkey="$ctrl.processHotkeyCreateTaskDialog"></action-cancel-dialog>
+
+        <div class="todolist-content-info-row" ng-if="$ctrl.loadingTasks">
+            <div class="todolist-content-info-row-text" ng-if="$ctrl.loadingTasks">Loading...</div>
+        </div>
+
+        <div class="todolist-content-info-row" ng-if="$ctrl.serviceCallsBlocked && !$ctrl.loadingTasks">
+            <div class="todolist-content-info-row-text">A change is being processed, please wait...</div>
+        </div>
     </div>
 </div>
 
