@@ -34,6 +34,7 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
 
     $scope.$watch(ctrl.selectedProject, function (newValue, oldValue) {
         ctrl.resetTasks();
+        ctrl.loadingTasks = true;
         ctrl.getTasks(ctrl.selectedProject.id);
     });
 
@@ -50,8 +51,6 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
     ctrl.getTasks = function (projectId) {
         if (!ctrl.serviceCallsBlocked) {
             ctrl.blockServiceCalls();
-
-            ctrl.loadingTasks = true;
 
             var selectedTaskId;
             var taskWorkedOnId;

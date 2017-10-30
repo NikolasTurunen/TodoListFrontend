@@ -2,6 +2,7 @@
     <div ng-if="!$ctrl.minimized">
         <div class="todolist-title-row">
             <div class="todolist-title-text">Project: {{$ctrl.selectedProject.name}}</div>
+            <div class="todolist-title-loading" ng-if="$ctrl.serviceCallsBlocked && !$ctrl.loadingTasks">A change is being processed, please wait...</div>
             <div class="todolist-title-loading" ng-if="$ctrl.loadingTasks">Loading...</div>
         </div>
     </div>
