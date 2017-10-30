@@ -29,7 +29,6 @@ function Controller(ProjectsService, Dialog, TabTraverseHelper, ErrorObjectBuild
         if (!ctrl.serviceCallsBlocked) {
             ctrl.blockServiceCalls();
 
-            ctrl.loadingProjects = true;
             ProjectsService.get.query(function (data) {
                 ctrl.projects = data;
                 ctrl.loadingProjects = false;
@@ -47,6 +46,7 @@ function Controller(ProjectsService, Dialog, TabTraverseHelper, ErrorObjectBuild
             });
         }
     };
+    ctrl.loadingProjects = true;
     ctrl.getProjects();
 
     ctrl.createProject = function (projectName) {
