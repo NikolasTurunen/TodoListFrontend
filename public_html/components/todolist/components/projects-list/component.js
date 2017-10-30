@@ -25,7 +25,7 @@ function Controller(ProjectsService, Dialog, TabTraverseHelper, ErrorObjectBuild
         ctrl.serviceCallsBlocked = false;
     };
 
-    ctrl.getProjects = function () {
+    ctrl.getProjects = function (callback) {
         if (!ctrl.serviceCallsBlocked) {
             ctrl.blockServiceCalls();
 
@@ -33,6 +33,10 @@ function Controller(ProjectsService, Dialog, TabTraverseHelper, ErrorObjectBuild
                 ctrl.projects = data;
                 ctrl.loadingProjects = false;
                 ctrl.loadingProjectsError = false;
+
+                if (callback) {
+                    callback();
+                }
 
                 ctrl.unblockServiceCalls();
             }, function (error) {
@@ -74,11 +78,7 @@ function Controller(ProjectsService, Dialog, TabTraverseHelper, ErrorObjectBuild
                 Dialog.closeDialog();
                 ctrl.unblockServiceCalls();
 
-                ctrl.getProjects();
-
-                if (callback) {
-                    callback();
-                }
+                ctrl.getProjects(callback);
             }, function (error) {
                 ctrl.error = ErrorObjectBuilder.build(error, "Failed to swap projects");
                 ctrl.unblockServiceCalls();

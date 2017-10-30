@@ -48,7 +48,7 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
         ctrl.serviceCallsBlocked = false;
     };
 
-    ctrl.getTasks = function (projectId) {
+    ctrl.getTasks = function (projectId, callback) {
         if (!ctrl.serviceCallsBlocked) {
             ctrl.blockServiceCalls();
 
@@ -71,6 +71,11 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
                 ctrl.setTaskWorkedOnById(taskWorkedOnId, ctrl.tasks);
 
                 ctrl.loadingTasksError = false;
+
+                if (callback) {
+                    callback();
+                }
+
                 ctrl.unblockServiceCalls();
             }, function (error) {
                 ctrl.error = ErrorObjectBuilder.build(error, "Failed to get tasks");
@@ -145,11 +150,7 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
                 Dialog.closeDialog();
                 ctrl.unblockServiceCalls();
 
-                ctrl.getTasks(ctrl.selectedProject.id);
-
-                if (callback) {
-                    callback();
-                }
+                ctrl.getTasks(ctrl.selectedProject.id, callback);
             }, function (error) {
                 ctrl.error = ErrorObjectBuilder.build(error, "Failed to swap tasks");
                 ctrl.unblockServiceCalls();
