@@ -137,7 +137,9 @@ function Controller(ProjectsService, Dialog, TabTraverseHelper, ErrorObjectBuild
 
     ctrl.moveProjectUp = function (project, index) {
         var callback = function () {
-            ctrl.traversedProjectIndex--;
+            if (ctrl.traversedProjectIndex !== null) {
+                ctrl.traversedProjectIndex--;
+            }
         };
 
         ctrl.swapProjects(project.id, ctrl.projects[index - 1].id, callback);
@@ -145,7 +147,9 @@ function Controller(ProjectsService, Dialog, TabTraverseHelper, ErrorObjectBuild
 
     ctrl.moveProjectDown = function (project, index) {
         var callback = function () {
-            ctrl.traversedProjectIndex++;
+            if (ctrl.traversedProjectIndex !== null) {
+                ctrl.traversedProjectIndex++;
+            }
         };
 
         ctrl.swapProjects(project.id, ctrl.projects[index + 1].id, callback);
