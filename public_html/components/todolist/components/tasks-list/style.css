@@ -6,6 +6,7 @@
     width: 100%;
     min-height: 24px;
     margin-bottom: 2px;
+    word-wrap: break-word;
     float: left;
 }
 
@@ -40,7 +41,5 @@
 
 .todolist-task-text {
     margin-top: 1px;
-    width: 80%;
     font-size: 14px;
-    float: left;
 }
