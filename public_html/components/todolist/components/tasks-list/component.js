@@ -313,6 +313,14 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
         ctrl.taskWorkedOn = null;
     };
 
+    ctrl.startOrStopWorkingOnSelectedTask = function () {
+        if (!ctrl.isSelectedTaskBeingWorkedOn()) {
+            ctrl.selectTaskToWorkOn();
+        } else {
+            ctrl.resetTaskWorkedOn();
+        }
+    };
+
     ctrl.isSelectedTaskBeingWorkedOn = function () {
         return ctrl.selectedTask === ctrl.taskWorkedOn;
     };
@@ -436,6 +444,9 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
     ctrl.processDialogSpecificHotkeys = function (key) {
         if (Dialog.isDialogOpen(Dialog.DIALOG.CONTROL_TASK)) {
             switch (key) {
+                case "CTRL":
+                    ctrl.startOrStopWorkingOnSelectedTask();
+                    break;
                 case "UP":
                     if (ctrl.isMoveSelectedTaskUpEnabled() && !ctrl.isSelectedTaskBeingWorkedOn()) {
                         ctrl.moveSelectedTaskUp();
