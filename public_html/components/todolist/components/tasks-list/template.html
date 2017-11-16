@@ -34,14 +34,6 @@
             </div>
 
             <div ng-if="$ctrl.loadingTasksError" class="error">{{$ctrl.loadingTasksError.clientMessage}}</div>
-
-            <div class="todolist-content-info-row" ng-if="$ctrl.loadingTasks">
-                <div class="todolist-content-info-row-text" ng-if="$ctrl.loadingTasks">Loading...</div>
-            </div>
-
-            <div class="todolist-content-info-row" ng-if="$ctrl.serviceCallsBlocked && !$ctrl.loadingTasks">
-                <div class="todolist-content-info-row-text">A change is being processed, please wait...</div>
-            </div>
         </div>
     </div>
 
@@ -116,5 +108,13 @@
             cancel-action="$ctrl.Dialog.closeDialog()" 
             wide
             process-hotkey="$ctrl.processHotkeyCreateTaskDialog"></action-cancel-dialog>
+
+        <div class="todolist-content-info-row" ng-if="$ctrl.loadingTasks">
+            <div class="todolist-content-info-row-text" ng-if="$ctrl.loadingTasks">Loading...</div>
+        </div>
+
+        <div class="todolist-content-info-row" ng-if="$ctrl.serviceCallsBlocked && !$ctrl.loadingTasks">
+            <div class="todolist-content-info-row-text">A change is being processed, please wait...</div>
+        </div>
     </div>
 </div>
