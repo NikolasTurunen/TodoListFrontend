@@ -1,7 +1,7 @@
 function Controller($hotkey) {
     var ctrl = this;
 
-    ctrl.minimized = true;
+    ctrl.minimized = false;
 
     ctrl.selectedProject = null;
 
