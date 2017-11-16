@@ -294,6 +294,10 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
         ctrl.selectedTask = task;
     };
 
+    ctrl.selectTraversedTask = function () {
+        ctrl.selectTask(ctrl.tasks[ctrl.traversedTaskIndex]);
+    };
+
     ctrl.selectTraversedTaskToWorkOn = function () {
         if (!ctrl.taskWorkedOn && ctrl.traversedTaskIndex !== null) {
             ctrl.taskWorkedOn = ctrl.tasks[ctrl.traversedTaskIndex];
@@ -457,6 +461,9 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
                         ctrl.moveSelectedTaskDown();
                     }
                     break;
+                case "DEL":
+                    Dialog.openDialog(Dialog.DIALOG.REMOVE_TASK);
+                    break;
             }
         }
     };
@@ -503,6 +510,9 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
                     break;
                 case "CTRL":
                     ctrl.processHotkeyCtrl();
+                    break;
+                case "DEL":
+                    ctrl.processHotkeyDel();
                     break;
             }
         }
@@ -606,6 +616,15 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
         if (Dialog.isDialogOpen(null)) {
             ctrl.selectTraversedTaskToWorkOn();
         }
+    };
+
+    ctrl.processHotkeyDel = function () {
+        if (!ctrl.isActive()) {
+            return null;
+        }
+
+        ctrl.selectTraversedTask();
+        Dialog.openDialog(Dialog.DIALOG.REMOVE_TASK);
     };
 }
 
