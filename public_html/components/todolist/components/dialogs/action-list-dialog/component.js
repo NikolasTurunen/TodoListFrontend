@@ -1,6 +1,11 @@
-function Controller($attrs, TabTraverseHelper, $hotkey) {
+function Controller($attrs, TabTraverseHelper, $hotkey, Dialog) {
     var ctrl = this;
     ctrl.attributes = $attrs;
+
+    ctrl.executeAction = function (action) {
+        Dialog.closeDialog();
+        action();
+    };
 
     ctrl.cancel = function () {
         ctrl.cancelAction();
@@ -67,7 +72,7 @@ function Controller($attrs, TabTraverseHelper, $hotkey) {
     ctrl.processHotkeyEnter = function () {
         if (ctrl.status) {
             if (ctrl.traversedActionIndex !== null) {
-                ctrl.actions[ctrl.traversedActionIndex].action();
+                ctrl.executeAction(ctrl.actions[ctrl.traversedActionIndex].action);
             }
         }
     };

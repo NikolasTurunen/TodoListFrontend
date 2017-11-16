@@ -1,6 +1,11 @@
-function Controller($attrs) {
+function Controller($attrs, Dialog) {
     var ctrl = this;
     ctrl.attributes = $attrs;
+
+    ctrl.executeAction = function () {
+        Dialog.closeDialog();
+        ctrl.action();
+    };
 
     ctrl.resetInput = function () {
         if (ctrl.textInput !== undefined) {
@@ -34,7 +39,7 @@ function Controller($attrs) {
 
     ctrl.processHotkeyEnter = function () {
         if (ctrl.status) {
-            ctrl.action();
+            ctrl.executeAction();
         }
     };
 

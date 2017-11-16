@@ -97,7 +97,6 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
             ctrl.blockServiceCalls();
 
             TasksService.create.query({projectId: projectId, task: task}, {}, function (data) {
-                Dialog.closeDialog();
                 ctrl.dialogInputText = null;
                 ctrl.unblockServiceCalls();
 
@@ -114,7 +113,6 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
             ctrl.blockServiceCalls();
 
             TasksService.createdetail.query({taskId: taskId, detail: detail}, {}, function (data) {
-                Dialog.closeDialog();
                 ctrl.dialogInputText = null;
                 ctrl.unblockServiceCalls();
 
@@ -131,7 +129,6 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
             ctrl.blockServiceCalls();
 
             TasksService.edit.query({taskId: taskId, newTask: newTask}, {}, function (data) {
-                Dialog.closeDialog();
                 ctrl.unblockServiceCalls();
 
                 ctrl.getTasks(ctrl.selectedProject.id);
@@ -147,7 +144,6 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
             ctrl.blockServiceCalls();
 
             TasksService.swappositions.query({taskId: taskId, taskId2: taskId2}, {}, function (data) {
-                Dialog.closeDialog();
                 ctrl.unblockServiceCalls();
 
                 ctrl.getTasks(ctrl.selectedProject.id, callback);
@@ -166,7 +162,6 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
                 if (ctrl.taskWorkedOn && ctrl.taskWorkedOn.id === taskId) {
                     ctrl.taskWorkedOn = null;
                 }
-                Dialog.closeDialog();
                 ctrl.unblockServiceCalls();
 
                 ctrl.getTasks(ctrl.selectedProject.id);
@@ -182,7 +177,6 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
             ctrl.blockServiceCalls();
 
             TasksService.complete.query({taskId: taskId}, {}, function (data) {
-                Dialog.closeDialog();
                 ctrl.unblockServiceCalls();
 
                 ctrl.getTasks(ctrl.selectedProject.id);
@@ -198,7 +192,6 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
             ctrl.blockServiceCalls();
 
             TasksService.uncomplete.query({taskId: taskId}, {}, function (data) {
-                Dialog.closeDialog();
                 ctrl.unblockServiceCalls();
 
                 ctrl.getTasks(ctrl.selectedProject.id);
@@ -314,14 +307,10 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
     ctrl.selectTaskToWorkOn = function () {
         ctrl.taskWorkedOn = ctrl.selectedTask;
         ctrl.traversedTaskDetailIndex = null;
-
-        Dialog.closeDialog();
     };
 
     ctrl.resetTaskWorkedOn = function () {
         ctrl.taskWorkedOn = null;
-
-        Dialog.closeDialog();
     };
 
     ctrl.isSelectedTaskBeingWorkedOn = function () {
@@ -444,6 +433,23 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
         }
     };
 
+    ctrl.processDialogSpecificHotkeys = function (key) {
+        if (Dialog.isDialogOpen(Dialog.DIALOG.CONTROL_TASK)) {
+            switch (key) {
+                case "UP":
+                    if (ctrl.isMoveSelectedTaskUpEnabled() && !ctrl.isSelectedTaskBeingWorkedOn()) {
+                        ctrl.moveSelectedTaskUp();
+                    }
+                    break;
+                case "DOWN":
+                    if (ctrl.isMoveSelectedTaskDownEnabled() && !ctrl.isSelectedTaskBeingWorkedOn()) {
+                        ctrl.moveSelectedTaskDown();
+                    }
+                    break;
+            }
+        }
+    };
+
     ctrl.processHotkeyControlTaskDialog = null;
     ctrl.processHotkeyCreateTaskDetailDialog = null;
     ctrl.processHotkeyCreateTaskDialog = null;
@@ -460,6 +466,9 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
 
     ctrl.processHotkey = function (key) {
         if (!Dialog.isDialogOpen(null)) {
+            console.log("Process dialog hotkey");
+            ctrl.processDialogSpecificHotkeys(key);
+
             ctrl.processHotkeyDialog(key);
         } else {
             switch (key) {
