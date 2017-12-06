@@ -404,6 +404,38 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
         return ctrl.isTaskNotBeingMoved();
     };
 
+    ctrl.isSetAsParentActionEnabled = function () {
+        if (ctrl.taskBeingMoved === ctrl.selectedTask) {
+            return false;
+        }
+
+        if (ctrl.taskBeingMoved.id === ctrl.selectedTask.parentTaskId) {
+            return false;
+        }
+
+        if (ctrl.isTaskLowerInHierarchy(ctrl.taskBeingMoved, ctrl.selectedTask)) {
+            return false;
+        }
+
+        return true;
+    };
+
+    ctrl.isTaskLowerInHierarchy = function (task, taskSearched) {
+        for (var i = 0; i < task.details.length; i++) {
+            var detail = task.details[i];
+
+            if (taskSearched.id === detail.id) {
+                return true;
+            }
+
+            if (ctrl.isTaskLowerInHierarchy(detail, taskSearched)) {
+                return true;
+            }
+        }
+
+        return false;
+    };
+
     ctrl.isCancelMoveActionHidden = function () {
         return ctrl.isTaskNotBeingMoved();
     };
@@ -485,7 +517,7 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
     };
 
     ctrl.controlTaskActions = [
-        {text: 'Set as parent', action: ctrl.setSelectedTaskAsParentOfTaskBeingMoved, hidden: ctrl.isSetAsParentActionHidden},
+        {text: 'Set as parent', action: ctrl.setSelectedTaskAsParentOfTaskBeingMoved, enabled: ctrl.isSetAsParentActionEnabled, hidden: ctrl.isSetAsParentActionHidden},
         {text: 'Cancel move', action: ctrl.resetTaskToBeMoved, hidden: ctrl.isCancelMoveActionHidden},
         {text: 'Work on', action: ctrl.selectTaskToWorkOn, hidden: ctrl.isWorkOnActionHidden},
         {text: 'Stop working on', action: ctrl.resetTaskWorkedOn, hidden: ctrl.isStopWorkingOnActionHidden},
