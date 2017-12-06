@@ -12,7 +12,7 @@ function Controller($attrs) {
 
     ctrl.isBeingMoved = function (detail) {
         return ctrl.isAnyParentTaskBeingMoved || ctrl.isTaskBeingMoved(detail);
-    }
+    };
 }
 
 angular.module("app").component("taskDetailsList", {
