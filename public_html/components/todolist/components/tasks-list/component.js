@@ -202,6 +202,21 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
         }
     };
 
+    ctrl.moveTask = function (taskId, newParentTaskId) {
+        if (!ctrl.serviceCallsBlocked) {
+            ctrl.blockServiceCalls();
+
+            TasksService.move.query({taskId: taskId, newParentTaskId: newParentTaskId}, {}, function (data) {
+                ctrl.unblockServiceCalls();
+
+                ctrl.getTasks(ctrl.selectedProject.id);
+            }, function (error) {
+                ctrl.error = ErrorObjectBuilder.build(error, "Failed to move task");
+                ctrl.unblockServiceCalls();
+            });
+        }
+    };
+
     ctrl.findTaskById = function (taskId, tasks) {
         for (var i = 0; i < tasks.length; i++) {
             var task = tasks[i];
@@ -355,16 +370,129 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
         ctrl.uncompleteTask(ctrl.selectedTask.id);
     };
 
+    ctrl.isTaskBeingMoved = function () {
+        return !ctrl.isTaskNotBeingMoved();
+    };
+
+    ctrl.isTaskNotBeingMoved = function () {
+        if (ctrl.taskBeingMoved) {
+            return false;
+        }
+
+        return true;
+    };
+
+    ctrl.setSelectedTaskAsParentOfTaskBeingMoved = function () {
+        ctrl.moveTask(ctrl.taskBeingMoved.id, ctrl.selectedTask.id);
+
+        ctrl.taskBeingMoved = null;
+    };
+
+    ctrl.setSelectedTaskToBeMoved = function () {
+        ctrl.taskBeingMoved = ctrl.selectedTask;
+    };
+
+    ctrl.resetTaskToBeMoved = function () {
+        ctrl.taskBeingMoved = null;
+    };
+
+    ctrl.isSetAsParentActionHidden = function () {
+        return ctrl.isTaskNotBeingMoved();
+    };
+
+    ctrl.isCancelMoveActionHidden = function () {
+        return ctrl.isTaskNotBeingMoved();
+    };
+
+    ctrl.isWorkOnActionHidden = function () {
+        if (ctrl.isTaskBeingMoved()) {
+            return true;
+        }
+
+        return ctrl.isSelectedTaskBeingWorkedOn();
+    };
+
+    ctrl.isStopWorkingOnActionHidden = function () {
+        if (ctrl.isTaskBeingMoved()) {
+            return true;
+        }
+
+        return ctrl.isSelectedTaskNotBeingWorkedOn();
+    };
+
+    ctrl.isCreateDetailActionHidden = function () {
+        if (ctrl.isTaskBeingMoved()) {
+            return true;
+        }
+
+        return false;
+    };
+
+    ctrl.isEditActionHidden = function () {
+        if (ctrl.isTaskBeingMoved()) {
+            return true;
+        }
+
+        return false;
+    };
+
+    ctrl.isMoveUpActionHidden = function () {
+        if (ctrl.isTaskBeingMoved()) {
+            return true;
+        }
+
+        return ctrl.isSelectedTaskBeingWorkedOn();
+    };
+
+    ctrl.isMoveDownActionHidden = function () {
+        if (ctrl.isTaskBeingMoved()) {
+            return true;
+        }
+
+        return ctrl.isSelectedTaskBeingWorkedOn();
+    };
+
+    ctrl.isMoveLocationActionHidden = function () {
+        return ctrl.isTaskBeingMoved();
+    };
+
+    ctrl.isCompleteActionHidden = function () {
+        if (ctrl.isTaskBeingMoved()) {
+            return true;
+        }
+
+        return ctrl.isSelectedTaskCompleted();
+    };
+
+    ctrl.isUncompleteActionHidden = function () {
+        if (ctrl.isTaskBeingMoved()) {
+            return true;
+        }
+
+        return ctrl.isSelectedTaskNotCompleted();
+    };
+
+    ctrl.isRemoveActionHidden = function () {
+        if (ctrl.isTaskBeingMoved()) {
+            return true;
+        }
+
+        return false;
+    };
+
     ctrl.controlTaskActions = [
-        {text: 'Work on', action: ctrl.selectTaskToWorkOn, hidden: ctrl.isSelectedTaskBeingWorkedOn},
-        {text: 'Stop working on', action: ctrl.resetTaskWorkedOn, hidden: ctrl.isSelectedTaskNotBeingWorkedOn},
-        {text: 'Create detail', action: Dialog.openDialog.bind(null, Dialog.DIALOG.CREATE_TASK_DETAIL)},
-        {text: 'Edit', action: ctrl.editTaskAction.bind(null)},
-        {text: 'Move up', action: ctrl.moveSelectedTaskUp, enabled: ctrl.isMoveSelectedTaskUpEnabled, hidden: ctrl.isSelectedTaskBeingWorkedOn},
-        {text: 'Move down', action: ctrl.moveSelectedTaskDown, enabled: ctrl.isMoveSelectedTaskDownEnabled, hidden: ctrl.isSelectedTaskBeingWorkedOn},
-        {text: 'Complete', action: ctrl.completeSelectedTask, hidden: ctrl.isSelectedTaskCompleted},
-        {text: 'Uncomplete', action: ctrl.uncompleteSelectedTask, hidden: ctrl.isSelectedTaskNotCompleted},
-        {text: 'Remove', action: Dialog.openDialog.bind(null, Dialog.DIALOG.REMOVE_TASK)}
+        {text: 'Set as parent', action: ctrl.setSelectedTaskAsParentOfTaskBeingMoved, hidden: ctrl.isSetAsParentActionHidden},
+        {text: 'Cancel move', action: ctrl.resetTaskToBeMoved, hidden: ctrl.isCancelMoveActionHidden},
+        {text: 'Work on', action: ctrl.selectTaskToWorkOn, hidden: ctrl.isWorkOnActionHidden},
+        {text: 'Stop working on', action: ctrl.resetTaskWorkedOn, hidden: ctrl.isStopWorkingOnActionHidden},
+        {text: 'Create detail', action: Dialog.openDialog.bind(null, Dialog.DIALOG.CREATE_TASK_DETAIL), hidden: ctrl.isCreateDetailActionHidden},
+        {text: 'Edit', action: ctrl.editTaskAction.bind(null), hidden: ctrl.isEditActionHidden},
+        {text: 'Move up', action: ctrl.moveSelectedTaskUp, enabled: ctrl.isMoveSelectedTaskUpEnabled, hidden: ctrl.isMoveUpActionHidden},
+        {text: 'Move down', action: ctrl.moveSelectedTaskDown, enabled: ctrl.isMoveSelectedTaskDownEnabled, hidden: ctrl.isMoveDownActionHidden},
+        {text: 'Move location', action: ctrl.setSelectedTaskToBeMoved, hidden: ctrl.isMoveLocationActionHidden},
+        {text: 'Complete', action: ctrl.completeSelectedTask, hidden: ctrl.isCompleteActionHidden},
+        {text: 'Uncomplete', action: ctrl.uncompleteSelectedTask, hidden: ctrl.isUncompleteActionHidden},
+        {text: 'Remove', action: Dialog.openDialog.bind(null, Dialog.DIALOG.REMOVE_TASK), hidden: ctrl.isRemoveActionHidden}
     ];
 
     ctrl.isTaskWorkedOn = function (task) {

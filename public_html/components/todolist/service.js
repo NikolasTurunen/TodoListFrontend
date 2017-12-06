@@ -78,6 +78,11 @@ angular.module("app").factory("TasksService", ["$resource", "$location",
                 query: {
                     method: "POST"
                 }
+            }),
+            move: $resource(url + "/move", {}, {
+                query: {
+                    method: "POST"
+                }
             })
         };
     }
