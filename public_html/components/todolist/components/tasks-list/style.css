@@ -26,6 +26,10 @@
     color: #527b5b !important;
 }
 
+.todolist-task-being-moved {
+    color: #41a3de;
+}
+
 .todolist-task-controls {
     margin-right: 8px;
     width: 20px;

@@ -14,7 +14,8 @@
                      ng-class="{'todolist-task-selected': $ctrl.isTaskSelected(task, $index)
                  , 'todolist-task-grayed': $ctrl.isTaskGrayed(task)
                  , 'todolist-task-completed': $ctrl.isTaskCompleted(task)
-                 , 'todolist-task-grayed-completed': $ctrl.isTaskGrayed(task) && $ctrl.isTaskCompleted(task)}">
+                 , 'todolist-task-grayed-completed': $ctrl.isTaskGrayed(task) && $ctrl.isTaskCompleted(task)
+                 , 'todolist-task-being-moved': $ctrl.isTaskBeingMoved(task)}">
                     <div class="w100">
                         <div ng-click="$ctrl.openControlTaskDialog(task)" class="todolist-task-controls" ng-class="{'todolist-task-controls-disabled': $ctrl.taskWorkedOn && !$ctrl.isTaskWorkedOn(task)}"></div>
                         <div class="todolist-task-text">{{task.taskString}}</div>
@@ -26,8 +27,10 @@
                             traversed-task-detail-index="$ctrl.traversedTaskDetailIndex" 
                             is-task-detail-selected="$ctrl.isTaskDetailSelected" 
                             is-task-worked-on="$ctrl.isTaskWorkedOn"
+                            is-task-being-moved="$ctrl.isTaskBeingMoved"
                             is-any-parent-task-worked-on="$ctrl.isTaskWorkedOn(task)"
                             is-any-parent-task-completed="$ctrl.isTaskCompleted(task)"
+                            is-any-parent-task-being-moved="$ctrl.isTaskBeingMoved(task)"
                             open-control-task-detail-dialog="$ctrl.openControlTaskDetailDialog"></task-details-list>
                     </div>
                 </div>

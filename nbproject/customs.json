@@ -36,6 +36,7 @@
         },
         "task-details-list": {
             "attributes": {
+                "is-any-parent-task-being-moved": {},
                 "task": {},
                 "detail-of-detail": {},
                 "is-any-parent-task-worked-on": {},
@@ -43,6 +44,7 @@
                 "open-control-task-detail-dialog": {},
                 "is-any-parent-task-completed": {},
                 "task-worked-on": {},
+                "is-task-being-moved": {},
                 "traversed-task-detail-index": {},
                 "is-task-detail-selected": {}
             }

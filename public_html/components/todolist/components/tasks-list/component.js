@@ -370,7 +370,11 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
         ctrl.uncompleteTask(ctrl.selectedTask.id);
     };
 
-    ctrl.isTaskBeingMoved = function () {
+    ctrl.isTaskBeingMoved = function (task) {
+        if (task !== undefined) {
+            return task === ctrl.taskBeingMoved;
+        }
+
         return !ctrl.isTaskNotBeingMoved();
     };
 

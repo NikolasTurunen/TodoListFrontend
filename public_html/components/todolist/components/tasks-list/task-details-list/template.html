@@ -4,7 +4,8 @@
      , 'todolist-task-detail-selected': $ctrl.isTaskDetailSelected(detail, $index)
      , 'todolist-task-detail-grayed': $ctrl.isGrayed(detail)
      , 'todolist-task-detail-completed': $ctrl.isCompleted(detail)
-     , 'todolist-task-detail-grayed-completed': $ctrl.isGrayed(detail) && $ctrl.isCompleted(detail)}">
+     , 'todolist-task-detail-grayed-completed': $ctrl.isGrayed(detail) && $ctrl.isCompleted(detail)
+     , 'todolist-task-detail-being-moved': $ctrl.isBeingMoved(detail)}">
     <div ng-click="!$ctrl.isGrayed(detail) && $ctrl.openControlTaskDetailDialog(detail)" class="todolist-task-detail-dash"></div>{{detail.taskString}}
 
     <task-details-list 
@@ -13,8 +14,10 @@
         traversed-task-detail-index="$ctrl.traversedTaskDetailIndex" 
         is-task-detail-selected="$ctrl.isTaskDetailSelected" 
         is-task-worked-on="$ctrl.isTaskWorkedOn"
+        is-task-being-moved="$ctrl.isTaskBeingMoved"
         is-any-parent-task-worked-on="!$ctrl.isGrayed(detail)"
         is-any-parent-task-completed="$ctrl.isCompleted(detail)"
+        is-any-parent-task-being-moved="$ctrl.isBeingMoved(detail)"
         open-control-task-detail-dialog="$ctrl.openControlTaskDetailDialog"
         detail-of-detail></task-details-list>
 </div>

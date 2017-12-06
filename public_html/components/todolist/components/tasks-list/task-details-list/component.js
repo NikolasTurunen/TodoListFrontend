@@ -9,6 +9,10 @@ function Controller($attrs) {
     ctrl.isCompleted = function (detail) {
         return ctrl.isAnyParentTaskCompleted || detail.completed;
     };
+
+    ctrl.isBeingMoved = function (detail) {
+        return ctrl.isAnyParentTaskBeingMoved || ctrl.isTaskBeingMoved(detail);
+    }
 }
 
 angular.module("app").component("taskDetailsList", {
@@ -20,8 +24,10 @@ angular.module("app").component("taskDetailsList", {
         traversedTaskDetailIndex: "<",
         isTaskDetailSelected: "<",
         isTaskWorkedOn: "<",
+        isTaskBeingMoved: "<",
         isAnyParentTaskWorkedOn: "<",
         isAnyParentTaskCompleted: "<",
+        isAnyParentTaskBeingMoved: "<",
         openControlTaskDetailDialog: "<"
     }
 });
