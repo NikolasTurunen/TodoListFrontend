@@ -707,6 +707,8 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
                 ctrl.traversedTaskDetailIndex = null;
             } else if (ctrl.taskWorkedOn && Dialog.isDialogOpen(null)) {
                 ctrl.taskWorkedOn = null;
+            } else if (ctrl.taskBeingMoved) {
+                ctrl.taskBeingMoved = null;
             } else if (ctrl.traversedTaskIndex !== null) {
                 ctrl.traversedTaskIndex = null;
             } else if (Dialog.isDialogOpen(null)) {
