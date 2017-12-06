@@ -405,6 +405,10 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
     };
 
     ctrl.isSetAsParentActionEnabled = function () {
+        if (!ctrl.taskBeingMoved) {
+            return false;
+        }
+
         if (ctrl.taskBeingMoved === ctrl.selectedTask) {
             return false;
         }
