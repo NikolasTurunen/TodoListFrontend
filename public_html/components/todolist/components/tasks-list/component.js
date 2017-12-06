@@ -554,7 +554,7 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
     };
 
     ctrl.openCreateTaskDialog = function () {
-        if (!ctrl.taskWorkedOn) {
+        if (!ctrl.taskWorkedOn && !ctrl.taskBeingMoved) {
             Dialog.openDialog(Dialog.DIALOG.CREATE_TASK);
         }
     };
@@ -610,7 +610,7 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
     };
 
     ctrl.processDialogSpecificHotkeys = function (key) {
-        if (Dialog.isDialogOpen(Dialog.DIALOG.CONTROL_TASK)) {
+        if (Dialog.isDialogOpen(Dialog.DIALOG.CONTROL_TASK) && !ctrl.taskBeingMoved) {
             switch (key) {
                 case "CTRL":
                     ctrl.startOrStopWorkingOnSelectedTask();
@@ -730,7 +730,7 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
                     ctrl.openControlTaskDetailDialog(ctrl.taskWorkedOn.details[ctrl.traversedTaskDetailIndex]);
                 } else if (ctrl.taskWorkedOn) {
                     ctrl.openControlTaskDialog(ctrl.taskWorkedOn);
-                } else if (!ctrl.taskWorkedOn) {
+                } else if (!ctrl.taskWorkedOn && !ctrl.taskBeingMoved) {
                     ctrl.openCreateTaskDialog();
                 }
             }
@@ -738,11 +738,11 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
     };
 
     ctrl.canMoveTaskWithHotkeys = function () {
-        return ctrl.traversedTaskIndex !== null && ctrl.selectedProject && Dialog.isDialogOpen(null);
+        return ctrl.traversedTaskIndex !== null && ctrl.selectedProject && Dialog.isDialogOpen(null) && !ctrl.taskBeingMoved;
     };
 
     ctrl.canMoveTaskDetailWithHotkeys = function () {
-        return ctrl.traversedTaskDetailIndex !== null && ctrl.selectedProject && Dialog.isDialogOpen(null);
+        return ctrl.traversedTaskDetailIndex !== null && ctrl.selectedProject && Dialog.isDialogOpen(null) && !ctrl.taskBeingMoved;
     };
 
     ctrl.processHotkeyUp = function () {
@@ -778,7 +778,7 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
             return null;
         }
 
-        if (Dialog.isDialogOpen(null)) {
+        if (Dialog.isDialogOpen(null) && !ctrl.taskBeingMoved) {
             ctrl.selectTraversedTaskToWorkOn();
         }
     };
@@ -788,8 +788,10 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
             return null;
         }
 
-        ctrl.selectTraversedTask();
-        Dialog.openDialog(Dialog.DIALOG.REMOVE_TASK);
+        if (!ctrl.taskBeingMoved) {
+            ctrl.selectTraversedTask();
+            Dialog.openDialog(Dialog.DIALOG.REMOVE_TASK);
+        }
     };
 }
 
