@@ -648,7 +648,6 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
 
     ctrl.processHotkey = function (key) {
         if (!Dialog.isDialogOpen(null)) {
-            console.log("Process dialog hotkey");
             ctrl.processDialogSpecificHotkeys(key);
 
             ctrl.processHotkeyDialog(key);
