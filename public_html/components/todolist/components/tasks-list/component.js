@@ -413,7 +413,7 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
             return false;
         }
 
-        if (ctrl.taskBeingMoved.id === ctrl.selectedTask.parentTaskId) {
+        if (ctrl.taskBeingMoved.parentTaskId === ctrl.selectedTask.id) {
             return false;
         }
 
