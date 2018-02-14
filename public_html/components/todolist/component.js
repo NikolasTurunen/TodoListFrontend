@@ -4,6 +4,8 @@ function Controller($hotkey) {
     ctrl.minimized = false;
 
     ctrl.selectedProject = null;
+    
+    ctrl.taskBeingMoved = null;
 
     ctrl.error = null;
 

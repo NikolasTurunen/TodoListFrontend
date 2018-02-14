@@ -58,6 +58,7 @@
         },
         "tasks-list": {
             "attributes": {
+                "task-being-moved": {},
                 "process-hotkey": {},
                 "minimized": {},
                 "error": {},

@@ -32,6 +32,17 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
         });
     };
 
+    ctrl.setTaskToBeMovedById = function (taskId, tasks) {
+        angular.forEach(tasks, function (value, key) {
+            var task = value;
+            if (ctrl.taskBeingMoved && task.id === taskId) {
+                ctrl.taskBeingMoved = task;
+            } else {
+                ctrl.setTaskToBeMovedById(taskId, task.details);
+            }
+        });
+    };
+
     $scope.$watch(ctrl.selectedProject, function (newValue, oldValue) {
         ctrl.resetTasks();
         ctrl.loadingTasks = true;
@@ -54,6 +65,7 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
 
             var selectedTaskId;
             var taskWorkedOnId;
+            var taskBeingMovedId;
 
             if (ctrl.selectedTask) {
                 selectedTaskId = ctrl.selectedTask.id;
@@ -63,12 +75,17 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
                 taskWorkedOnId = ctrl.taskWorkedOn.id;
             }
 
+            if (ctrl.taskBeingMoved) {
+                taskBeingMovedId = ctrl.taskBeingMoved.id;
+            }
+
             TasksService.get.query({projectId: projectId}, {}, function (data) {
                 ctrl.tasks = data;
                 ctrl.loadingTasks = false;
 
                 ctrl.selectTaskById(selectedTaskId, ctrl.tasks);
                 ctrl.setTaskWorkedOnById(taskWorkedOnId, ctrl.tasks);
+                ctrl.setTaskToBeMovedById(taskBeingMovedId, ctrl.tasks);
 
                 ctrl.loadingTasksError = false;
 
@@ -811,6 +828,7 @@ angular.module("app").component("tasksList", {
     bindings: {
         minimized: "=",
         selectedProject: "=",
+        taskBeingMoved: "=",
         error: "=",
         processHotkey: "="
     }
