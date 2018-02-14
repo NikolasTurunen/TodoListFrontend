@@ -392,6 +392,12 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
         ctrl.taskBeingMoved = null;
     };
 
+    ctrl.clearParentTaskOfTaskBeingMoved = function () {
+        ctrl.moveTask(ctrl.taskBeingMoved.id, "");
+
+        ctrl.taskBeingMoved = null;
+    };
+
     ctrl.setSelectedTaskToBeMoved = function () {
         ctrl.taskBeingMoved = ctrl.selectedTask;
     };

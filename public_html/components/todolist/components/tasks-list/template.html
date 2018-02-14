@@ -12,10 +12,10 @@
             <div class="todolist-tasks selectable">
                 <div ng-repeat="task in $ctrl.tasks" class="todolist-task" 
                      ng-class="{'todolist-task-selected': $ctrl.isTaskSelected(task, $index)
-                 , 'todolist-task-grayed': $ctrl.isTaskGrayed(task)
-                 , 'todolist-task-completed': $ctrl.isTaskCompleted(task)
-                 , 'todolist-task-grayed-completed': $ctrl.isTaskGrayed(task) && $ctrl.isTaskCompleted(task)
-                 , 'todolist-task-being-moved': $ctrl.isTaskBeingMoved(task)}">
+                                 , 'todolist-task-grayed': $ctrl.isTaskGrayed(task)
+                                 , 'todolist-task-completed': $ctrl.isTaskCompleted(task)
+                                 , 'todolist-task-grayed-completed': $ctrl.isTaskGrayed(task) && $ctrl.isTaskCompleted(task)
+                                 , 'todolist-task-being-moved': $ctrl.isTaskBeingMoved(task)}">
                     <div class="w100">
                         <div ng-click="$ctrl.openControlTaskDialog(task)" class="todolist-task-controls" ng-class="{'todolist-task-controls-disabled': $ctrl.taskWorkedOn && !$ctrl.isTaskWorkedOn(task)}"></div>
                         <div class="todolist-task-text">{{task.taskString}}</div>
@@ -51,6 +51,7 @@
         <div ng-if="!$ctrl.minimized">
             <div ng-click="$ctrl.backFromTasks(); $ctrl.taskWorkedOn = null; $ctrl.Dialog.closeDialog();" class="todolist-button todolist-footer-button">Back</div>
             <div ng-click="$ctrl.openCreateTaskDialog(); $ctrl.traversedTaskIndex = null;" class="todolist-button todolist-footer-button" ng-class="{'todolist-footer-button-disabled': $ctrl.taskWorkedOn || $ctrl.taskBeingMoved}">New Task</div>
+            <div ng-if="$ctrl.taskBeingMoved && $ctrl.taskBeingMoved.parentTaskId" ng-click="$ctrl.clearParentTaskOfTaskBeingMoved(); $ctrl.traversedTaskIndex = null;" class="todolist-button todolist-footer-button">Clear parent</div>
         </div>
     </div>
 
