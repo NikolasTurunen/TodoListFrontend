@@ -219,11 +219,11 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
         }
     };
 
-    ctrl.moveTask = function (taskId, newParentTaskId) {
+    ctrl.moveTask = function (taskId, newParentTaskId, newProjectId) {
         if (!ctrl.serviceCallsBlocked) {
             ctrl.blockServiceCalls();
 
-            TasksService.move.query({taskId: taskId, newParentTaskId: newParentTaskId}, {}, function (data) {
+            TasksService.move.query({taskId: taskId, newParentTaskId: newParentTaskId, newProjectId: newProjectId}, {}, function (data) {
                 ctrl.unblockServiceCalls();
 
                 ctrl.getTasks(ctrl.selectedProject.id);
@@ -411,6 +411,12 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
 
     ctrl.clearParentTaskOfTaskBeingMoved = function () {
         ctrl.moveTask(ctrl.taskBeingMoved.id, "");
+
+        ctrl.taskBeingMoved = null;
+    };
+
+    ctrl.setProjectOfTaskBeingMoved = function () {
+        ctrl.moveTask(ctrl.taskBeingMoved.id, "", ctrl.selectedProject.id);
 
         ctrl.taskBeingMoved = null;
     };

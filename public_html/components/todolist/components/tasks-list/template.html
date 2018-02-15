@@ -51,7 +51,8 @@
         <div ng-if="!$ctrl.minimized">
             <div ng-click="$ctrl.backFromTasks(); $ctrl.taskWorkedOn = null; $ctrl.Dialog.closeDialog();" class="todolist-button todolist-footer-button">Back</div>
             <div ng-click="$ctrl.openCreateTaskDialog(); $ctrl.traversedTaskIndex = null;" class="todolist-button todolist-footer-button" ng-class="{'todolist-footer-button-disabled': $ctrl.taskWorkedOn || $ctrl.taskBeingMoved}">New Task</div>
-            <div ng-if="$ctrl.taskBeingMoved && $ctrl.taskBeingMoved.parentTaskId && $ctrl.taskBeingMoved.projectId === $ctrl.selectedProject.id" ng-click="$ctrl.clearParentTaskOfTaskBeingMoved(); $ctrl.traversedTaskIndex = null;" class="todolist-button todolist-footer-button">Clear parent</div>
+            <div ng-if="$ctrl.taskBeingMoved && $ctrl.taskBeingMoved.parentTaskId && $ctrl.taskBeingMoved.projectId === $ctrl.selectedProject.id" ng-click="$ctrl.clearParentTaskOfTaskBeingMoved(); $ctrl.traversedTaskIndex = null;" class="todolist-button todolist-footer-button">Clear Parent</div>
+            <div ng-if="$ctrl.taskBeingMoved && $ctrl.taskBeingMoved.projectId !== $ctrl.selectedProject.id" ng-click="$ctrl.setProjectOfTaskBeingMoved(); $ctrl.traversedTaskIndex = null;" class="todolist-button todolist-footer-button">Move To Project</div>
         </div>
     </div>
 
