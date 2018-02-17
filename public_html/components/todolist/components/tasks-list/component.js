@@ -662,36 +662,51 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
     };
 
     ctrl.processDialogSpecificHotkeys = function (key) {
-        if (Dialog.isDialogOpen(Dialog.DIALOG.CONTROL_TASK) && !ctrl.taskBeingMoved) {
-            switch (key) {
-                case "CTRL":
-                    ctrl.startOrStopWorkingOnSelectedTask();
-                    break;
-                case "SHIFT+D":
-                    Dialog.openDialog(Dialog.DIALOG.CREATE_TASK_DETAIL);
-                    break;
-                case "SHIFT+E":
-                    ctrl.openEditTaskDialog();
-                    break;
-                case "UP":
-                    if (ctrl.isMoveSelectedTaskUpEnabled() && !ctrl.isSelectedTaskBeingWorkedOn()) {
-                        ctrl.moveSelectedTaskUp();
-                    }
-                    break;
-                case "DOWN":
-                    if (ctrl.isMoveSelectedTaskDownEnabled() && !ctrl.isSelectedTaskBeingWorkedOn()) {
-                        ctrl.moveSelectedTaskDown();
-                    }
-                    break;
-                case "SHIFT+C":
-                    ctrl.completeOrUncompleteSelectedTask();
-                    break;
-                case "SHIFT+R":
-                    ctrl.setSelectedTaskToBeMoved();
-                    break;
-                case "DEL":
-                    Dialog.openDialog(Dialog.DIALOG.REMOVE_TASK);
-                    break;
+        if (Dialog.isDialogOpen(Dialog.DIALOG.CONTROL_TASK)) {
+            if (!ctrl.taskBeingMoved) {
+                switch (key) {
+                    case "CTRL":
+                        ctrl.startOrStopWorkingOnSelectedTask();
+                        break;
+                    case "SHIFT+D":
+                        Dialog.openDialog(Dialog.DIALOG.CREATE_TASK_DETAIL);
+                        break;
+                    case "SHIFT+E":
+                        ctrl.openEditTaskDialog();
+                        break;
+                    case "UP":
+                        if (ctrl.isMoveSelectedTaskUpEnabled() && !ctrl.isSelectedTaskBeingWorkedOn()) {
+                            ctrl.moveSelectedTaskUp();
+                        }
+                        break;
+                    case "DOWN":
+                        if (ctrl.isMoveSelectedTaskDownEnabled() && !ctrl.isSelectedTaskBeingWorkedOn()) {
+                            ctrl.moveSelectedTaskDown();
+                        }
+                        break;
+                    case "SHIFT+C":
+                        ctrl.completeOrUncompleteSelectedTask();
+                        break;
+                    case "SHIFT+R":
+                        ctrl.setSelectedTaskToBeMoved();
+                        break;
+                    case "DEL":
+                        Dialog.openDialog(Dialog.DIALOG.REMOVE_TASK);
+                        break;
+                }
+            } else {
+                switch (key) {
+                    case "SHIFT+R":
+                        if (ctrl.taskBeingMoved === ctrl.selectedTask) {
+                            ctrl.taskBeingMoved = null;
+                        } else if (ctrl.isSetAsParentActionEnabled()) {
+                            ctrl.setSelectedTaskAsParentOfTaskBeingMoved();
+                        }
+                        break;
+                    case "SHIFT+C":
+                        ctrl.taskBeingMoved = null;
+                        break;
+                }
             }
         }
     };
@@ -899,9 +914,13 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
             return null;
         }
 
-        if (ctrl.canControlTraversedTaskWithHotkeys()) {
-            ctrl.selectTraversedTask();
-            ctrl.completeOrUncompleteSelectedTask();
+        if (!ctrl.taskBeingMoved) {
+            if (ctrl.canControlTraversedTaskWithHotkeys()) {
+                ctrl.selectTraversedTask();
+                ctrl.completeOrUncompleteSelectedTask();
+            }
+        } else {
+            ctrl.taskBeingMoved = null;
         }
     };
 
