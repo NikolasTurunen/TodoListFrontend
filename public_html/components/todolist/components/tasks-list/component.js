@@ -697,11 +697,7 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
             } else {
                 switch (key) {
                     case "SHIFT+R":
-                        if (ctrl.taskBeingMoved === ctrl.selectedTask) {
-                            ctrl.taskBeingMoved = null;
-                        } else if (ctrl.isSetAsParentActionEnabled()) {
-                            ctrl.setSelectedTaskAsParentOfTaskBeingMoved();
-                        }
+                        ctrl.setSelectedTaskAsParentOfTaskBeingMovedOrClearIfTheyAreEqual();
                         break;
                     case "SHIFT+C":
                         ctrl.taskBeingMoved = null;
@@ -933,11 +929,7 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
             if (ctrl.taskWorkedOn || ctrl.traversedTaskIndex !== null) {
                 ctrl.selectTraversedTask();
 
-                if (ctrl.selectedTask === ctrl.taskBeingMoved) {
-                    ctrl.taskBeingMoved = null;
-                } else if (ctrl.isSetAsParentActionEnabled()) {
-                    ctrl.setSelectedTaskAsParentOfTaskBeingMoved();
-                }
+                ctrl.setSelectedTaskAsParentOfTaskBeingMovedOrClearIfTheyAreEqual();
             } else {
                 if (ctrl.taskBeingMoved.projectId === ctrl.selectedProject.id) {
                     if (ctrl.taskBeingMoved.parentTaskId) {
@@ -950,6 +942,14 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
         } else if (ctrl.canControlTraversedTaskWithHotkeys()) {
             ctrl.selectTraversedTask();
             ctrl.setSelectedTaskToBeMoved();
+        }
+    };
+
+    ctrl.setSelectedTaskAsParentOfTaskBeingMovedOrClearIfTheyAreEqual = function () {
+        if (ctrl.taskBeingMoved === ctrl.selectedTask) {
+            ctrl.taskBeingMoved = null;
+        } else if (ctrl.isSetAsParentActionEnabled()) {
+            ctrl.setSelectedTaskAsParentOfTaskBeingMoved();
         }
     };
 }
