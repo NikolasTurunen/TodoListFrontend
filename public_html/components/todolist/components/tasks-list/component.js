@@ -911,8 +911,10 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
         }
 
         if (ctrl.taskBeingMoved) {
-            if (ctrl.taskWorkedOn || ctrl.traversedTaskIndex !== null) {
-                ctrl.selectTraversedTask();
+            ctrl.selectTraversedTask();
+            if (ctrl.selectedTask === ctrl.taskBeingMoved) {
+                ctrl.taskBeingMoved = null;
+            } else if (ctrl.taskWorkedOn || ctrl.traversedTaskIndex !== null) {
                 if (ctrl.isSetAsParentActionEnabled()) {
                     ctrl.setSelectedTaskAsParentOfTaskBeingMoved();
                 }
