@@ -327,7 +327,15 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
     };
 
     ctrl.selectTraversedTask = function () {
-        ctrl.selectTask(ctrl.tasks[ctrl.traversedTaskIndex]);
+        if (!ctrl.taskWorkedOn) {
+            ctrl.selectTask(ctrl.tasks[ctrl.traversedTaskIndex]);
+        } else {
+            if (ctrl.taskWorkedOn.details.length === 0 || ctrl.traversedTaskDetailIndex === null) {
+                ctrl.selectTask(ctrl.taskWorkedOn);
+            } else {
+                ctrl.selectTask(ctrl.taskWorkedOn.details[ctrl.traversedTaskDetailIndex]);
+            }
+        }
     };
 
     ctrl.selectTraversedTaskToWorkOn = function () {
@@ -357,6 +365,14 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
         }
     };
 
+    ctrl.completeOrUncompleteSelectedTask = function () {
+        if (!ctrl.isTaskCompleted(ctrl.selectedTask)) {
+            ctrl.completeSelectedTask();
+        } else {
+            ctrl.uncompleteSelectedTask();
+        }
+    };
+
     ctrl.isSelectedTaskBeingWorkedOn = function () {
         return ctrl.selectedTask === ctrl.taskWorkedOn;
     };
@@ -366,8 +382,11 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
     };
 
     ctrl.editTaskAction = function () {
-        ctrl.dialogInputText = ctrl.selectedTask.taskString;
+        ctrl.openEditTaskDialog();
+    };
 
+    ctrl.openEditTaskDialog = function () {
+        ctrl.dialogInputText = ctrl.selectedTask.taskString;
         Dialog.openDialog(Dialog.DIALOG.EDIT_TASK);
     };
 
@@ -648,6 +667,12 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
                 case "CTRL":
                     ctrl.startOrStopWorkingOnSelectedTask();
                     break;
+                case "SHIFT+D":
+                    Dialog.openDialog(Dialog.DIALOG.CREATE_TASK_DETAIL);
+                    break;
+                case "SHIFT+E":
+                    ctrl.openEditTaskDialog();
+                    break;
                 case "UP":
                     if (ctrl.isMoveSelectedTaskUpEnabled() && !ctrl.isSelectedTaskBeingWorkedOn()) {
                         ctrl.moveSelectedTaskUp();
@@ -657,6 +682,9 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
                     if (ctrl.isMoveSelectedTaskDownEnabled() && !ctrl.isSelectedTaskBeingWorkedOn()) {
                         ctrl.moveSelectedTaskDown();
                     }
+                    break;
+                case "SHIFT+C":
+                    ctrl.completeOrUncompleteSelectedTask();
                     break;
                 case "DEL":
                     Dialog.openDialog(Dialog.DIALOG.REMOVE_TASK);
@@ -707,8 +735,17 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
                 case "CTRL":
                     ctrl.processHotkeyCtrl();
                     break;
+                case "SHIFT+D":
+                    ctrl.processHotkeyShiftD();
+                    break;
+                case "SHIFT+E":
+                    ctrl.processHotkeyShiftE();
+                    break;
                 case "DEL":
                     ctrl.processHotkeyDel();
+                    break;
+                case "SHIFT+C":
+                    ctrl.processHotkeyShiftC();
                     break;
             }
         }
@@ -778,6 +815,10 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
         return ctrl.traversedTaskDetailIndex !== null && ctrl.selectedProject && Dialog.isDialogOpen(null) && !ctrl.taskBeingMoved;
     };
 
+    ctrl.canControlTraversedTaskWithHotkeys = function () {
+        return !ctrl.taskBeingMoved && (ctrl.taskWorkedOn || ctrl.traversedTaskIndex !== null);
+    };
+
     ctrl.processHotkeyUp = function () {
         if (!ctrl.isActive()) {
             return null;
@@ -816,14 +857,47 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
         }
     };
 
+    ctrl.processHotkeyShiftD = function () {
+        if (!ctrl.isActive()) {
+            return null;
+        }
+
+        if (ctrl.canControlTraversedTaskWithHotkeys()) {
+            ctrl.selectTraversedTask();
+            Dialog.openDialog(Dialog.DIALOG.CREATE_TASK_DETAIL);
+        }
+    };
+
+    ctrl.processHotkeyShiftE = function () {
+        if (!ctrl.isActive()) {
+            return null;
+        }
+
+        if (ctrl.canControlTraversedTaskWithHotkeys()) {
+            ctrl.selectTraversedTask();
+            ctrl.openEditTaskDialog();
+        }
+    };
+
     ctrl.processHotkeyDel = function () {
         if (!ctrl.isActive()) {
             return null;
         }
 
-        if (!ctrl.taskBeingMoved) {
+        if (ctrl.canControlTraversedTaskWithHotkeys()) {
             ctrl.selectTraversedTask();
             Dialog.openDialog(Dialog.DIALOG.REMOVE_TASK);
+        }
+    };
+
+    ctrl.processHotkeyShiftC = function () {
+        if (!ctrl.isActive()) {
+            return null;
+        }
+
+        if (ctrl.canControlTraversedTaskWithHotkeys()) {
+            ctrl.selectTraversedTask();
+            ctrl.completeOrUncompleteSelectedTask();
         }
     };
 }

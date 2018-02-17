@@ -4,7 +4,7 @@ function Controller($hotkey) {
     ctrl.minimized = false;
 
     ctrl.selectedProject = null;
-    
+
     ctrl.taskBeingMoved = null;
 
     ctrl.error = null;
@@ -12,7 +12,7 @@ function Controller($hotkey) {
     ctrl.processHotkeyProjectsList = null;
     ctrl.processHotkeyTasksList = null;
 
-    var hotkeys = ["ENTER", "TAB", "SHIFT+TAB", "ESC", "UP", "DOWN", "CTRL", "DEL"];
+    var hotkeys = ["ENTER", "TAB", "SHIFT+TAB", "ESC", "UP", "DOWN", "CTRL", "DEL", "SHIFT+D", "SHIFT+E", "SHIFT+C"];
     for (var i = 0; i < hotkeys.length; i++) {
         var hotkey = hotkeys[i];
         $hotkey.bind(hotkey, function (hotkey) {
