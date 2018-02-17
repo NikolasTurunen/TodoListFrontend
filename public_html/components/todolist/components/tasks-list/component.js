@@ -856,7 +856,7 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
             return null;
         }
 
-        if (Dialog.isDialogOpen(null) && !ctrl.taskBeingMoved) {
+        if (Dialog.isDialogOpen(null)) {
             ctrl.selectTraversedTaskToWorkOn();
         }
     };
@@ -910,7 +910,22 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
             return null;
         }
 
-        if (ctrl.canControlTraversedTaskWithHotkeys()) {
+        if (ctrl.taskBeingMoved) {
+            if (ctrl.taskWorkedOn || ctrl.traversedTaskIndex !== null) {
+                ctrl.selectTraversedTask();
+                if (ctrl.isSetAsParentActionEnabled()) {
+                    ctrl.setSelectedTaskAsParentOfTaskBeingMoved();
+                }
+            } else {
+                if (ctrl.taskBeingMoved.projectId === ctrl.selectedProject.id) {
+                    if (ctrl.taskBeingMoved.parentTaskId) {
+                        ctrl.clearParentTaskOfTaskBeingMoved();
+                    }
+                } else {
+                    ctrl.setProjectOfTaskBeingMoved();
+                }
+            }
+        } else if (ctrl.canControlTraversedTaskWithHotkeys()) {
             ctrl.selectTraversedTask();
             ctrl.setSelectedTaskToBeMoved();
         }
