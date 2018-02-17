@@ -686,6 +686,9 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
                 case "SHIFT+C":
                     ctrl.completeOrUncompleteSelectedTask();
                     break;
+                case "SHIFT+R":
+                    ctrl.setSelectedTaskToBeMoved();
+                    break;
                 case "DEL":
                     Dialog.openDialog(Dialog.DIALOG.REMOVE_TASK);
                     break;
@@ -740,6 +743,9 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
                     break;
                 case "SHIFT+E":
                     ctrl.processHotkeyShiftE();
+                    break;
+                case "SHIFT+R":
+                    ctrl.processHotkeyShiftR();
                     break;
                 case "DEL":
                     ctrl.processHotkeyDel();
@@ -898,6 +904,17 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
         if (ctrl.canControlTraversedTaskWithHotkeys()) {
             ctrl.selectTraversedTask();
             ctrl.completeOrUncompleteSelectedTask();
+        }
+    };
+
+    ctrl.processHotkeyShiftR = function () {
+        if (!ctrl.isActive()) {
+            return null;
+        }
+
+        if (ctrl.canControlTraversedTaskWithHotkeys()) {
+            ctrl.selectTraversedTask();
+            ctrl.setSelectedTaskToBeMoved();
         }
     };
 }
