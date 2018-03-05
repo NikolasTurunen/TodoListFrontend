@@ -1,10 +1,11 @@
-function Controller($attrs, Dialog) {
+function Controller($attrs, $scope, Dialog) {
     var ctrl = this;
     ctrl.attributes = $attrs;
 
     ctrl.executeAction = function () {
         Dialog.closeDialog();
         ctrl.action();
+        $scope.$emit("EnableTextFieldImportantHotkeys");
     };
 
     ctrl.resetInput = function () {
@@ -18,10 +19,13 @@ function Controller($attrs, Dialog) {
         ctrl.error = null;
 
         ctrl.resetInput();
+        $scope.$emit("EnableTextFieldImportantHotkeys");
     };
 
     this.$onChanges = function (changedObject) {
         if (changedObject.status !== undefined && changedObject.status.currentValue === true) {
+            $scope.$emit("DisableTextFieldImportantHotkeys");
+
             ctrl.resetInput();
             if (ctrl.defaultTextInput !== undefined) {
                 ctrl.textInput = ctrl.defaultTextInput;
