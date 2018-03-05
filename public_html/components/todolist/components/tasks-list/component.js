@@ -179,6 +179,10 @@ function Controller(TasksService, Dialog, TabTraverseHelper, ErrorObjectBuilder,
                 if (ctrl.taskWorkedOn && ctrl.taskWorkedOn.id === taskId) {
                     ctrl.taskWorkedOn = null;
                 }
+
+                ctrl.traversedTaskIndex = null;
+                ctrl.traversedTaskDetailIndex = null;
+
                 ctrl.unblockServiceCalls();
 
                 ctrl.getTasks(ctrl.selectedProject.id);
