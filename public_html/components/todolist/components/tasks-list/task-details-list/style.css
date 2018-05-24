@@ -17,6 +17,10 @@
     background-color: #585858;
 }
 
+.todolist-task-detail-selected-dark {
+    background-color: #505050;
+}
+
 .todolist-task-detail-grayed {
     color: #848484;
 }
