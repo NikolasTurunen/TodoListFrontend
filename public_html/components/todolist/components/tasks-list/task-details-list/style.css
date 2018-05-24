@@ -42,3 +42,7 @@
     cursor: pointer;
     float: left;
 }
+
+.todolist-task-detail-text {
+    margin-left: 18px;
+}

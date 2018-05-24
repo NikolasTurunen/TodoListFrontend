@@ -6,7 +6,8 @@
      , 'todolist-task-detail-completed': $ctrl.isCompleted(detail)
      , 'todolist-task-detail-grayed-completed': $ctrl.isGrayed(detail) && $ctrl.isCompleted(detail)
      , 'todolist-task-detail-being-moved': $ctrl.isBeingMoved(detail)}">
-    <div ng-click="!$ctrl.isGrayed(detail) && $ctrl.openControlTaskDetailDialog(detail)" class="todolist-task-detail-dash"></div>{{detail.taskString}}
+    <div ng-click="!$ctrl.isGrayed(detail) && $ctrl.openControlTaskDetailDialog(detail)" class="todolist-task-detail-dash"></div>
+    <div class="todolist-task-detail-text">{{detail.taskString}}</div>
 
     <task-details-list 
         task="detail" 
