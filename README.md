@@ -1,14 +1,28 @@
-Instructions:
-1. Open the project in NetBeans-IDE.
-2. Click "Resolve Problems..."
-3. Resolve "Missing Bower modules"
-4. Click "Close" ("Invalid Unit Tests" cannot be Resolved because there are no unit tests in the frontend)
-5. Run the project.
+# Todo-List Frontend
 
-The frontend should now be opened in the browser.
-Start by clicking the arrow on the bottom-left corner.
-This arrow might seem odd but it is there because i run the frontend in a JavaFX WebView-component in a window that does not have the title bar. This is because i find it useful to have the todolist at a predefined location on the screen without the possibility to move, close, or minimize it. The window starts on system startup so the todolist is always quickly accessible.
+<img src="projects-view.png" width="384"> <img src="tasks-view.png" width="384">
 
-![Image of projects view](projects-view.png)
+## Requirements:
+- Python (for easy to setup http.server-module). A dedicated web server is recommended for long term usage.
+- Bower installation
 
-![Image of tasks view](tasks-view.png)
+## Installing:
+1. Clone this repository
+
+2. Install dependencies with: ```bower install```
+
+3. #### Setting up the directory structure for Pythons http.server-module (or a dedicated web server)
+   1. Create a directory "html" in your preferred location
+   2. Create a subdirectory "todolist"
+   3. Copy the contents of the "public_html"-folder to the "todolist"-folder
+
+The directory structure should now look like in the image below:
+
+![Directory structure as an image](python-http-server-directory-structure.png)
+
+## Running:
+1. Navigate to the "html"-directory.
+
+2. With python 3, run ```python -m http.server 80```, otherwise run ```python -m SimpleHTTPServer 80```
+
+3. Open ```http://localhost/todolist/``` in your preferred browser (Tested with Google Chrome)
